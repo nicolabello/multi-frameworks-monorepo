@@ -1,14 +1,15 @@
 {
   "name": "root",
   "private": true,
-  "devDependencies": {
-    "lerna": "^3.20.2"
-  },
-  "scripts": {
-    "bootstrap": "lerna bootstrap"
-  },
   "workspaces": [
     "apps/*",
     "libs/*"
-  ]
+  ],
+  "scripts": {
+    "ws": "yarn workspaces",
+    "ws:es": "yarn workspace @feature-toggles/express-server"
+  },
+  "devDependencies": {
+    "lerna": "^3.20.2"
+  }
 }
