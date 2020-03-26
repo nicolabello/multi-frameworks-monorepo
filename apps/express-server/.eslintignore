@@ -1,2 +1,11 @@
+# Dependencies folder
 node_modules
+
+# Anything starting with .
+.*
+
+# Configs
+*.config.*
+
+# Build output
 build
