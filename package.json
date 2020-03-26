@@ -1,12 +1,12 @@
 {
-  "name": "root",
   "private": true,
+  "name": "root",
   "workspaces": [
     "apps/*",
     "libs/*"
   ],
   "scripts": {
-    "ws": "yarn workspaces",
+    "ws:all": "yarn workspaces",
     "ws:es": "yarn workspace @feature-toggles/express-server"
   },
   "devDependencies": {
