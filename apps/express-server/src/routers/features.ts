@@ -11,7 +11,7 @@ const router = express.Router();
 router
   .route('/')
   .get((req, res) => {
-    Feature.find((err, features) => {
+    Feature.find(req.query, (err, features) => {
       if (err) res.send(err);
       res.json(features);
     });
