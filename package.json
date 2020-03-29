@@ -6,8 +6,9 @@
     "libs/*"
   ],
   "scripts": {
-    "ws:all": "yarn workspaces",
-    "ws:es": "yarn workspace @feature-toggles/express-server"
+    "ws": "yarn workspaces",
+    "ws:a": "yarn workspace @feature-toggles/express",
+    "ws:e": "yarn workspace @feature-toggles/angular"
   },
   "devDependencies": {
     "lerna": "^3.20.2"

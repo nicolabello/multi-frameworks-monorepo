@@ -4,7 +4,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import { featuresRouter } from './routers/features';
 
-async function start() {
+async function start(): Promise<void> {
   dotenv.config();
 
   const dbUri = process.env.DB_URI || '';

@@ -1,7 +1,7 @@
 {
   "private": true,
   "version": "1.0.0",
-  "name": "@feature-toggles/express-server",
+  "name": "@feature-toggles/express",
   "scripts": {
     "start": "nodemon",
     "build": "rimraf ./build && tsc",
