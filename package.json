@@ -1,14 +1,20 @@
 {
   "private": true,
-  "name": "root",
+  "name": "feature-toggles",
+  "author": "Nicola Bello <nicola.bello.3@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicolabello/feature-toggles"
+  },
+  "license": "GPL-2.0-or-later",
   "workspaces": [
     "apps/*",
     "libs/*"
   ],
   "scripts": {
     "ws": "yarn workspaces",
-    "ws:a": "yarn workspace @feature-toggles/express",
-    "ws:e": "yarn workspace @feature-toggles/angular"
+    "ws:e": "yarn workspace @feature-toggles/express",
+    "ws:a": "yarn workspace @feature-toggles/angular"
   },
   "devDependencies": {
     "lerna": "^3.20.2"

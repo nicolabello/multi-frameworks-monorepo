@@ -1,6 +1,14 @@
 {
-  "name": "@feature-toggles/angular",
+  "private": true,
   "version": "1.0.0",
+  "name": "@feature-toggles/angular",
+  "author": "Nicola Bello <nicola.bello.3@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicolabello/feature-toggles",
+    "directory": "apps/angular"
+  },
+  "license": "GPL-2.0-or-later",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +17,6 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "~9.1.0",
     "@angular/common": "~9.1.0",

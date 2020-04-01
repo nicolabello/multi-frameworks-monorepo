@@ -2,6 +2,13 @@
   "private": true,
   "version": "1.0.0",
   "name": "@feature-toggles/express",
+  "author": "Nicola Bello <nicola.bello.3@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicolabello/feature-toggles",
+    "directory": "apps/express"
+  },
+  "license": "GPL-2.0-or-later",
   "scripts": {
     "start": "nodemon",
     "build": "rimraf ./build && tsc",
