@@ -1,41 +1,24 @@
-import mongoose from 'mongoose';
+export enum FeatureValueType {
+  String = 'string',
+  // Text = 'text',
+  Number = 'number',
+  Boolean = 'bool',
+}
 
-interface FeatureInterface extends mongoose.Document {
+export type FeatureValue = string | number | boolean;
+
+export interface FeatureSwitch {
+  environment?: string;
+  version?: string;
+  language?: string;
+  value: FeatureValueType;
+}
+
+export interface Feature {
+  _id: any;
   name: string;
-  value?: boolean;
+  description: string;
+  type: FeatureValueType;
+  value: FeatureValue;
+  switches: FeatureSwitch[];
 }
-
-const schema = new mongoose.Schema<FeatureInterface>({
-  name: { type: String, required: true },
-  value: Boolean,
-});
-
-/*
-// Trying to use loadClass for methods, statics and virtuals
-class FeatureClass {
-  get fullName(this: FeatureInterface): string {
-    return `${this.name} get`;
-  }
-
-  set fullName(this: FeatureInterface, name: string) {
-    this.name = `${name} set`;
-  }
-
-  public static findByFullName(
-    this: mongoose.Model<FeatureInterfaceExtended>,
-    name: string
-  ) {
-    return this.findOne({ name });
-  }
-}
-
-schema.loadClass(FeatureClass);
-
-type FeatureInterfaceExtended = FeatureInterface & FeatureClass
-*/
-
-export const Feature = mongoose.model<FeatureInterface>(
-  'Feature',
-  schema,
-  'features'
-);

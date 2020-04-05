@@ -1,1 +1,1 @@
-export * from 'material-components-web';
+export * from '@nicolabello/material-components-web';

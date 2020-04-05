@@ -1,0 +1,37 @@
+<form class="ft-form" [formGroup]="form" (ngSubmit)="submit()">
+
+  <label class="mdc-text-field" mdcTextField>
+    <span class="mdc-text-field__ripple"></span>
+    <input class="mdc-text-field__input" type="text" aria-labelledby="name-id" formControlName="name" autofocus>
+    <span class="mdc-floating-label" id="name-id"
+          [ngClass]="{'mdc-floating-label--float-above': form.get('name').value}">Name</span>
+    <span class="mdc-line-ripple"></span>
+  </label>
+
+  <label class="mdc-text-field" mdcTextField>
+    <span class="mdc-text-field__ripple"></span>
+    <input class="mdc-text-field__input" type="text" aria-labelledby="description-id" formControlName="description">
+    <span class="mdc-floating-label" id="description-id"
+          [ngClass]="{'mdc-floating-label--float-above': form.get('description').value}">Description</span>
+    <span class="mdc-line-ripple"></span>
+  </label>
+
+  <div class="ft-form-controls">
+
+    <div class="mdc-touch-target-wrapper">
+      <button class="mdc-button" type="button" (click)="cancel()" mdcButton>
+        <span class="mdc-button__ripple"></span>
+        Cancel
+      </button>
+    </div>
+
+    <div class="mdc-touch-target-wrapper">
+      <button class="mdc-button mdc-button--unelevated" type="submit" [disabled]="!form.valid" mdcButton>
+        <span class="mdc-button__ripple"></span>
+        Save
+      </button>
+    </div>
+
+  </div>
+
+</form>

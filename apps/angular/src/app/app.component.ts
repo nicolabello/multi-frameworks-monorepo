@@ -1,17 +1,10 @@
-import { AfterViewInit, Component } from '@angular/core';
-import { MDCCheckbox } from '@material/checkbox';
-
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'ft-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent implements AfterViewInit {
-  title = 'Feature Toggles';
-
-  public ngAfterViewInit(): void {
-    const chk = new MDCCheckbox(document.querySelector('.mdc-checkbox'));
-  }
-
+export class AppComponent {
 }

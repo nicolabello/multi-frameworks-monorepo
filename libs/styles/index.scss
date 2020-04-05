@@ -4,3 +4,65 @@
 @import "https://fonts.googleapis.com/css?family=Roboto:300,400,500";
 
 @import "~@nicolabello/material-components-web/styles";
+// @import "~@nicolabello/material-components-web/mixins";
+
+body {
+  height: 100vh;
+}
+
+.mdc-drawer {
+  position: fixed;
+}
+
+.mdc-top-app-bar {
+  z-index: 7;
+}
+
+.ft-main-content {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.ft-fab-absolute {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.ft-form {
+  display: flex;
+  flex-direction: column;
+
+  > * + * {
+    margin-top: 2rem;
+  }
+
+  .ft-form-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    > * + * {
+      margin-left: 1rem;
+    }
+  }
+}
+
+.ft-card-content {
+  padding: 1rem;
+
+  h2, p {
+    margin: 0;
+  }
+}
+
+.ft-cards-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+
+  li + li {
+    margin-top: .5rem;
+  }
+}
