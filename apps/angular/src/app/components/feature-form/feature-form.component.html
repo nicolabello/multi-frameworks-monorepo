@@ -1,32 +1,32 @@
-<form class="ft-form" [formGroup]="form" (ngSubmit)="submit()">
+<form (ngSubmit)="submit()" [formGroup]="form" class="ft-form">
 
   <label class="mdc-text-field" mdcTextField>
     <span class="mdc-text-field__ripple"></span>
-    <input class="mdc-text-field__input" type="text" aria-labelledby="name-id" formControlName="name" autofocus>
-    <span class="mdc-floating-label" id="name-id"
-          [ngClass]="{'mdc-floating-label--float-above': form.get('name').value}">Name</span>
+    <input aria-labelledby="name-id" autofocus class="mdc-text-field__input" formControlName="name" type="text">
+    <span [ngClass]="{'mdc-floating-label--float-above': form.get('name').value}" class="mdc-floating-label"
+          id="name-id">Name</span>
     <span class="mdc-line-ripple"></span>
   </label>
 
   <label class="mdc-text-field" mdcTextField>
     <span class="mdc-text-field__ripple"></span>
-    <input class="mdc-text-field__input" type="text" aria-labelledby="description-id" formControlName="description">
-    <span class="mdc-floating-label" id="description-id"
-          [ngClass]="{'mdc-floating-label--float-above': form.get('description').value}">Description</span>
+    <input aria-labelledby="description-id" class="mdc-text-field__input" formControlName="description" type="text">
+    <span [ngClass]="{'mdc-floating-label--float-above': form.get('description').value}" class="mdc-floating-label"
+          id="description-id">Description</span>
     <span class="mdc-line-ripple"></span>
   </label>
 
   <div class="ft-form-controls">
 
     <div class="mdc-touch-target-wrapper">
-      <button class="mdc-button" type="button" (click)="cancel()" mdcButton>
+      <button (click)="cancel()" class="mdc-button" mdcButton type="button">
         <span class="mdc-button__ripple"></span>
         Cancel
       </button>
     </div>
 
     <div class="mdc-touch-target-wrapper">
-      <button class="mdc-button mdc-button--unelevated" type="submit" [disabled]="!form.valid" mdcButton>
+      <button [disabled]="!form.valid" class="mdc-button mdc-button--unelevated" mdcButton type="submit">
         <span class="mdc-button__ripple"></span>
         Save
       </button>

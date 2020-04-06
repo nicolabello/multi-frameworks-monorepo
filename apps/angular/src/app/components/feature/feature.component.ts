@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
-import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { Feature } from '~express/models/feature';
 import { FeatureService } from '../../services/feature.service';
 
@@ -11,10 +11,12 @@ import { FeatureService } from '../../services/feature.service';
   styleUrls: ['./feature.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FeatureComponent implements OnInit {
+export class FeatureComponent implements OnInit, OnDestroy {
 
+  public addingNew: boolean;
   public data: Feature;
-  private subscriptions = new Subscription();
+  private dataSubscription: Subscription;
+  private saveSubscription: Subscription;
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
@@ -23,22 +25,26 @@ export class FeatureComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscriptions.add(this.activatedRoute.params.pipe(
+    this.dataSubscription = this.activatedRoute.params.pipe(
       map(params => params.id),
       distinctUntilChanged(),
-      switchMap(id => id === 'new' ? of(null) : this.featureService.get(id))
+      tap(id => this.addingNew = id === 'new'),
+      switchMap(id => this.addingNew ? of(null) : this.featureService.get(id))
     ).subscribe(data => {
       this.data = data;
       this.cdr.markForCheck();
-    }));
+    });
   }
 
   public addOrUpdate(data: Feature): void {
-    if (data._id) {
-      this.featureService.update(data).subscribe(() => this.showList());
-    } else {
-      this.featureService.add(data).subscribe(() => this.showList());
+
+    if (this.saveSubscription) {
+      this.saveSubscription.unsubscribe();
     }
+
+    const saveObservable = this.addingNew ? this.featureService.add(data) : this.featureService.update(data);
+    this.saveSubscription = saveObservable.subscribe(() => this.showList());
+
   }
 
   public showList() {
@@ -46,7 +52,15 @@ export class FeatureComponent implements OnInit {
   }
 
   public ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+    }
+
+    if (this.saveSubscription) {
+      this.saveSubscription.unsubscribe();
+    }
+
   }
 
 }

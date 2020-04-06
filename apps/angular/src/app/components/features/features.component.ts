@@ -12,21 +12,23 @@ import { FeaturesService } from '../../services/features.service';
 export class FeaturesComponent implements OnInit, OnDestroy {
 
   public data: Feature[];
-  private subscriptions = new Subscription();
+  private dataSubscription: Subscription;
 
   constructor(private featuresService: FeaturesService,
               private cdr: ChangeDetectorRef) {
   }
 
   public ngOnInit(): void {
-    this.subscriptions.add(this.featuresService.getAll().subscribe(data => {
+    this.dataSubscription = this.featuresService.getAll().subscribe(data => {
       this.data = data;
       this.cdr.markForCheck();
-    }));
+    });
   }
 
   public ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe();
+    }
   }
 
 }

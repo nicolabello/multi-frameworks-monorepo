@@ -1,5 +1,5 @@
 import { AfterViewInit, Directive, ElementRef, OnDestroy } from '@angular/core';
-import { MDCLineRipple, MDCTextField, MDCFloatingLabel } from '@nicolabello/material-components-web';
+import { MDCFloatingLabel, MDCLineRipple, MDCTextField } from '@nicolabello/material-components-web';
 
 @Directive({
   selector: '[mdcTextField]',

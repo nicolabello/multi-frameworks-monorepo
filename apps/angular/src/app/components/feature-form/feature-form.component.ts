@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Feature } from '~express/models/feature';
 
@@ -8,9 +17,25 @@ import { Feature } from '~express/models/feature';
   styleUrls: ['./feature-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FeatureFormComponent {
+export class FeatureFormComponent implements AfterViewInit {
+
+  @Output() public ftSubmit = new EventEmitter<Feature>();
+  @Output() public ftCancel = new EventEmitter<void>();
+  public form = new FormGroup({
+    name: new FormControl(''),
+    description: new FormControl(''),
+    type: new FormControl(''),
+  });
+
+  constructor(private elementRef: ElementRef<HTMLElement>,
+              private cdr: ChangeDetectorRef) {
+  }
 
   private _data: Feature;
+
+  public get data(): Feature {
+    return this._data;
+  }
 
   @Input()
   public set data(value: Feature) {
@@ -26,30 +51,25 @@ export class FeatureFormComponent {
     this.cdr.markForCheck();
   }
 
-  public get data(): Feature {
-    return this._data;
+  public ngAfterViewInit(): void {
+    this.autoFocus();
   }
 
-  @Output() public ftSubmit = new EventEmitter<Feature>();
-  @Output() public ftCancel = new EventEmitter<void>();
-
-  constructor(private cdr: ChangeDetectorRef) {
-  }
-
-  public form = new FormGroup({
-    name: new FormControl(''),
-    description: new FormControl(''),
-    type: new FormControl(''),
-  });
-
-  public submit() {
+  public submit(): void {
     if (this.form.valid) {
       this.ftSubmit.emit({ ...this.data, ...this.form.value });
     }
   }
 
-  public cancel() {
+  public cancel(): void {
     this.ftCancel.emit();
+  }
+
+  private autoFocus() {
+    const autofocusElement: HTMLElement = this.elementRef.nativeElement.querySelector('[autofocus]');
+    if (autofocusElement) {
+      autofocusElement.focus();
+    }
   }
 
 }
