@@ -1,0 +1,5 @@
+<ng-container *ngIf="error" [ngSwitch]="error.key">
+  <ng-container *ngSwitchCase="'required'">This is required</ng-container>
+  <ng-container *ngSwitchCase="'inArray'">Value not allowed</ng-container>
+  <ng-container *ngSwitchDefault>Invalid</ng-container>
+</ng-container>
