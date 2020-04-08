@@ -8,8 +8,9 @@ import {
   Input,
   Output
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Feature } from '~express/models/feature';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { Feature, FeatureValueType } from '~express/models/feature';
+import { Validators } from '../../helpers/validators';
 
 @Component({
   selector: 'ft-feature-form',
@@ -21,11 +22,18 @@ export class FeatureFormComponent implements AfterViewInit {
 
   @Output() public ftSubmit = new EventEmitter<Feature>();
   @Output() public ftCancel = new EventEmitter<void>();
+
   public form = new FormGroup({
-    name: new FormControl(''),
+    name: new FormControl('', [Validators.required]),
     description: new FormControl(''),
-    type: new FormControl(''),
+    type: new FormControl('', [
+      Validators.required,
+      Validators.inArray(Object.keys(FeatureValueType).map(key => FeatureValueType[key]))
+    ]),
+    value: new FormControl(''),
+    switches: new FormArray([])
   });
+  public types = FeatureValueType;
 
   constructor(private elementRef: ElementRef<HTMLElement>,
               private cdr: ChangeDetectorRef) {
@@ -39,7 +47,7 @@ export class FeatureFormComponent implements AfterViewInit {
 
   @Input()
   public set data(value: Feature) {
-    this._data = value || {
+    value = value || {
       _id: null,
       name: null,
       description: null,
@@ -47,6 +55,7 @@ export class FeatureFormComponent implements AfterViewInit {
       value: null,
       switches: null,
     };
+    this._data = value;
     this.form.reset(this._data);
     this.cdr.markForCheck();
   }

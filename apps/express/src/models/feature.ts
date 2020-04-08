@@ -1,6 +1,5 @@
 export enum FeatureValueType {
   String = 'string',
-  // Text = 'text',
   Number = 'number',
   Boolean = 'bool',
 }

@@ -1,10 +1,29 @@
+@use "~@nicolabello/material-components-web/textfield";
+@use "~@nicolabello/material-components-web/theme";
+
 @import "~normalize.css/normalize.css";
 
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
 @import "https://fonts.googleapis.com/css?family=Roboto:300,400,500";
 
+// @import "https://unpkg.com/material-components-web@v5.1.0/dist/material-components-web.min.css";
 @import "~@nicolabello/material-components-web/styles";
-// @import "~@nicolabello/material-components-web/mixins";
+
+// Material styles fixes - Start
+.mdc-select__anchor {
+  vertical-align: top;
+}
+
+.mdc-select-helper-text {
+  padding-right: textfield.$helper-line-padding;
+  padding-left: textfield.$helper-line-padding;
+  color: textfield.$helper-text-color;
+
+  &.mdc-select-helper-text--validation-msg {
+    @include theme.prop(color, error);
+  }
+}
+// Material styles fixes - End
 
 body {
   height: 100vh;
@@ -34,7 +53,7 @@ body {
   display: flex;
   flex-direction: column;
 
-  > * + * {
+  > * + *:not(.mdc-text-field-helper-line):not(.mdc-select-helper-text) {
     margin-top: 2rem;
   }
 
@@ -45,6 +64,13 @@ body {
 
     > * + * {
       margin-left: 1rem;
+    }
+  }
+
+  .mdc-select {
+
+    > * {
+      width: 100%;
     }
   }
 }

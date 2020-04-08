@@ -1,20 +1,61 @@
-<form (ngSubmit)="submit()" [formGroup]="form" class="ft-form">
+<form (ngSubmit)="submit()" [formGroup]="form" class="ft-form" novalidate>
 
-  <label class="mdc-text-field" mdcTextField>
+  <label [mdcTextField]="form.get('name')" [required]="true" class="mdc-text-field">
     <span class="mdc-text-field__ripple"></span>
-    <input aria-labelledby="name-id" autofocus class="mdc-text-field__input" formControlName="name" type="text">
-    <span [ngClass]="{'mdc-floating-label--float-above': form.get('name').value}" class="mdc-floating-label"
-          id="name-id">Name</span>
+    <input aria-controls="name-helper-text-id" aria-describedby="name-helper-text-id" aria-labelledby="name-id"
+           autofocus
+           class="mdc-text-field__input" formControlName="name" type="text">
+    <span class="mdc-floating-label" id="name-id">Name</span>
     <span class="mdc-line-ripple"></span>
   </label>
+  <div aria-hidden="true" class="mdc-text-field-helper-line" id="name-helper-text-id">
+    <div *ngIf="form.get('name').errors; else noNameErrors" class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+         mdcTextFieldHelperText>
+      <ft-validation-message [errors]="form.get('name').errors"></ft-validation-message>
+    </div>
+    <ng-template #noNameErrors>
+      <div class="mdc-text-field-helper-text" mdcTextFieldHelperText>This will be used as key in the
+        response object
+      </div>
+    </ng-template>
+  </div>
 
-  <label class="mdc-text-field" mdcTextField>
+  <label [mdcTextField]="form.get('description')" class="mdc-text-field">
     <span class="mdc-text-field__ripple"></span>
-    <input aria-labelledby="description-id" class="mdc-text-field__input" formControlName="description" type="text">
-    <span [ngClass]="{'mdc-floating-label--float-above': form.get('description').value}" class="mdc-floating-label"
-          id="description-id">Description</span>
+    <input aria-controls="description-helper-text-id" aria-describedby="description-helper-text-id"
+           aria-labelledby="description-id" class="mdc-text-field__input" formControlName="description"
+           type="text">
+    <span class="mdc-floating-label" id="description-id">Description</span>
     <span class="mdc-line-ripple"></span>
   </label>
+  <div aria-hidden="true" class="mdc-text-field-helper-line" id="description-helper-text-id">
+    <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" mdcTextFieldHelperText>
+      <ft-validation-message [errors]="form.get('name').errors"></ft-validation-message>
+    </div>
+  </div>
+
+  <div [mdcSelect]="form.get('type')" [required]="true" class="mdc-select">
+    <div class="mdc-select__anchor">
+      <i class="mdc-select__dropdown-icon"></i>
+      <div aria-controls="type-helper-text-id" aria-describedby="type-helper-text-id"
+           aria-haspopup="listbox" aria-labelledby="type-label-id type-selected-text-id"
+           class="mdc-select__selected-text" id="type-selected-text-id"
+           role="button"></div>
+      <span class="mdc-floating-label" id="type-label-id">Type</span>
+      <div class="mdc-line-ripple"></div>
+    </div>
+    <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
+      <ul class="mdc-list">
+        <li class="mdc-list-item" data-value="boolean" role="option">Boolean</li>
+        <li class="mdc-list-item" data-value="string" role="option">String</li>
+        <li class="mdc-list-item" data-value="number" role="option">Number</li>
+      </ul>
+    </div>
+  </div>
+  <div aria-hidden="true" class="mdc-select-helper-text mdc-select-helper-text--validation-msg" id="type-helper-text-id"
+       mdcSelectHelperText>
+    <ft-validation-message [errors]="form.get('type').errors"></ft-validation-message>
+  </div>
 
   <div class="ft-form-controls">
 

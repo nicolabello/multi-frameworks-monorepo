@@ -1,5 +1,7 @@
-import { AfterViewInit, Directive, ElementRef, OnDestroy } from '@angular/core';
-import { MDCFloatingLabel, MDCLineRipple, MDCTextField } from '@nicolabello/material-components-web';
+import { AfterViewInit, Directive, ElementRef, Input, OnDestroy } from '@angular/core';
+import { AbstractControl } from '@angular/forms';
+import { MDCTextField } from '@nicolabello/material-components-web';
+import { Subscription } from 'rxjs';
 
 @Directive({
   selector: '[mdcTextField]',
@@ -8,8 +10,9 @@ import { MDCFloatingLabel, MDCLineRipple, MDCTextField } from '@nicolabello/mate
 export class TextFieldDirective implements AfterViewInit, OnDestroy {
 
   public instance: MDCTextField;
-  public lineRippleInstance: MDCLineRipple;
-  public floatingLabelInstance: MDCFloatingLabel;
+  private controlStatusSubscription: Subscription;
+  @Input('mdcTextField') private control: AbstractControl;
+  @Input() private required: boolean;
 
   constructor(private elementRef: ElementRef<HTMLElement>) {
   }
@@ -17,15 +20,20 @@ export class TextFieldDirective implements AfterViewInit, OnDestroy {
   public ngAfterViewInit(): void {
 
     this.instance = MDCTextField.attachTo(this.elementRef.nativeElement);
+    this.instance.required = this.required || false;
 
-    const lineRippleElement = this.elementRef.nativeElement.querySelector('.mdc-line-ripple');
-    if (lineRippleElement) {
-      this.lineRippleInstance = MDCLineRipple.attachTo(lineRippleElement);
-    }
+    if (this.control) {
 
-    const floatingLabelElement = this.elementRef.nativeElement.querySelector('.mdc-floating-label');
-    if (floatingLabelElement) {
-      this.floatingLabelInstance = MDCFloatingLabel.attachTo(floatingLabelElement);
+      this.instance.useNativeValidation = false;
+
+      this.controlStatusSubscription = this.control.statusChanges.subscribe(() => {
+        this.instance.valid = !(this.control.invalid && (this.control.dirty || this.control.touched));
+        this.instance.disabled = this.control.disabled;
+      });
+
+      this.instance.valid = this.control.valid;
+      this.instance.disabled = this.control.disabled;
+
     }
 
   }
@@ -34,12 +42,8 @@ export class TextFieldDirective implements AfterViewInit, OnDestroy {
 
     this.instance.destroy();
 
-    if (this.lineRippleInstance) {
-      this.lineRippleInstance.destroy();
-    }
-
-    if (this.floatingLabelInstance) {
-      this.floatingLabelInstance.destroy();
+    if (this.controlStatusSubscription) {
+      this.controlStatusSubscription.unsubscribe();
     }
 
   }
