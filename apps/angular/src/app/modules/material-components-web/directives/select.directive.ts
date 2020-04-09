@@ -70,6 +70,6 @@ export class SelectDirective implements AfterViewInit, OnDestroy {
       this.control.markAsTouched();
       this.cdr.markForCheck();
     }
-  };
+  }
 
 }

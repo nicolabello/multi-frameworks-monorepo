@@ -4,10 +4,9 @@ export enum FeatureValueType {
   Boolean = 'boolean',
 }
 
-export const featureValueTypes: string[] = Object.keys(
-  FeatureValueType
-// @ts-ignore
-).map(key => FeatureValueType[key]);
+export const featureValueTypes: string[] = Object.keys(FeatureValueType).map(
+  (key) => (FeatureValueType as any)[key] as string
+);
 
 export type FeatureValue = string | number | boolean;
 

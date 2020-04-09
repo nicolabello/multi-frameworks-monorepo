@@ -24,7 +24,7 @@ export class FeatureComponent implements OnInit, OnDestroy {
               private cdr: ChangeDetectorRef) {
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.dataSubscription = this.activatedRoute.params.pipe(
       map(params => params.id),
       distinctUntilChanged(),

@@ -8,7 +8,7 @@ export class Validators extends AngularValidators {
         return null;
       } else {
         return {
-          'inArray': true
+          inArray: true
         };
       }
     };

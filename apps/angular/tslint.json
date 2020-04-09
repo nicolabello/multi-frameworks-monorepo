@@ -19,7 +19,7 @@
     "directive-selector": [
       true,
       "attribute",
-      "ft",
+      ["ft", "mdc"],
       "camelCase"
     ],
     "component-selector": [
@@ -117,7 +117,8 @@
       "options": [
         "ban-keywords",
         "check-format",
-        "allow-pascal-case"
+        "allow-pascal-case",
+        "allow-leading-underscore"
       ]
     },
     "whitespace": {

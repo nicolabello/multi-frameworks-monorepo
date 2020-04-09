@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 
 interface ValidationError {
-  key: string,
-  details: { [key: string]: string | number }
+  key: string;
+  details: { [key: string]: string | number };
 }
 
 @Component({
@@ -29,7 +29,7 @@ export class ValidationMessageComponent {
       for (const key of this.errorsKeysByPriority) {
         if (errors[key]) {
           return {
-            key: key,
+            key,
             details: errors[key],
           };
         }
@@ -38,7 +38,7 @@ export class ValidationMessageComponent {
       for (const key of Object.keys(errors)) {
         if (errors[key]) {
           return {
-            key: key,
+            key,
             details: errors[key],
           };
         }

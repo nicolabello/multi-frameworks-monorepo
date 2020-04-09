@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
 import { Feature, featureValueTypes } from './feature';
 
-interface FeatureDocument extends mongoose.Document, Feature {
-}
+interface FeatureDocument extends mongoose.Document, Feature {}
 
 const schema = new mongoose.Schema<FeatureDocument>({
   key: { type: String, required: true },
