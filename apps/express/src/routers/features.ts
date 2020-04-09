@@ -19,7 +19,11 @@ router
   })
   .post((req, res) => {
     const feature = new FeatureModel();
-    feature.name = req.body.name;
+
+    feature.key = req.body.key;
+    feature.description = req.body.description;
+    feature.type = req.body.type;
+    feature.value = req.body.value;
 
     feature.save((error, feature) => {
       if (error) return res.status(500).json({ message: error.message });
@@ -43,7 +47,10 @@ router
       if (error) return res.status(500).json({ message: error.message });
       if (!feature) return res.status(404).json({ message: 'Not found' });
 
-      feature.name = req.body.name;
+      feature.key = req.body.key;
+      feature.description = req.body.description;
+      feature.type = req.body.type;
+      feature.value = req.body.value;
 
       feature.save((error, feature) => {
         if (error) return res.status(500).json({ message: error.message });

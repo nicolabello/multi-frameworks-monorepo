@@ -23,10 +23,13 @@
     @include theme.prop(color, error);
   }
 }
+
 // Material styles fixes - End
 
 body {
   height: 100vh;
+  @include theme.prop(background-color, background);
+  @include theme.prop(color, text-primary-on-light);
 }
 
 .mdc-drawer {
@@ -54,7 +57,7 @@ body {
   flex-direction: column;
 
   > * + *:not(.mdc-text-field-helper-line):not(.mdc-select-helper-text) {
-    margin-top: 2rem;
+    margin-top: 1.5rem;
   }
 
   .ft-form-controls {
@@ -71,6 +74,16 @@ body {
 
     > * {
       width: 100%;
+    }
+  }
+
+  .ft-switch {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    > * + * {
+      margin-left: 1rem;
     }
   }
 }
@@ -91,4 +104,10 @@ body {
   li + li {
     margin-top: .5rem;
   }
+}
+
+.ft-feature-preview {
+  padding: 1rem;
+  background: rgba(0, 0, 0, .8);
+  color: rgba(255, 255, 255, .8);
 }

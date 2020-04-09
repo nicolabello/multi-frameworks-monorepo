@@ -1,6 +1,6 @@
 <div class="mdc-card mdc-card--outlined" mdcCard>
   <a [routerLink]="['/features', data._id]" class="mdc-card__primary-action ft-card-content">
-    <h2 class="mdc-typography--headline6">{{data.name}}</h2>
+    <h2 class="mdc-typography--headline6">{{data.key}}</h2>
     <p *ngIf="data.description" class="mdc-typography--subtitle2">{{data.description}}</p>
   </a>
 </div>

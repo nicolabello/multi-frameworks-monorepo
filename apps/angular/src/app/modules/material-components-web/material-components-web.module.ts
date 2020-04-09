@@ -5,6 +5,7 @@ import { DrawerDirective } from './directives/drawer.directive';
 import { FabDirective } from './directives/fab.directive';
 import { SelectHelperTextDirective } from './directives/select-helper-text.directive';
 import { SelectDirective } from './directives/select.directive';
+import { SwitchDirective } from './directives/switch.directive';
 import { TextFieldHelperTextDirective } from './directives/text-field-helper-text.directive';
 import { TextFieldDirective } from './directives/text-field.directive';
 import { TopAppBarDirective } from './directives/top-app-bar.directive';
@@ -18,7 +19,8 @@ const directives = [
   CardDirective,
   SelectDirective,
   TextFieldHelperTextDirective,
-  SelectHelperTextDirective
+  SelectHelperTextDirective,
+  SwitchDirective
 ];
 
 @NgModule({

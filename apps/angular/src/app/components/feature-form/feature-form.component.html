@@ -1,17 +1,18 @@
 <form (ngSubmit)="submit()" [formGroup]="form" class="ft-form" novalidate>
 
-  <label [mdcTextField]="form.get('name')" [required]="true" class="mdc-text-field">
+  <label [mdcTextField]="form.get('key')" [required]="true" class="mdc-text-field">
     <span class="mdc-text-field__ripple"></span>
-    <input aria-controls="name-helper-text-id" aria-describedby="name-helper-text-id" aria-labelledby="name-id"
+    <input aria-controls="key-helper-text-id" aria-describedby="key-helper-text-id" aria-labelledby="key-id"
            autofocus
-           class="mdc-text-field__input" formControlName="name" type="text">
-    <span class="mdc-floating-label" id="name-id">Name</span>
+           class="mdc-text-field__input" formControlName="key" type="text">
+    <span class="mdc-floating-label" id="key-id">Key</span>
     <span class="mdc-line-ripple"></span>
   </label>
-  <div aria-hidden="true" class="mdc-text-field-helper-line" id="name-helper-text-id">
-    <div *ngIf="form.get('name').errors; else noNameErrors" class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
+  <div aria-hidden="true" class="mdc-text-field-helper-line" id="key-helper-text-id">
+    <div *ngIf="form.get('key').errors; else noNameErrors"
+         class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
          mdcTextFieldHelperText>
-      <ft-validation-message [errors]="form.get('name').errors"></ft-validation-message>
+      <ft-validation-message [errors]="form.get('key').errors"></ft-validation-message>
     </div>
     <ng-template #noNameErrors>
       <div class="mdc-text-field-helper-text" mdcTextFieldHelperText>This will be used as key in the
@@ -30,13 +31,13 @@
   </label>
   <div aria-hidden="true" class="mdc-text-field-helper-line" id="description-helper-text-id">
     <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" mdcTextFieldHelperText>
-      <ft-validation-message [errors]="form.get('name').errors"></ft-validation-message>
+      <ft-validation-message [errors]="form.get('key').errors"></ft-validation-message>
     </div>
   </div>
 
   <div [mdcSelect]="form.get('type')" [required]="true" class="mdc-select">
     <div class="mdc-select__anchor">
-      <i class="mdc-select__dropdown-icon"></i>
+      <span class="mdc-select__dropdown-icon"></span>
       <div aria-controls="type-helper-text-id" aria-describedby="type-helper-text-id"
            aria-haspopup="listbox" aria-labelledby="type-label-id type-selected-text-id"
            class="mdc-select__selected-text" id="type-selected-text-id"
@@ -46,7 +47,7 @@
     </div>
     <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
       <ul class="mdc-list">
-        <li class="mdc-list-item" data-value="boolean" role="option">Boolean</li>
+        <li class="mdc-list-item" data-value="boolean" role="option">Toggle</li>
         <li class="mdc-list-item" data-value="string" role="option">String</li>
         <li class="mdc-list-item" data-value="number" role="option">Number</li>
       </ul>
@@ -56,6 +57,54 @@
        mdcSelectHelperText>
     <ft-validation-message [errors]="form.get('type').errors"></ft-validation-message>
   </div>
+
+  <ng-container [ngSwitch]="form.get('type').value">
+    <ng-container *ngSwitchCase="types.Boolean">
+      <div class="ft-switch" role="presentation">
+        <div class="mdc-switch" mdcSwitch>
+          <div class="mdc-switch__track"></div>
+          <div class="mdc-switch__thumb-underlay">
+            <div class="mdc-switch__thumb"></div>
+            <input [attr.aria-checked]="form.get('value').value === true" class="mdc-switch__native-control" formControlName="value" id="value-boolean-id"
+                   role="switch" type="checkbox">
+          </div>
+        </div>
+        <label for="value-boolean-id">Off/On</label>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="types.Number">
+      <label [mdcTextField]="form.get('value')" [required]="true" class="mdc-text-field">
+        <span class="mdc-text-field__ripple"></span>
+        <input aria-controls="value-number-helper-text-id" aria-describedby="value-number-helper-text-id"
+               aria-labelledby="value-number-id" class="mdc-text-field__input" formControlName="value"
+               type="number">
+        <span class="mdc-floating-label" id="value-number-id">Value</span>
+        <span class="mdc-line-ripple"></span>
+      </label>
+      <div aria-hidden="true" class="mdc-text-field-helper-line" id="value-number-helper-text-id">
+        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" mdcTextFieldHelperText>
+          <ft-validation-message [errors]="form.get('value').errors"></ft-validation-message>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngSwitchCase="types.String">
+      <label [mdcTextField]="form.get('value')" [required]="true" class="mdc-text-field">
+        <span class="mdc-text-field__ripple"></span>
+        <input aria-controls="value-string-helper-text-id" aria-describedby="value-string-helper-text-id"
+               aria-labelledby="value-string-id" class="mdc-text-field__input" formControlName="value"
+               type="text">
+        <span class="mdc-floating-label" id="value-string-id">Value</span>
+        <span class="mdc-line-ripple"></span>
+      </label>
+      <div aria-hidden="true" class="mdc-text-field-helper-line" id="value-string-helper-text-id">
+        <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" mdcTextFieldHelperText>
+          <ft-validation-message [errors]="form.get('value').errors"></ft-validation-message>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <pre class="ft-feature-preview">{{preview | json}}</pre>
 
   <div class="ft-form-controls">
 

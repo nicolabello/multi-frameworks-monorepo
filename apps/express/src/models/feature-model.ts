@@ -1,36 +1,18 @@
 import mongoose from 'mongoose';
-import { Feature } from './feature';
+import { Feature, featureValueTypes } from './feature';
 
-interface FeatureDocument extends mongoose.Document, Feature {}
-
-const schema = new mongoose.Schema<FeatureDocument>({
-  name: { type: String, required: true },
-  value: Boolean,
-});
-
-/*
-// Trying to use loadClass for methods, statics and virtuals
-class FeatureClass {
-  get fullName(this: FeatureInterface): string {
-    return `${this.name} get`;
-  }
-
-  set fullName(this: FeatureInterface, name: string) {
-    this.name = `${name} set`;
-  }
-
-  public static findByFullName(
-    this: mongoose.Model<FeatureInterfaceExtended>,
-    name: string
-  ) {
-    return this.findOne({ name });
-  }
+interface FeatureDocument extends mongoose.Document, Feature {
 }
 
-schema.loadClass(FeatureClass);
-
-type FeatureInterfaceExtended = FeatureInterface & FeatureClass
-*/
+const schema = new mongoose.Schema<FeatureDocument>({
+  key: { type: String, required: true },
+  description: String,
+  type: {
+    type: String,
+    validate: (value: string): boolean => featureValueTypes.indexOf(value) > -1,
+  },
+  value: Object,
+});
 
 export const FeatureModel = mongoose.model<FeatureDocument>(
   'Feature',
