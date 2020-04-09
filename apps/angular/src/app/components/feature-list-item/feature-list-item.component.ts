@@ -11,4 +11,12 @@ export class FeatureListItemComponent {
 
   @Input() public data: Feature;
 
+  public get value(): string {
+    return JSON.stringify(this.data?.value);
+  }
+
+  public get key(): string {
+    return JSON.stringify(this.data?.key);
+  }
+
 }

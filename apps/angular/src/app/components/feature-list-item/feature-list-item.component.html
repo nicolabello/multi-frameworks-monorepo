@@ -2,5 +2,15 @@
   <a [routerLink]="['/features', data._id]" class="mdc-card__primary-action ft-card-content">
     <h2 class="mdc-typography--headline6">{{data.key}}</h2>
     <p *ngIf="data.description" class="mdc-typography--subtitle2">{{data.description}}</p>
+    <div role="presentation" class="feature-value">
+      <pre>{{value}}</pre>
+    </div>
   </a>
 </div>
+
+<!--<div class="mdc-card mdc-card&#45;&#45;outlined" mdcCard>
+  <a [routerLink]="['/features', data._id]" class="mdc-card__primary-action ft-card-content">
+    <h2 class="mdc-typography&#45;&#45;headline6">{{key}}: <span>{{value}}</span></h2>
+    <p *ngIf="data.description" class="mdc-typography&#45;&#45;subtitle2">{{data.description}}</p>
+  </a>
+</div>-->

@@ -94,6 +94,20 @@ body {
   h2, p {
     margin: 0;
   }
+
+  p {
+    @include theme.prop(color, text-secondary-on-background);
+  }
+
+  .feature-value {
+    margin-top: .5rem;
+
+    pre {
+      margin: 0;
+      padding: 0;
+      @include theme.prop(color, error);
+    }
+  }
 }
 
 .ft-cards-list {
