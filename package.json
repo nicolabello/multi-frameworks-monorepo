@@ -14,7 +14,8 @@
   "scripts": {
     "ws": "yarn workspaces",
     "ws:e": "yarn workspace @feature-toggles/express",
-    "ws:a": "yarn workspace @feature-toggles/angular"
+    "ws:a": "yarn workspace @feature-toggles/angular",
+    "ws:r": "yarn workspace @feature-toggles/react"
   },
   "devDependencies": {
     "lerna": "^3.20.2"
