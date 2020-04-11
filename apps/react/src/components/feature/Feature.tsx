@@ -1,14 +1,34 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import './Feature.scss';
 
 function Feature() {
 
-  let { id } = useParams();
+  const { id } = useParams();
+  const addingNew = id === 'new';
 
   return (
     <div className="Feature">
-      Feature component {id}
+
+      <header className="mdc-top-app-bar mdc-top-app-bar--fixed">
+        <div className="mdc-top-app-bar__row">
+          <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+            <Link to="/features">
+              <button className="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button">
+                arrow_back
+              </button>
+            </Link>
+            <h1 className="mdc-top-app-bar__title">{addingNew ? 'Add feature' : 'Edit feature'}</h1>
+          </section>
+        </div>
+      </header>
+
+      <div className="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
+        <main className="ft-main-content">
+          {/*TODO: <Feature-form/>*/}
+        </main>
+      </div>
+
     </div>
   );
 }
