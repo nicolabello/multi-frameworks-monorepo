@@ -1,13 +1,13 @@
 import { render, RenderResult } from '@testing-library/react';
 import React from 'react';
-import App from './App';
+import Feature from './Feature';
 
-describe('App', () => {
+describe('Feature', () => {
 
   let component: RenderResult;
 
   beforeEach(() => {
-    component = render(<App/>);
+    component = render(<Feature/>);
   });
 
   it('should create', () => {

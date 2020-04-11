@@ -1,13 +1,13 @@
 import { render, RenderResult } from '@testing-library/react';
 import React from 'react';
-import App from './App';
+import AppRouting from './AppRouting';
 
-describe('App', () => {
+describe('AppRouting', () => {
 
   let component: RenderResult;
 
   beforeEach(() => {
-    component = render(<App/>);
+    component = render(<AppRouting/>);
   });
 
   it('should create', () => {
