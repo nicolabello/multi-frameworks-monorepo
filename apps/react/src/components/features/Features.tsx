@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Feature } from '../../../../express/src/models/feature';
+import { FeaturesService } from '../../services/features.service';
 import MDCFab from '../material-components-web/MDCFab';
-import './Features.scss';
 import MDCTopAppBar from '../material-components-web/MDCTopAppBar';
+import './Features.scss';
 
 function Features() {
+
+  const [data, setData] = useState<Feature[]>([]);
+
+  useEffect(() => {
+    (async () => setData(await FeaturesService.getAll()))();
+  }, []);
+
   return (
     <div className="Features">
 
@@ -20,6 +29,7 @@ function Features() {
 
         <main className="ft-main-content">
           {/*TODO: <Features-list/>*/}
+          {JSON.stringify(data)}
         </main>
 
         <Link to="/feature/new">

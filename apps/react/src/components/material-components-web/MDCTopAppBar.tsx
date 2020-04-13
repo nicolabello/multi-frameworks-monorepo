@@ -9,7 +9,7 @@ function MDCTopAppBar(props: any) {
   useEffect(() => {
     instance.current = ref.current && !instance.current ? MDCTopAppBarImport.attachTo(ref.current) : instance.current;
     return () => instance.current ? instance.current.destroy() : undefined;
-  });
+  }, []);
 
   return (
     <header ref={ref} {...props}>{props.children}</header>
