@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useParams } from 'react-router-dom';
+import MDCTopAppBar from '../material-components-web/MDCTopAppBar';
 import './Feature.scss';
 
 function Feature() {
@@ -10,7 +11,7 @@ function Feature() {
   return (
     <div className="Feature">
 
-      <header className="mdc-top-app-bar mdc-top-app-bar--fixed">
+      <MDCTopAppBar className="mdc-top-app-bar mdc-top-app-bar--fixed">
         <div className="mdc-top-app-bar__row">
           <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
             <Link to="/features">
@@ -21,7 +22,7 @@ function Feature() {
             <h1 className="mdc-top-app-bar__title">{addingNew ? 'Add feature' : 'Edit feature'}</h1>
           </section>
         </div>
-      </header>
+      </MDCTopAppBar>
 
       <div className="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
         <main className="ft-main-content">

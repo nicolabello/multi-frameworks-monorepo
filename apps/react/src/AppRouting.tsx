@@ -26,9 +26,9 @@ function AppRouting() {
   return (
     <Router>
       <Switch>
-        {routes.map((route, i) => (
-          <Route path={route.path} render={() => <route.component {...route.params}/>}/>
-        ))}
+        {routes.map((route, i) =>
+          <Route key={i} path={route.path} render={() => <route.component {...route.params}/>}/>
+        )}
       </Switch>
     </Router>
   );
