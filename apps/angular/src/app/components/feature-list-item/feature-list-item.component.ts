@@ -15,8 +15,4 @@ export class FeatureListItemComponent {
     return JSON.stringify(this.data?.value);
   }
 
-  public get key(): string {
-    return JSON.stringify(this.data?.key);
-  }
-
 }

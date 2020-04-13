@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Feature } from '../../../../express/src/models/feature';
 import { FeaturesService } from '../../services/features.service';
+import FeaturesList from '../features-list/FeaturesList';
 import MDCFab from '../material-components-web/MDCFab';
 import MDCTopAppBar from '../material-components-web/MDCTopAppBar';
 import './Features.scss';
@@ -9,6 +10,7 @@ import './Features.scss';
 function Features() {
 
   const [data, setData] = useState<Feature[]>([]);
+  const history = useHistory();
 
   useEffect(() => {
     (async () => setData(await FeaturesService.getAll()))();
@@ -28,16 +30,14 @@ function Features() {
       <div className="mdc-top-app-bar--fixed-adjust" role="presentation">
 
         <main className="ft-main-content">
-          {/*TODO: <Features-list/>*/}
-          {JSON.stringify(data)}
+          <FeaturesList data={data}/>
         </main>
 
-        <Link to="/feature/new">
-          <MDCFab aria-label="Add feature" className="mdc-fab ft-fab-absolute" type="button">
-            <span className="mdc-fab__ripple"/>
-            <span className="mdc-fab__icon material-icons">add</span>
-          </MDCFab>
-        </Link>
+        <MDCFab onClick={() => history.push('/feature/new')} aria-label="Add feature"
+                className="mdc-fab ft-fab-absolute" type="button">
+          <span className="mdc-fab__ripple"/>
+          <span className="mdc-fab__icon material-icons">add</span>
+        </MDCFab>
 
       </div>
 
