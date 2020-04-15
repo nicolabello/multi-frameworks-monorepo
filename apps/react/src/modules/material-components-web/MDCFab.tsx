@@ -8,7 +8,7 @@ function MDCFab(props: any) {
 
   useEffect(() => {
     rippleInstance.current = ref.current && !rippleInstance.current ? MDCRipple.attachTo(ref.current) : rippleInstance.current;
-    return () => rippleInstance.current ? rippleInstance.current.destroy() : undefined;
+    return () => rippleInstance.current && rippleInstance.current.destroy();
   }, []);
 
   return (

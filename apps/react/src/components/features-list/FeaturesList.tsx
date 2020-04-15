@@ -10,6 +10,7 @@ function FeaturesList(props: { data: Feature[] }) {
       {props.data.map(item => <li key={item._id}><FeatureListItem data={item}/></li>)}
     </ul>
   );
+
 }
 
 export default FeaturesList;

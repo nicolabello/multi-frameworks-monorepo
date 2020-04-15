@@ -9,7 +9,7 @@ function MDCCard(props: any) {
   useEffect(() => {
     const rippleElement = ref.current?.querySelector('.mdc-card__primary-action');
     rippleInstance.current = rippleElement && !rippleInstance.current ? MDCRipple.attachTo(rippleElement) : rippleInstance.current;
-    return () => rippleInstance.current ? rippleInstance.current.destroy() : undefined;
+    return () => rippleInstance.current && rippleInstance.current.destroy();
   }, []);
 
   return (

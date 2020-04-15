@@ -1,12 +1,14 @@
 import { Feature } from '../../../express/src/models/feature';
-import http from './http';
+import http, { httpCancelToken, promiseWithCanceller, PromiseWithCanceller } from '../helpers/http';
 
 export class FeaturesService {
 
   private static http = http;
 
-  public static getAll(): Promise<Feature[]> {
-    return this.http.get<Feature[]>('/features').then(response => response.data);
+  public static getAll(): PromiseWithCanceller<Feature[]> {
+    const cancelToken = httpCancelToken();
+    const request = this.http.get<Feature[]>('/features', { cancelToken: cancelToken.token });
+    return promiseWithCanceller(request, cancelToken);
   }
 
 }

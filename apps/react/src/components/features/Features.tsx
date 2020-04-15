@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Feature } from '../../../../express/src/models/feature';
+import MDCFab from '../../modules/material-components-web/MDCFab';
+import MDCTopAppBar from '../../modules/material-components-web/MDCTopAppBar';
 import { FeaturesService } from '../../services/features.service';
 import FeaturesList from '../features-list/FeaturesList';
-import MDCFab from '../material-components-web/MDCFab';
-import MDCTopAppBar from '../material-components-web/MDCTopAppBar';
 import './Features.scss';
 
 function Features() {
@@ -13,7 +13,9 @@ function Features() {
   const history = useHistory();
 
   useEffect(() => {
-    (async () => setData(await FeaturesService.getAll()))();
+    const {request, cancelRequest} = FeaturesService.getAll();
+    (async () => setData(await request))();
+    return cancelRequest;
   }, []);
 
   return (
@@ -43,6 +45,7 @@ function Features() {
 
     </div>
   );
+
 }
 
 export default Features;
