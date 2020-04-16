@@ -51,8 +51,8 @@ export class FeatureFormComponent implements OnInit, AfterViewInit, OnDestroy {
   public set data(value: Feature) {
     value = value || {
       _id: null,
-      key: null,
-      description: null,
+      key: '',
+      description: '',
       type: null,
       value: null
     };
@@ -61,8 +61,8 @@ export class FeatureFormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.cdr.markForCheck();
   }
 
-  public get preview(): {} {
-    return { [this.form.value.key]: this.form.value.value };
+  public get preview(): string {
+    return JSON.stringify({ [`${this.form.value.key}`]: this.form.value.value }, null, 2);
   }
 
   public ngOnInit(): void {

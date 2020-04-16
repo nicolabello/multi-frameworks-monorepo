@@ -1,15 +1,15 @@
-import { MDCTopAppBar as MDCTopAppBarImport } from '@nicolabello/material-components-web';
+import { MDCTextFieldHelperText as MDCTextFieldHelperTextImport } from '@nicolabello/material-components-web';
 import React, { useEffect, useRef } from 'react';
 
-function MDCTopAppBar(props: any) {
+function MDCTextFieldHelperText(props: any) {
 
   const ref = useRef<HTMLElement>();
-  const instance = useRef<MDCTopAppBarImport>();
+  const instance = useRef<MDCTextFieldHelperTextImport>();
 
   const init = () => {
     destroy();
     if (ref.current) {
-      instance.current = MDCTopAppBarImport.attachTo(ref.current);
+      instance.current = MDCTextFieldHelperTextImport.attachTo(ref.current);
     }
   };
   const destroy = () => {
@@ -23,9 +23,9 @@ function MDCTopAppBar(props: any) {
   }, []);
 
   return (
-    <header ref={ref} {...props}>{props.children}</header>
+    <div ref={ref} {...props}>{props.children}</div>
   );
 
 }
 
-export default MDCTopAppBar;
+export default MDCTextFieldHelperText;

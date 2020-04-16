@@ -6,9 +6,20 @@ function MDCFab(props: any) {
   const ref = useRef<HTMLElement>();
   const rippleInstance = useRef<MDCRipple>();
 
+  const init = () => {
+    destroy();
+    if (ref.current) {
+      rippleInstance.current = MDCRipple.attachTo(ref.current);
+    }
+  };
+  const destroy = () => {
+    rippleInstance.current && rippleInstance.current.destroy();
+  };
+
   useEffect(() => {
-    rippleInstance.current = ref.current && !rippleInstance.current ? MDCRipple.attachTo(ref.current) : rippleInstance.current;
-    return () => rippleInstance.current && rippleInstance.current.destroy();
+    init();
+    return destroy;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

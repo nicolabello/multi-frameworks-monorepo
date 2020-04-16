@@ -47,9 +47,9 @@
     </div>
     <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
       <ul class="mdc-list">
-        <li class="mdc-list-item" data-value="boolean" role="option">Toggle</li>
-        <li class="mdc-list-item" data-value="string" role="option">String</li>
-        <li class="mdc-list-item" data-value="number" role="option">Number</li>
+        <li class="mdc-list-item" data-value="boolean" role="option" aria-selected="false">Toggle</li>
+        <li class="mdc-list-item" data-value="string" role="option" aria-selected="false">String</li>
+        <li class="mdc-list-item" data-value="number" role="option" aria-selected="false">Number</li>
       </ul>
     </div>
   </div>
@@ -65,7 +65,8 @@
           <div class="mdc-switch__track"></div>
           <div class="mdc-switch__thumb-underlay">
             <div class="mdc-switch__thumb"></div>
-            <input [attr.aria-checked]="form.get('value').value === true" class="mdc-switch__native-control" formControlName="value" id="value-boolean-id"
+            <input [attr.aria-checked]="form.get('value').value === true" class="mdc-switch__native-control"
+                   formControlName="value" id="value-boolean-id"
                    role="switch" type="checkbox">
           </div>
         </div>
@@ -104,7 +105,7 @@
     </ng-container>
   </ng-container>
 
-  <pre class="ft-feature-preview">{{preview | json}}</pre>
+  <pre class="ft-feature-preview">{{preview}}</pre>
 
   <div class="ft-form-controls">
 

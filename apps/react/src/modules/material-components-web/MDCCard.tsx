@@ -6,10 +6,23 @@ function MDCCard(props: any) {
   const ref = useRef<HTMLElement>();
   const rippleInstance = useRef<MDCRipple>();
 
+  const init = () => {
+    destroy();
+    if (ref.current) {
+      const rippleElement = ref.current?.querySelector('.mdc-card__primary-action');
+      if (rippleElement) {
+        rippleInstance.current = MDCRipple.attachTo(rippleElement);
+      }
+    }
+  };
+  const destroy = () => {
+    rippleInstance.current && rippleInstance.current.destroy();
+  };
+
   useEffect(() => {
-    const rippleElement = ref.current?.querySelector('.mdc-card__primary-action');
-    rippleInstance.current = rippleElement && !rippleInstance.current ? MDCRipple.attachTo(rippleElement) : rippleInstance.current;
-    return () => rippleInstance.current && rippleInstance.current.destroy();
+    init();
+    return destroy;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -11,20 +11,33 @@ function Feature() {
 
   const { id } = useParams();
   const addingNew = id === 'new';
+
   const [data, setData] = useState<FeatureInterface>();
   const history = useHistory();
-  const cancelRequestRef = useRef<Canceler>();
+
+  const cancelGetRequest = useRef<Canceler>();
+
+  const cancelAddORUpdateRequest = useRef<Canceler>();
+  const addOrUpdate = (data: FeatureInterface) => {
+    cancelAddORUpdateRequest.current && cancelAddORUpdateRequest.current();
+    const { cancelRequest, request } = addingNew ? FeatureService.add(data) : FeatureService.update(data);
+    cancelAddORUpdateRequest.current = cancelRequest;
+    (async () => {
+      await request;
+      history.push('/features');
+    })();
+  };
 
   useEffect(() => {
-    cancelRequestRef.current && cancelRequestRef.current();
+    cancelGetRequest.current && cancelGetRequest.current();
     if (addingNew) {
       setData(undefined);
     } else {
       const { cancelRequest, request } = FeatureService.get(id);
-      cancelRequestRef.current = cancelRequest;
+      cancelGetRequest.current = cancelRequest;
       (async () => setData(await request))();
     }
-    return cancelRequestRef.current;
+    return cancelGetRequest.current;
   }, [id, addingNew]);
 
   return (
@@ -44,7 +57,7 @@ function Feature() {
 
       <div className="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
         <main className="ft-main-content">
-          <FeatureForm data={data}/>
+          <FeatureForm data={data} onCancel={() => history.push('/features')} onSubmit={values => addOrUpdate(values)}/>
         </main>
       </div>
 
