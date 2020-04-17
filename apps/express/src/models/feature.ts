@@ -21,7 +21,7 @@ export interface Feature {
   _id: any;
   key: string;
   description: string;
-  type: FeatureValueType;
-  value: FeatureValue;
+  type: FeatureValueType | null;
+  value: FeatureValue | null;
   // switches: FeatureSwitch[];
 }

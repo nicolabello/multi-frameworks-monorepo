@@ -49,12 +49,12 @@ export class FeatureFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input()
   public set data(value: Feature) {
-    value = value || {
-      _id: null,
-      key: '',
-      description: '',
-      type: null,
-      value: null
+    value = {
+      _id: value?._id || null,
+      key: value?.key || '',
+      description: value?.description || '',
+      type: value?.type || null,
+      value: value?.value || null
     };
     this._data = value;
     this.form.reset(this._data);

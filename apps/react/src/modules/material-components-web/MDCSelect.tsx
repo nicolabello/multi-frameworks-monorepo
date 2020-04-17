@@ -1,13 +1,15 @@
-import { MDCTextField as MDCTextFieldImport } from '@nicolabello/material-components-web';
+import { MDCSelect as MDCSelectImport } from '@nicolabello/material-components-web';
 import React from 'react';
 
-type Props = { required?: boolean, invalid?: boolean, disabled?: boolean, value?: any } & any;
+type Props =
+  { required?: boolean, invalid?: boolean, disabled?: boolean, value?: any, onChange?: (value: any) => any }
+  & any;
 type State = any;
 
-export class MDCTextField extends React.Component<Props, State> {
+export class MDCSelect extends React.Component<Props, State> {
 
   private ref = React.createRef<HTMLElement>();
-  private instance: MDCTextFieldImport | undefined;
+  private instance: MDCSelectImport | undefined;
 
   constructor(public props: Props) {
     super(props);
@@ -23,10 +25,12 @@ export class MDCTextField extends React.Component<Props, State> {
     return props;
   }
 
+  private onChange = () => this.props.onChange && this.instance && this.props.onChange(this.instance.value);
+
   public componentDidMount(): void {
     if (this.ref.current) {
-      this.instance = MDCTextFieldImport.attachTo(this.ref.current);
-      this.instance.useNativeValidation = false;
+      this.instance = MDCSelectImport.attachTo(this.ref.current);
+      this.instance.listen('MDCSelect:change', this.onChange);
     }
   }
 
@@ -35,7 +39,8 @@ export class MDCTextField extends React.Component<Props, State> {
       || this.props.required !== nextProps.required
       || this.props.disabled !== nextProps.disabled
       || this.props.value !== nextProps.value
-      || this.props.valid !== nextProps.valid;
+      || this.props.valid !== nextProps.valid
+      || this.props.onChange !== nextProps.onChange;
   }
 
   public componentDidUpdate(): void {
@@ -51,16 +56,17 @@ export class MDCTextField extends React.Component<Props, State> {
 
   public componentWillUnmount(): void {
     if (this.instance) {
+      this.instance.listen('MDCSelect:change', this.onChange);
       this.instance.destroy();
     }
   }
 
   public render() {
     return (
-      <label ref={this.ref} {...this.spreadProps}>{this.props.children}</label>
+      <div ref={this.ref} {...this.spreadProps}>{this.props.children}</div>
     );
   }
 
 }
 
-export default MDCTextField;
+export default MDCSelect;
