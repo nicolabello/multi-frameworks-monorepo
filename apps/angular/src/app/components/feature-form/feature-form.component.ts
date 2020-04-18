@@ -54,7 +54,7 @@ export class FeatureFormComponent implements OnInit, AfterViewInit, OnDestroy {
       key: value?.key || '',
       description: value?.description || '',
       type: value?.type || null,
-      value: value?.value || null
+      value: value ? value.value : null
     };
     this._data = value;
     this.form.reset(this._data);
@@ -72,16 +72,16 @@ export class FeatureFormComponent implements OnInit, AfterViewInit, OnDestroy {
       switch (type) {
         case FeatureValueType.Boolean:
           newValue = typeof value === 'boolean' ? value : value === 'true';
+          newValue !== value && this.form.get('value').setValue(newValue);
           break;
         case FeatureValueType.Number:
           newValue = parseFloat(value) || null;
+          newValue !== value && this.form.get('value').setValue(newValue);
           break;
         case FeatureValueType.String:
           newValue = typeof value !== 'undefined' && value !== null ? `${value}` : '';
+          newValue !== value && this.form.get('value').setValue(newValue);
           break;
-      }
-      if (newValue !== value) {
-        this.form.get('value').setValue(newValue);
       }
     });
   }

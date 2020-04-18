@@ -16,7 +16,7 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
       key: props.data?.key || '',
       description: props.data?.description || '',
       type: props.data?.type || null,
-      value: props.data?.value || null
+      value: props.data ? props.data.value : null
     };
   };
 
@@ -52,20 +52,20 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
 
   const updateValue = (type: any) => {
     const value = form.values.value;
-    let newValue: FeatureValue = null;
+    let newValue: FeatureValue;
     switch (type) {
       case 'boolean':
         newValue = typeof value === 'boolean' ? value : value === 'true';
+        newValue !== value && form.setFieldValue('value', newValue);
         break;
       case 'number':
         newValue = parseFloat(value as string) || null;
+        newValue !== value && form.setFieldValue('value', newValue);
         break;
       case 'string':
         newValue = typeof value !== 'undefined' && value !== null ? `${value}` : '';
+        newValue !== value && form.setFieldValue('value', newValue);
         break;
-    }
-    if (newValue !== value) {
-      form.setFieldValue('value', newValue);
     }
   };
 
