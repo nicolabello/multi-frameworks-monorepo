@@ -4,14 +4,10 @@ import React from 'react';
 type Props = { required?: boolean, invalid?: boolean, disabled?: boolean, value?: any } & any;
 type State = any;
 
-export class MDCTextField extends React.Component<Props, State> {
+class MDCTextField extends React.Component<Props, State> {
 
   private ref = React.createRef<HTMLElement>();
   private instance: MDCTextFieldImport | undefined;
-
-  constructor(public props: Props) {
-    super(props);
-  }
 
   private get spreadProps(): any {
     const props = { ...this.props };
@@ -30,13 +26,13 @@ export class MDCTextField extends React.Component<Props, State> {
     }
   }
 
-  public shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
+  /*public shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
     return this.props.children !== nextProps.childrean
       || this.props.required !== nextProps.required
       || this.props.disabled !== nextProps.disabled
       || this.props.value !== nextProps.value
       || this.props.valid !== nextProps.valid;
-  }
+  }*/
 
   public componentDidUpdate(): void {
     if (this.instance) {

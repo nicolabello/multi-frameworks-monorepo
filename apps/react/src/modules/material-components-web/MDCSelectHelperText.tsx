@@ -1,14 +1,14 @@
-import { MDCTextFieldHelperText as MDCTextFieldHelperTextImport } from '@nicolabello/material-components-web';
+import { MDCSelectHelperText as MDCSelectHelperTextImport } from '@nicolabello/material-components-web';
 import React from 'react';
 
-class MDCTextFieldHelperText extends React.Component<any> {
+class MDCSelectHelperText extends React.Component<any> {
 
   private ref = React.createRef<HTMLDivElement>();
-  private instance: MDCTextFieldHelperTextImport | undefined;
+  private instance: MDCSelectHelperTextImport | undefined;
 
   public componentDidMount(): void {
     if (this.ref.current) {
-      this.instance = MDCTextFieldHelperTextImport.attachTo(this.ref.current);
+      this.instance = MDCSelectHelperTextImport.attachTo(this.ref.current);
     }
   }
 
@@ -26,4 +26,4 @@ class MDCTextFieldHelperText extends React.Component<any> {
 
 }
 
-export default MDCTextFieldHelperText;
+export default MDCSelectHelperText;

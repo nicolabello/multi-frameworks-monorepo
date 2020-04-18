@@ -1,33 +1,31 @@
 import { MDCRipple } from '@nicolabello/material-components-web';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
-function MDCCard(props: any) {
+class MDCCard extends React.Component<any> {
 
-  const ref = useRef<HTMLElement>();
-  const rippleInstance = useRef<MDCRipple>();
+  private ref = React.createRef<HTMLDivElement>();
+  private rippleInstance: MDCRipple | undefined;
 
-  const init = () => {
-    destroy();
-    if (ref.current) {
-      const rippleElement = ref.current?.querySelector('.mdc-card__primary-action');
+  public componentDidMount(): void {
+    if (this.ref.current) {
+      const rippleElement = this.ref.current.querySelector('.mdc-card__primary-action');
       if (rippleElement) {
-        rippleInstance.current = MDCRipple.attachTo(rippleElement);
+        this.rippleInstance = MDCRipple.attachTo(rippleElement);
       }
     }
-  };
-  const destroy = () => {
-    rippleInstance.current && rippleInstance.current.destroy();
-  };
+  }
 
-  useEffect(() => {
-    init();
-    return destroy;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  public componentWillUnmount(): void {
+    if (this.rippleInstance) {
+      this.rippleInstance.destroy();
+    }
+  }
 
-  return (
-    <div ref={ref} {...props}>{props.children}</div>
-  );
+  public render(): React.ReactNode {
+    return (
+      <div ref={this.ref} {...this.props}>{this.props.children}</div>
+    );
+  }
 
 }
 

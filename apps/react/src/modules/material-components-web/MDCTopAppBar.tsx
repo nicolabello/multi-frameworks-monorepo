@@ -1,30 +1,28 @@
 import { MDCTopAppBar as MDCTopAppBarImport } from '@nicolabello/material-components-web';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
-function MDCTopAppBar(props: any) {
+class MDCTopAppBar extends React.Component<any> {
 
-  const ref = useRef<HTMLElement>();
-  const instance = useRef<MDCTopAppBarImport>();
+  private ref = React.createRef<HTMLDivElement>();
+  private instance: MDCTopAppBarImport | undefined;
 
-  const init = () => {
-    destroy();
-    if (ref.current) {
-      instance.current = MDCTopAppBarImport.attachTo(ref.current);
+  public componentDidMount(): void {
+    if (this.ref.current) {
+      this.instance = MDCTopAppBarImport.attachTo(this.ref.current);
     }
-  };
-  const destroy = () => {
-    instance.current && instance.current.destroy();
-  };
+  }
 
-  useEffect(() => {
-    init();
-    return destroy;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  public componentWillUnmount(): void {
+    if (this.instance) {
+      this.instance.destroy();
+    }
+  }
 
-  return (
-    <header ref={ref} {...props}>{props.children}</header>
-  );
+  public render(): React.ReactNode {
+    return (
+      <header ref={this.ref} {...this.props}>{this.props.children}</header>
+    );
+  }
 
 }
 

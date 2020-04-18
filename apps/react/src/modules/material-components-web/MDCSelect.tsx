@@ -6,14 +6,10 @@ type Props =
   & any;
 type State = any;
 
-export class MDCSelect extends React.Component<Props, State> {
+class MDCSelect extends React.Component<Props, State> {
 
   private ref = React.createRef<HTMLElement>();
   private instance: MDCSelectImport | undefined;
-
-  constructor(public props: Props) {
-    super(props);
-  }
 
   private get spreadProps(): any {
     const props = { ...this.props };
@@ -34,14 +30,14 @@ export class MDCSelect extends React.Component<Props, State> {
     }
   }
 
-  public shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
+  /*public shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
     return this.props.children !== nextProps.childrean
       || this.props.required !== nextProps.required
       || this.props.disabled !== nextProps.disabled
       || this.props.value !== nextProps.value
       || this.props.valid !== nextProps.valid
       || this.props.onChange !== nextProps.onChange;
-  }
+  }*/
 
   public componentDidUpdate(): void {
     if (this.instance) {

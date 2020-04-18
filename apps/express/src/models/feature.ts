@@ -8,7 +8,7 @@ export const featureValueTypes: string[] = Object.keys(FeatureValueType).map(
   (key) => (FeatureValueType as any)[key] as string
 );
 
-export type FeatureValue = string | number | boolean;
+export type FeatureValue = string | number | boolean | null;
 
 /*export interface FeatureSwitch {
   environment?: string;

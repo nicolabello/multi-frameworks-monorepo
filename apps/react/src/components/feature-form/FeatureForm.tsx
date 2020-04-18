@@ -1,8 +1,9 @@
 import { useFormik } from 'formik';
 import React, { useEffect } from 'react';
-import { Feature } from '../../../../express/src/models/feature';
+import { Feature, FeatureValue } from '../../../../express/src/models/feature';
 import MDCButton from '../../modules/material-components-web/MDCButton';
 import MDCSelect from '../../modules/material-components-web/MDCSelect';
+import MDCSelectHelperText from '../../modules/material-components-web/MDCSelectHelperText';
 import MDCTextField from '../../modules/material-components-web/MDCTextField';
 import MDCTextFieldHelperText from '../../modules/material-components-web/MDCTextFieldHelperText';
 import './FeatureForm.scss';
@@ -23,12 +24,17 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
     initialValues: getFormValues(),
     validate: values => {
 
-      console.log('validate', values);
-
-      const errors: Partial<Feature> = {};
+      const errors: { [key in keyof Feature]?: string } = {};
 
       if (!values.key) {
         errors.key = 'This is required';
+      }
+
+      if (!values.type) {
+        errors.type = 'This is required';
+        // TODO: this should use featureValueTypes,but it's giving error "imports outside of src/ are not supported"
+      } else if (!['string', 'number', 'boolean'].find(item => values.type === item)) {
+        errors.type = 'Value not allowed';
       }
 
       return errors;
@@ -40,11 +46,30 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
   const setType = (value: any) => {
     if (form.values.type !== value) {
       form.setFieldValue('type', value);
+      updateValue(value);
+    }
+  };
+
+  const updateValue = (type: any) => {
+    const value = form.values.value;
+    let newValue: FeatureValue = null;
+    switch (type) {
+      case 'boolean':
+        newValue = typeof value === 'boolean' ? value : value === 'true';
+        break;
+      case 'number':
+        newValue = parseFloat(value as string) || null;
+        break;
+      case 'string':
+        newValue = typeof value !== 'undefined' && value !== null ? `${value}` : '';
+        break;
+    }
+    if (newValue !== value) {
+      form.setFieldValue('value', newValue);
     }
   };
 
   useEffect(() => {
-    console.log('setValues', getFormValues());
     form.setValues(getFormValues(), true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data]);
@@ -54,11 +79,12 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
   return (
     <form onSubmit={form.handleSubmit} className="ft-form" noValidate>
 
-      <MDCTextField className="mdc-text-field" required={true} invalid={!!form.errors.key} value={form.values.key}>
+      <MDCTextField className="mdc-text-field" required={true} invalid={form.touched.key && !!form.errors.key}
+                    value={form.values.key}>
         <span className="mdc-text-field__ripple"/>
         <input aria-controls="key-helper-text-id" aria-describedby="key-helper-text-id" aria-labelledby="key-id"
                className="mdc-text-field__input" type="text" name="key" value={form.values.key}
-               onChange={form.handleChange}
+               onChange={form.handleChange} onBlur={form.handleBlur}
                autoFocus/>
         <span className="mdc-floating-label" id="key-id">Key</span>
         <span className="mdc-line-ripple"/>
@@ -71,12 +97,13 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
             object</MDCTextFieldHelperText>}
       </div>
 
-      <MDCTextField className="mdc-text-field" invalid={!!form.errors.description} value={form.values.description}>
+      <MDCTextField className="mdc-text-field" invalid={form.touched.description && !!form.errors.description}
+                    value={form.values.description}>
         <span className="mdc-text-field__ripple"/>
         <input aria-controls="description-helper-text-id" aria-describedby="description-helper-text-id"
                aria-labelledby="description-id"
                className="mdc-text-field__input" type="text" name="description" value={form.values.description}
-               onChange={form.handleChange}/>
+               onChange={form.handleChange} onBlur={form.handleBlur}/>
         <span className="mdc-floating-label" id="description-id">Description</span>
         <span className="mdc-line-ripple"/>
       </MDCTextField>
@@ -85,7 +112,8 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
           className="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">{form.errors.description}</MDCTextFieldHelperText>
       </div>
 
-      <MDCSelect className="mdc-select" required={true} invalid={!!form.errors.type} value={form.values.type}
+      <MDCSelect className="mdc-select" required={true} invalid={form.touched.type && !!form.errors.type}
+                 value={form.values.type}
                  onChange={(value: any) => setType(value)}>
         <div className="mdc-select__anchor">
           <span className="mdc-select__dropdown-icon"/>
@@ -104,8 +132,8 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
           </ul>
         </div>
       </MDCSelect>
-      <div aria-hidden="true" className="mdc-select-helper-text mdc-select-helper-text--validation-msg"
-           id="type-helper-text-id">{form.errors.type}</div>
+      <MDCSelectHelperText aria-hidden="true" className="mdc-select-helper-text mdc-select-helper-text--validation-msg"
+                           id="type-helper-text-id">{form.errors.type}</MDCSelectHelperText>
 
       <pre className="ft-feature-preview">{preview()}</pre>
 

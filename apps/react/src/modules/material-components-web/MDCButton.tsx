@@ -1,30 +1,28 @@
 import { MDCRipple } from '@nicolabello/material-components-web';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
-function MDCButton(props: any) {
+class MDCButton extends React.Component<any> {
 
-  const ref = useRef<HTMLElement>();
-  const rippleInstance = useRef<MDCRipple>();
+  private ref = React.createRef<HTMLButtonElement>();
+  private rippleInstance: MDCRipple | undefined;
 
-  const init = () => {
-    destroy();
-    if (ref.current) {
-      rippleInstance.current = MDCRipple.attachTo(ref.current);
+  public componentDidMount(): void {
+    if (this.ref.current) {
+      this.rippleInstance = MDCRipple.attachTo(this.ref.current);
     }
-  };
-  const destroy = () => {
-    rippleInstance.current && rippleInstance.current.destroy();
-  };
+  }
 
-  useEffect(() => {
-    init();
-    return destroy;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  public componentWillUnmount(): void {
+    if (this.rippleInstance) {
+      this.rippleInstance.destroy();
+    }
+  }
 
-  return (
-    <button ref={ref} {...props}>{props.children}</button>
-  );
+  public render(): React.ReactNode {
+    return (
+      <button ref={this.ref} {...this.props}>{this.props.children}</button>
+    );
+  }
 
 }
 
