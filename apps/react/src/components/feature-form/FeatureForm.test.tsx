@@ -1,6 +1,6 @@
-import { Feature, FeatureValueType } from '../../../../express/src/models/feature';
 import { render, RenderResult } from '@testing-library/react';
 import React from 'react';
+import { Feature, FeatureValueType } from '../../../../express/src/models/feature';
 import FeatureForm from './FeatureForm';
 
 describe('FeatureForm', () => {

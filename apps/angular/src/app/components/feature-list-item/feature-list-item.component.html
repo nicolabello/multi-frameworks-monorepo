@@ -2,7 +2,7 @@
   <a [routerLink]="['/features', data._id]" class="mdc-card__primary-action ft-card-content">
     <h2 class="mdc-typography--headline6">{{data.key}}</h2>
     <p *ngIf="data.description" class="mdc-typography--subtitle2">{{data.description}}</p>
-    <div role="presentation" class="feature-value">
+    <div class="feature-value" role="presentation">
       <pre>{{value}}</pre>
     </div>
   </a>

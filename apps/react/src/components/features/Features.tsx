@@ -13,7 +13,7 @@ function Features() {
   const history = useHistory();
 
   useEffect(() => {
-    const {request, cancelRequest} = FeaturesService.getAll();
+    const { request, cancelRequest } = FeaturesService.getAll();
     (async () => setData(await request))();
     return cancelRequest;
   }, []);

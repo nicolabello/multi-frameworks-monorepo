@@ -15,7 +15,7 @@ async function start(): Promise<void> {
   server.use(bodyParser.urlencoded({ extended: true }));
   server.use(bodyParser.json());
 
-  server.use(function (req, res, next) {
+  server.use(function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header(
       'Access-Control-Allow-Headers',

@@ -21,23 +21,12 @@ class MDCSelect extends React.Component<Props, State> {
     return props;
   }
 
-  private onChange = () => this.props.onChange && this.instance && this.props.onChange(this.instance.value);
-
   public componentDidMount(): void {
     if (this.ref.current) {
       this.instance = MDCSelectImport.attachTo(this.ref.current);
       this.instance.listen('MDCSelect:change', this.onChange);
     }
   }
-
-  /*public shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
-    return this.props.children !== nextProps.childrean
-      || this.props.required !== nextProps.required
-      || this.props.disabled !== nextProps.disabled
-      || this.props.value !== nextProps.value
-      || this.props.valid !== nextProps.valid
-      || this.props.onChange !== nextProps.onChange;
-  }*/
 
   public componentDidUpdate(): void {
     if (this.instance) {
@@ -49,6 +38,15 @@ class MDCSelect extends React.Component<Props, State> {
       this.instance.valid = !this.props.invalid;
     }
   }
+
+  /*public shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
+    return this.props.children !== nextProps.childrean
+      || this.props.required !== nextProps.required
+      || this.props.disabled !== nextProps.disabled
+      || this.props.value !== nextProps.value
+      || this.props.valid !== nextProps.valid
+      || this.props.onChange !== nextProps.onChange;
+  }*/
 
   public componentWillUnmount(): void {
     if (this.instance) {
@@ -62,6 +60,8 @@ class MDCSelect extends React.Component<Props, State> {
       <div ref={this.ref} {...this.spreadProps}>{this.props.children}</div>
     );
   }
+
+  private onChange = () => this.props.onChange && this.instance && this.props.onChange(this.instance.value);
 
 }
 
