@@ -1,4 +1,4 @@
-import HelloWorld from '@/components/HelloWorld.vue';
+import HelloWorld from '@/components/Feature.vue';
 import { shallowMount } from '@vue/test-utils';
 import { expect } from 'chai';
 
