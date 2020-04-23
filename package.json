@@ -18,6 +18,7 @@
     ]
   },
   "scripts": {
+    "reinstall": "rimraf **/yarn.lock && rimraf **/node_modules && yarn install",
     "ws": "yarn workspaces",
     "ws:e": "yarn workspace @feature-toggles/express",
     "ws:a": "yarn workspace @feature-toggles/angular",
@@ -25,6 +26,7 @@
     "ws:v": "yarn workspace @feature-toggles/vue"
   },
   "devDependencies": {
-    "lerna": "^3.20.2"
+    "lerna": "^3.20.2",
+    "rimraf": "^3.0.2"
   }
 }
