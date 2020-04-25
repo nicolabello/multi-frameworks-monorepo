@@ -1,7 +1,7 @@
+import Feature from '@/components/Feature.vue';
+import Features from '@/components/Features.vue';
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import FeatureView from '../views/FeatureView.vue';
-import FeaturesView from '../views/FeaturesView.vue';
 
 Vue.use(VueRouter);
 
@@ -9,12 +9,12 @@ const routes: RouteConfig[] = [
   {
     path: '/features',
     name: 'Features',
-    component: FeaturesView
+    component: Features
   },
   {
     path: '/feature/:id',
     name: 'Feature',
-    component: FeatureView
+    component: Feature
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
