@@ -2,7 +2,7 @@
     <div class="mdc-card mdc-card--outlined" v-mdc-card>
         <a class="mdc-card__primary-action ft-card-content" v-on:click="showDetails()">
             <h2 class="mdc-typography--headline6">{{data.key}}</h2>
-            <p v-if="data.description" class="mdc-typography--subtitle2">{{data.description}}</p>
+            <p class="mdc-typography--subtitle2" v-if="data.description">{{data.description}}</p>
             <div class="feature-value" role="presentation">
                 <pre>{{value}}</pre>
             </div>
@@ -13,9 +13,10 @@
 <script lang="ts">
   import mdcCard from '@/modules/material-components-web/directives/mdc-card';
   import { computed, SetupContext } from '@vue/composition-api';
+  import Vue, { ComponentOptions } from 'vue';
   import { Feature } from '~express/models/feature';
 
-  export default {
+  const componentOptions: ComponentOptions<Vue> = {
     props: {
       data: { type: Object, default: () => ({}) },
     },
@@ -31,6 +32,8 @@
     },
     directives: { mdcCard }
   };
+
+  export default componentOptions;
 </script>
 
 <style lang="scss" scoped></style>

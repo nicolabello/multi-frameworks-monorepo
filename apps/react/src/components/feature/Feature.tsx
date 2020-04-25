@@ -17,11 +17,11 @@ function Feature() {
 
   const cancelGetRequest = useRef<Canceler>();
 
-  const cancelAddORUpdateRequest = useRef<Canceler>();
+  const cancelAddOrUpdateRequest = useRef<Canceler>();
   const addOrUpdate = (data: FeatureInterface) => {
-    cancelAddORUpdateRequest.current && cancelAddORUpdateRequest.current();
+    cancelAddOrUpdateRequest.current && cancelAddOrUpdateRequest.current();
     const { cancelRequest, request } = addingNew ? FeatureService.add(data) : FeatureService.update(data);
-    cancelAddORUpdateRequest.current = cancelRequest;
+    cancelAddOrUpdateRequest.current = cancelRequest;
     (async () => {
       await request;
       history.push('/features');

@@ -15,7 +15,7 @@
 
         <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
             <main class="ft-main-content">
-                {{JSON.stringify(data)}}
+                <FeatureForm v-bind:data="data" v-on:ftCancel="showList()" v-on:ftSubmit="addOrUpdate"/>
             </main>
         </div>
 
@@ -23,12 +23,14 @@
 </template>
 
 <script lang="ts">
+  import FeatureForm from '@/components/FeatureForm.vue';
   import mdcTopAppBar from '@/modules/material-components-web/directives/mdc-top-app-bar';
   import { FeatureService } from '@/services/feature.service';
   import { onBeforeUnmount, onMounted, ref, SetupContext } from '@vue/composition-api';
+  import Vue, { ComponentOptions } from 'vue';
   import { Feature } from '~express/models/feature';
 
-  export default {
+  const componentOptions: ComponentOptions<Vue> = {
     setup(props: {}, context: SetupContext) {
 
       const id = context.root.$route.params.id;
@@ -38,23 +40,37 @@
       const showList = () => router.push('/features');
 
       const data = ref<Feature>();
-      let cancelRequest: Function;
 
+      let cancelGetRequest: Function;
       onMounted(() => {
         if (!addingNew.value) {
-          let request: Promise<Feature>;
-          ({ request, cancelRequest } = FeatureService.get(id));
+          const { request, cancelRequest } = FeatureService.get(id);
+          cancelGetRequest = cancelRequest;
           (async () => data.value = await request)();
         }
       });
 
-      onBeforeUnmount(() => cancelRequest && cancelRequest());
+      onBeforeUnmount(() => cancelGetRequest && cancelGetRequest());
 
-      return { addingNew, showList, data };
+      let cancelAddOrUpdateRequest: Function;
+      const addOrUpdate = (data: Feature) => {
+        cancelAddOrUpdateRequest && cancelAddOrUpdateRequest();
+        const { request, cancelRequest } = addingNew.value ? FeatureService.add(data) : FeatureService.update(data);
+        cancelAddOrUpdateRequest = cancelRequest;
+        (async () => {
+          await request;
+          showList();
+        })();
+      };
+
+      return { addingNew, showList, data, addOrUpdate };
 
     },
+    components: { FeatureForm },
     directives: { mdcTopAppBar }
   };
+
+  export default componentOptions;
 </script>
 
 <style lang="scss" scoped></style>

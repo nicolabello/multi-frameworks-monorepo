@@ -15,8 +15,8 @@
                 <FeaturesList v-bind:data="data"/>
             </main>
 
-            <button aria-label="Add feature" class="mdc-fab ft-fab-absolute" type="button" v-on:click="addNew()"
-                    v-mdc-fab>
+            <button aria-label="Add feature" class="mdc-fab ft-fab-absolute" type="button" v-mdc-fab
+                    v-on:click="addNew()">
                 <span class="mdc-fab__ripple"></span>
                 <span class="mdc-fab__icon material-icons">add</span>
             </button>
@@ -32,9 +32,10 @@
   import mdcTopAppBar from '@/modules/material-components-web/directives/mdc-top-app-bar';
   import { FeaturesService } from '@/services/features.service';
   import { onBeforeUnmount, onMounted, ref, SetupContext } from '@vue/composition-api';
+  import Vue, { ComponentOptions } from 'vue';
   import { Feature } from '~express/models/feature';
 
-  export default {
+  const componentOptions: ComponentOptions<Vue> = {
     setup(props: {}, context: SetupContext) {
 
       const router = context.root.$router;
@@ -58,6 +59,8 @@
     components: { FeaturesList },
     directives: { mdcFab, mdcTopAppBar }
   };
+
+  export default componentOptions;
 </script>
 
 <style lang="scss" scoped></style>

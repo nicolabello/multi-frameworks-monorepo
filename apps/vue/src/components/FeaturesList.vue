@@ -1,6 +1,6 @@
 <template>
     <ul class="ft-cards-list">
-        <li v-for="item of data" v-bind:key="item._id">
+        <li v-bind:key="item._id" v-for="item of data">
             <FeatureListItem v-bind:data="item"/>
         </li>
     </ul>
@@ -8,8 +8,9 @@
 
 <script lang="ts">
   import FeatureListItem from '@/components/FeatureListItem.vue';
+  import Vue, { ComponentOptions } from 'vue';
 
-  export default {
+  const componentOptions: ComponentOptions<Vue> = {
     props: {
       data: { type: Array, default: () => [] }
     },
@@ -18,6 +19,8 @@
     },
     components: { FeatureListItem }
   };
+
+  export default componentOptions;
 </script>
 
 <style lang="scss" scoped></style>
