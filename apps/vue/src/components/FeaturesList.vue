@@ -16,9 +16,7 @@
     setup() {
       return {};
     },
-    components: {
-      FeatureListItem
-    }
+    components: { FeatureListItem }
   };
 </script>
 

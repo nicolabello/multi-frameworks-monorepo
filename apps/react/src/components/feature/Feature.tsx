@@ -2,7 +2,7 @@ import { Canceler } from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { Feature as FeatureInterface } from '../../../../express/src/models/feature';
-import MDCTopAppBar from '../../modules/material-components-web/MDCTopAppBar';
+import MDCTopAppBar from '../../modules/material-components-web/components/MDCTopAppBar';
 import { FeatureService } from '../../services/feature.service';
 import FeatureForm from '../feature-form/FeatureForm';
 import './Feature.scss';

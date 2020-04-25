@@ -1,7 +1,7 @@
 <template>
     <div role="presentation">
 
-        <header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+        <header class="mdc-top-app-bar mdc-top-app-bar--fixed" v-mdc-top-app-bar>
             <div class="mdc-top-app-bar__row">
                 <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                     <h1 class="mdc-top-app-bar__title">Feature toggles</h1>
@@ -15,7 +15,8 @@
                 <FeaturesList v-bind:data="data"/>
             </main>
 
-            <button aria-label="Add feature" class="mdc-fab ft-fab-absolute" type="button" v-on:click="addNew()">
+            <button aria-label="Add feature" class="mdc-fab ft-fab-absolute" type="button" v-on:click="addNew()"
+                    v-mdc-fab>
                 <span class="mdc-fab__ripple"></span>
                 <span class="mdc-fab__icon material-icons">add</span>
             </button>
@@ -27,6 +28,8 @@
 
 <script lang="ts">
   import FeaturesList from '@/components/FeaturesList.vue';
+  import mdcFab from '@/modules/material-components-web/directives/mdc-fab';
+  import mdcTopAppBar from '@/modules/material-components-web/directives/mdc-top-app-bar';
   import { FeaturesService } from '@/services/features.service';
   import { onBeforeUnmount, onMounted, ref, SetupContext } from '@vue/composition-api';
   import { Feature } from '~express/models/feature';
@@ -52,9 +55,8 @@
       return { addNew, data };
 
     },
-    components: {
-      FeaturesList
-    }
+    components: { FeaturesList },
+    directives: { mdcFab, mdcTopAppBar }
   };
 </script>
 

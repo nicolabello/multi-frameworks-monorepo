@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Feature } from '../../../../express/src/models/feature';
-import MDCCard from '../../modules/material-components-web/MDCCard';
+import MDCCard from '../../modules/material-components-web/components/MDCCard';
 import './FeatureListItem.scss';
 
 function FeatureListItem(props: { data: Feature }) {

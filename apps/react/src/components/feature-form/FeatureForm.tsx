@@ -1,12 +1,12 @@
 import { useFormik } from 'formik';
 import React, { useEffect } from 'react';
 import { Feature, FeatureValue } from '../../../../express/src/models/feature';
-import MDCButton from '../../modules/material-components-web/MDCButton';
-import MDCSelect from '../../modules/material-components-web/MDCSelect';
-import MDCSelectHelperText from '../../modules/material-components-web/MDCSelectHelperText';
-import MDCSwitch from '../../modules/material-components-web/MDCSwitch';
-import MDCTextField from '../../modules/material-components-web/MDCTextField';
-import MDCTextFieldHelperText from '../../modules/material-components-web/MDCTextFieldHelperText';
+import MDCButton from '../../modules/material-components-web/components/MDCButton';
+import MDCSelect from '../../modules/material-components-web/components/MDCSelect';
+import MDCSelectHelperText from '../../modules/material-components-web/components/MDCSelectHelperText';
+import MDCSwitch from '../../modules/material-components-web/components/MDCSwitch';
+import MDCTextField from '../../modules/material-components-web/components/MDCTextField';
+import MDCTextFieldHelperText from '../../modules/material-components-web/components/MDCTextFieldHelperText';
 import './FeatureForm.scss';
 
 // TODO: this should be imported, but it's giving error "imports outside of src/ are not supported"

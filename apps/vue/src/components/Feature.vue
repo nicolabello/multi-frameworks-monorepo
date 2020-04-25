@@ -1,7 +1,7 @@
 <template>
     <div role="presentation">
 
-        <header class="mdc-top-app-bar mdc-top-app-bar--fixed">
+        <header class="mdc-top-app-bar mdc-top-app-bar--fixed" v-mdc-top-app-bar>
             <div class="mdc-top-app-bar__row">
                 <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                     <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button"
@@ -23,6 +23,7 @@
 </template>
 
 <script lang="ts">
+  import mdcTopAppBar from '@/modules/material-components-web/directives/mdc-top-app-bar';
   import { FeatureService } from '@/services/feature.service';
   import { onBeforeUnmount, onMounted, ref, SetupContext } from '@vue/composition-api';
   import { Feature } from '~express/models/feature';
@@ -51,7 +52,8 @@
 
       return { addingNew, showList, data };
 
-    }
+    },
+    directives: { mdcTopAppBar }
   };
 </script>
 
