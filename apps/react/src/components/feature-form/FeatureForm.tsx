@@ -45,7 +45,7 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
 
       if (!values.type) {
         errors.type = 'This is required';
-      } else if (!featureValueTypes.find(item => values.type === item)) {
+      } else if (!featureValueTypes.includes(values.type)) {
         errors.type = 'Value not allowed';
       }
 

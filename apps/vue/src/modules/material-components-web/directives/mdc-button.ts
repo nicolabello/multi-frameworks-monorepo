@@ -5,16 +5,13 @@ type CustomHTMLElement = HTMLElement & {
   rippleInstance?: MDCRipple;
 }
 
-const mdcCard: DirectiveOptions = {
+const mdcButton: DirectiveOptions = {
   inserted: (el: CustomHTMLElement) => {
-    const rippleElement = el.querySelector('.mdc-card__primary-action');
-    if (rippleElement) {
-      el.rippleInstance = MDCRipple.attachTo(rippleElement);
-    }
+    el.rippleInstance = MDCRipple.attachTo(el);
   },
   unbind: (el: CustomHTMLElement) => {
     el.rippleInstance?.destroy();
   },
 };
 
-export default mdcCard;
+export default mdcButton;

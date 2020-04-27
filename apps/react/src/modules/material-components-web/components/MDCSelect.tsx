@@ -50,7 +50,7 @@ class MDCSelect extends React.Component<Props, State> {
 
   public componentWillUnmount(): void {
     if (this.instance) {
-      this.instance.listen('MDCSelect:change', this.onChange);
+      this.instance.unlisten('MDCSelect:change', this.onChange);
       this.instance.destroy();
     }
   }

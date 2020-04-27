@@ -4,7 +4,7 @@ export class Validators extends AngularValidators {
 
   public static inArray(values: any[]): ValidatorFn {
     return (control: AbstractControl): ValidationErrors => {
-      if (values?.find(item => item === control.value)) {
+      if (values?.includes(control.value)) {
         return null;
       } else {
         return {

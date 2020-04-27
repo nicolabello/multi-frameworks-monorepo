@@ -1,14 +1,37 @@
 import { MDCTextField } from '@nicolabello/material-components-web';
 import { DirectiveOptions } from 'vue';
+import { DirectiveBinding } from 'vue/types/options';
+
+type CustomHTMLElement = HTMLElement & {
+  textFieldInstance?: MDCTextField;
+}
+
+interface BindingValue {
+  value?: any;
+  required?: boolean;
+  valid?: boolean;
+}
+
+const updateInstance = (instance?: MDCTextField, data?: BindingValue) => {
+  if (instance && data) {
+    if ('value' in data) {
+      instance.value = data.value;
+    }
+    instance.valid = !!data.valid;
+    instance.required = !!data.required;
+  }
+};
 
 const mdcTextField: DirectiveOptions = {
-  inserted: (el: HTMLElement) => {
-    const element: HTMLElement & { textFieldInstance: MDCTextField } = el as any;
-    element.textFieldInstance = MDCTextField.attachTo(el);
+  inserted: (el: CustomHTMLElement) => {
+    el.textFieldInstance = MDCTextField.attachTo(el);
+    el.textFieldInstance.useNativeValidation = false;
   },
-  unbind: (el: HTMLElement) => {
-    const element: HTMLElement & { textFieldInstance: MDCTextField } = el as any;
-    element.textFieldInstance && element.textFieldInstance.destroy();
+  update: (el: CustomHTMLElement, binding: DirectiveBinding) => {
+    updateInstance(el.textFieldInstance, binding.value);
+  },
+  unbind: (el: CustomHTMLElement) => {
+    el.textFieldInstance?.destroy();
   },
 };
 
