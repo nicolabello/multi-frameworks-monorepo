@@ -1,5 +1,5 @@
-import { Feature } from '../../../express/src/models/feature';
-import http, { httpCancelToken, promiseWithCanceller, PromiseWithCanceller } from '../helpers/http';
+import { Feature } from '../../index';
+import http, { httpCancelToken, promiseWithCanceller, PromiseWithCanceller } from '../http';
 
 export class FeaturesService {
 

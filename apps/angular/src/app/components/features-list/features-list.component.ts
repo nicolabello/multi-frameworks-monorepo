@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Feature } from '~express/models/feature';
+import { Feature } from '@feature-toggles/helpers';
 
 @Component({
   selector: 'ft-features-list',

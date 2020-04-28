@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { Feature, FeatureValue, FeatureValueType, featureValueTypes } from '~express/models/feature';
+import { Feature, FeatureValue, FeatureValueType, featureValueTypes } from '@feature-toggles/helpers';
 import { Validators } from '../../helpers/validators';
 
 @Component({

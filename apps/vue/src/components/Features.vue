@@ -30,10 +30,9 @@
   import FeaturesList from '@/components/FeaturesList.vue';
   import mdcFab from '@/modules/material-components-web/directives/mdc-fab';
   import mdcTopAppBar from '@/modules/material-components-web/directives/mdc-top-app-bar';
-  import { FeaturesService } from '@/services/features.service';
+  import { Feature, FeaturesService } from '@feature-toggles/helpers';
   import { onBeforeUnmount, onMounted, ref, SetupContext } from '@vue/composition-api';
   import Vue, { ComponentOptions } from 'vue';
-  import { Feature } from '~express/models/feature';
 
   const componentOptions: ComponentOptions<Vue> = {
     setup(props: {}, context: SetupContext) {

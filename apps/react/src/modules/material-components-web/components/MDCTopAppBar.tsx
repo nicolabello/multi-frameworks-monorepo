@@ -13,9 +13,7 @@ class MDCTopAppBar extends React.Component<any> {
   }
 
   public componentWillUnmount(): void {
-    if (this.instance) {
-      this.instance.destroy();
-    }
+    this.instance?.destroy();
   }
 
   public render(): React.ReactNode {

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Feature } from '../../../../express/src/models/feature';
+import { Feature, FeaturesService } from '@feature-toggles/helpers';
 import MDCFab from '../../modules/material-components-web/components/MDCFab';
 import MDCTopAppBar from '../../modules/material-components-web/components/MDCTopAppBar';
-import { FeaturesService } from '../../services/features.service';
 import FeaturesList from '../features-list/FeaturesList';
 import './Features.scss';
 

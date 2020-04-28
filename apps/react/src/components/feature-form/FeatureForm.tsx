@@ -1,6 +1,13 @@
+import {
+  Feature,
+  FeatureValueType,
+  featureValueTypes,
+  getUpdatedValue,
+  normalizeValues,
+  toFormValue
+} from '@feature-toggles/helpers';
 import { useFormik } from 'formik';
 import React, { useEffect } from 'react';
-import { Feature, FeatureValue } from '../../../../express/src/models/feature';
 import MDCButton from '../../modules/material-components-web/components/MDCButton';
 import MDCSelect from '../../modules/material-components-web/components/MDCSelect';
 import MDCSelectHelperText from '../../modules/material-components-web/components/MDCSelectHelperText';
@@ -9,32 +16,10 @@ import MDCTextField from '../../modules/material-components-web/components/MDCTe
 import MDCTextFieldHelperText from '../../modules/material-components-web/components/MDCTextFieldHelperText';
 import './FeatureForm.scss';
 
-// TODO: this should be imported, but it's giving error "imports outside of src/ are not supported"
-enum FeatureValueType {
-  String = 'string',
-  Number = 'number',
-  Boolean = 'boolean',
-}
-
-// TODO: this should be imported, but it's giving error "imports outside of src/ are not supported"
-const featureValueTypes: string[] = Object.keys(FeatureValueType).map(
-  (key) => (FeatureValueType as any)[key] as string
-);
-
 function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (values: Feature) => any }) {
 
-  const getFormValues = (): Feature => {
-    return {
-      _id: props.data?._id || null,
-      key: props.data?.key || '',
-      description: props.data?.description || '',
-      type: props.data?.type || null,
-      value: props.data ? props.data.value : null
-    };
-  };
-
   const form = useFormik<Feature>({
-    initialValues: getFormValues(),
+    initialValues: normalizeValues(props.data),
     validate: values => {
 
       const errors: { [key in keyof Feature]?: string } = {};
@@ -64,25 +49,14 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
 
   const updateValue = (type: FeatureValueType) => {
     const value = form.values.value;
-    let newValue: FeatureValue;
-    switch (type) {
-      case FeatureValueType.Boolean:
-        newValue = typeof value === 'boolean' ? value : value === 'true';
-        newValue !== value && form.setFieldValue('value', newValue);
-        break;
-      case FeatureValueType.Number:
-        newValue = parseFloat(value as string) || null;
-        newValue !== value && form.setFieldValue('value', newValue);
-        break;
-      case FeatureValueType.String:
-        newValue = typeof value !== 'undefined' && value !== null ? `${value}` : '';
-        newValue !== value && form.setFieldValue('value', newValue);
-        break;
+    const newValue = getUpdatedValue(value, type);
+    if (newValue !== value) {
+      form.setFieldValue('value', newValue);
     }
   };
 
   useEffect(() => {
-    form.setValues(getFormValues(), true);
+    form.setValues(normalizeValues(props.data), true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data]);
 
@@ -91,7 +65,7 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
   return (
     <form onSubmit={form.handleSubmit} className="ft-form" noValidate>
 
-      <MDCTextField className="mdc-text-field" required={true} invalid={form.touched.key && !!form.errors.key}
+      <MDCTextField className="mdc-text-field" required={true} valid={!form.touched.key || !form.errors.key}
                     value={form.values.key}>
         <span className="mdc-text-field__ripple"/>
         <input aria-controls="key-helper-text-id" aria-describedby="key-helper-text-id" aria-labelledby="key-id"
@@ -109,7 +83,7 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
             object</MDCTextFieldHelperText>}
       </div>
 
-      <MDCTextField className="mdc-text-field" invalid={form.touched.description && !!form.errors.description}
+      <MDCTextField className="mdc-text-field" valid={!form.touched.description || !form.errors.description}
                     value={form.values.description}>
         <span className="mdc-text-field__ripple"/>
         <input aria-controls="description-helper-text-id" aria-describedby="description-helper-text-id"
@@ -124,7 +98,7 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
           className="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">{form.errors.description}</MDCTextFieldHelperText>
       </div>
 
-      <MDCSelect className="mdc-select" required={true} invalid={form.touched.type && !!form.errors.type}
+      <MDCSelect className="mdc-select" required={true} valid={!form.touched.type || !form.errors.type}
                  value={form.values.type}
                  onChange={(value: FeatureValueType) => setType(value)}>
         <div className="mdc-select__anchor">
@@ -165,13 +139,13 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
 
       {form.values.type === FeatureValueType.Number ?
         <>
-          <MDCTextField className="mdc-text-field" invalid={form.touched.value && !!form.errors.value}
-                        value={form.values.value || form.values.value === 0 ? `${form.values.value}` : ''}>
+          <MDCTextField className="mdc-text-field" valid={!form.touched.value || !form.errors.value}
+                        value={form.values.value}>
             <span className="mdc-text-field__ripple"/>
             <input aria-controls="value-helper-text-id" aria-describedby="value-helper-text-id"
                    aria-labelledby="value-id"
                    className="mdc-text-field__input" type="number" name="value"
-                   value={form.values.value || form.values.value === 0 ? `${form.values.value}` : ''}
+                   value={toFormValue(form.values.value)}
                    onChange={form.handleChange} onBlur={form.handleBlur}/>
             <span className="mdc-floating-label" id="value-id">Value</span>
             <span className="mdc-line-ripple"/>
@@ -185,13 +159,13 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
 
       {form.values.type === FeatureValueType.String ?
         <>
-          <MDCTextField className="mdc-text-field" invalid={form.touched.value && !!form.errors.value}
-                        value={form.values.value && form.values.value !== true ? `${form.values.value}` : ''}>
+          <MDCTextField className="mdc-text-field" valid={!form.touched.value || !form.errors.value}
+                        value={form.values.value}>
             <span className="mdc-text-field__ripple"/>
             <input aria-controls="value-helper-text-id" aria-describedby="value-helper-text-id"
                    aria-labelledby="value-id"
                    className="mdc-text-field__input" type="text" name="value"
-                   value={form.values.value && form.values.value !== true ? `${form.values.value}` : ''}
+                   value={toFormValue(form.values.value)}
                    onChange={form.handleChange} onBlur={form.handleBlur}/>
             <span className="mdc-floating-label" id="value-id">Value</span>
             <span className="mdc-line-ripple"/>

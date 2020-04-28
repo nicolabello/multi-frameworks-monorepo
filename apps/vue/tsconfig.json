@@ -18,9 +18,6 @@
     "paths": {
       "@/*": [
         "src/*"
-      ],
-      "~express/*": [
-        "./../express/src/*"
       ]
     },
     "lib": [

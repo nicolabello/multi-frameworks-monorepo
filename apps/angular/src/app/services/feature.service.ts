@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Feature } from '~express/models/feature';
+import { Feature } from '@feature-toggles/helpers';
 import { environment } from '../../environments/environment';
 
 @Injectable({

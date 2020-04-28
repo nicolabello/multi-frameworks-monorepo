@@ -13,9 +13,7 @@ class MDCFab extends React.Component<any> {
   }
 
   public componentWillUnmount(): void {
-    if (this.rippleInstance) {
-      this.rippleInstance.destroy();
-    }
+    this.rippleInstance?.destroy();
   }
 
   public render(): React.ReactNode {

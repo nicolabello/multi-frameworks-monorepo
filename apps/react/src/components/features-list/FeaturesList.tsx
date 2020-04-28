@@ -1,5 +1,5 @@
 import React from 'react';
-import { Feature } from '../../../../express/src/models/feature';
+import { Feature } from '@feature-toggles/helpers';
 import FeatureListItem from '../feature-list-item/FeatureListItem';
 import './FeaturesList.scss';
 

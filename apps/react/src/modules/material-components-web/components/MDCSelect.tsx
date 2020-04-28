@@ -1,15 +1,15 @@
+import { MDCSelectProps, updateMDCInput } from '@feature-toggles/helpers';
 import { MDCSelect as MDCSelectImport } from '@nicolabello/material-components-web';
 import React from 'react';
 
-type Props =
-  { required?: boolean, invalid?: boolean, disabled?: boolean, value?: any, onChange?: (value: any) => any }
-  & any;
+type Props = MDCSelectProps & any;
 type State = any;
 
 class MDCSelect extends React.Component<Props, State> {
 
   private ref = React.createRef<HTMLElement>();
   private instance: MDCSelectImport | undefined;
+  private onChange = () => this.props.onChange && this.instance && this.props.onChange(this.instance.value);
 
   private get spreadProps(): any {
     const props = { ...this.props };
@@ -29,14 +29,7 @@ class MDCSelect extends React.Component<Props, State> {
   }
 
   public componentDidUpdate(): void {
-    if (this.instance) {
-      this.instance.required = this.props.required || false;
-      this.instance.disabled = this.props.disabled || false;
-      if (this.instance.value !== this.props.value) {
-        this.instance.value = this.props.value;
-      }
-      this.instance.valid = !this.props.invalid;
-    }
+    updateMDCInput(this.instance, this.props as MDCSelectProps);
   }
 
   /*public shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
@@ -49,10 +42,8 @@ class MDCSelect extends React.Component<Props, State> {
   }*/
 
   public componentWillUnmount(): void {
-    if (this.instance) {
-      this.instance.unlisten('MDCSelect:change', this.onChange);
-      this.instance.destroy();
-    }
+    this.instance?.unlisten('MDCSelect:change', this.onChange);
+    this.instance?.destroy();
   }
 
   public render() {
@@ -60,8 +51,6 @@ class MDCSelect extends React.Component<Props, State> {
       <div ref={this.ref} {...this.spreadProps}>{this.props.children}</div>
     );
   }
-
-  private onChange = () => this.props.onChange && this.instance && this.props.onChange(this.instance.value);
 
 }
 

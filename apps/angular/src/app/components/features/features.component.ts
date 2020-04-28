@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Feature } from '~express/models/feature';
+import { Feature } from '@feature-toggles/helpers';
 import { FeaturesService } from '../../services/features.service';
 
 @Component({

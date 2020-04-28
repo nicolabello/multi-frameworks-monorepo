@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Feature, featureValueTypes } from './feature';
+import { Feature, featureValueTypes } from '@feature-toggles/helpers';
 
 interface FeatureDocument extends mongoose.Document, Feature {
 }

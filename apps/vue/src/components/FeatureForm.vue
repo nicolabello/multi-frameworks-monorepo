@@ -34,7 +34,8 @@
             </div>
         </div>
 
-        <div class="mdc-select" v-mdc-select="{value: form.type, valid: !errors.type, onChange: setType}">
+        <div class="mdc-select"
+             v-mdc-select="{value: form.type, valid: !errors.type, onChange: setType, required: true}">
             <div class="mdc-select__anchor">
                 <span class="mdc-select__dropdown-icon"></span>
                 <div aria-controls="type-helper-text-id" aria-describedby="type-helper-text-id"
@@ -71,7 +72,7 @@
             <label for="value-boolean-id">Off/On</label>
         </div>
         <label class="mdc-text-field" v-if="form.type === types.Number"
-               v-mdc-text-field="{value: toFormValue(form.value), valid: !errors.value, required: true}">
+               v-mdc-text-field="{value: form.value, valid: !errors.value}">
             <span class="mdc-text-field__ripple"></span>
             <input aria-controls="value-number-helper-text-id" aria-describedby="value-number-helper-text-id"
                    aria-labelledby="value-number-id" class="mdc-text-field__input" type="number"
@@ -87,7 +88,7 @@
             </div>
         </div>
         <label class="mdc-text-field" v-if="form.type === types.String"
-               v-mdc-text-field="{value: toFormValue(form.value), valid: !errors.value, required: true}">
+               v-mdc-text-field="{value: form.value, valid: !errors.value}">
             <span class="mdc-text-field__ripple"></span>
             <input aria-controls="value-string-helper-text-id" aria-describedby="value-string-helper-text-id"
                    aria-labelledby="value-string-id" class="mdc-text-field__input" type="text"
@@ -133,21 +134,16 @@
   import mdcSwitch from '@/modules/material-components-web/directives/mdc-switch';
   import mdcTextField from '@/modules/material-components-web/directives/mdc-text-field';
   import mdcTextFieldHelperText from '@/modules/material-components-web/directives/mdc-text-field-helper-text';
+  import {
+    Feature,
+    FeatureValueType,
+    featureValueTypes,
+    getUpdatedValue,
+    normalizeValues,
+    toFormValue
+  } from '@feature-toggles/helpers';
   import { computed, reactive, SetupContext, watchEffect } from '@vue/composition-api';
   import Vue, { ComponentOptions } from 'vue';
-  import { Feature, FeatureValue } from '~express/models/feature';
-
-  // TODO: this should be imported, but it's giving error "This dependency was not found"
-  enum FeatureValueType {
-    String = 'string',
-    Number = 'number',
-    Boolean = 'boolean',
-  }
-
-  // TODO: this should be imported, but it's giving error "This dependency was not found"
-  const featureValueTypes: string[] = Object.keys(FeatureValueType).map(
-    (key) => (FeatureValueType as any)[key] as string
-  );
 
   const componentOptions: ComponentOptions<Vue> = {
     props: {
@@ -162,45 +158,18 @@
         value: null
       });
 
-      // const errors = ref<{ [key in keyof Feature]?: string }>({});
-
       let data: Feature | undefined;
 
       watchEffect(() => {
         if (props.data !== data) {
-
           data = props.data;
-
-          form.key = props.data?.key || '';
-          form.description = props.data?.description || '';
-          form.type = props.data?.type || null;
-          form.value = props.data?.value || null;
-
-          // errors.value = {};
-
+          const normalizedValues = normalizeValues(props.data);
+          form.key = normalizedValues.key;
+          form.description = normalizedValues.description;
+          form.type = normalizedValues.type;
+          form.value = normalizedValues.value;
         }
       });
-
-      // The following causes infinite loop
-      /*watchEffect(() => {
-
-        console.log('update errors');
-
-        const formErrors: { [key in keyof Feature]?: string } = {};
-
-        if (!form.key) {
-          formErrors.key = 'This is required';
-        }
-
-        if (!form.type) {
-          formErrors.type = 'This is required';
-        } else if (!featureValueTypes.includes(form.type)) {
-          formErrors.type = 'Value not allowed';
-        }
-
-        errors.value = formErrors;
-
-      });*/
 
       const getErrors = () => {
 
@@ -237,26 +206,9 @@
 
       const updateValue = (type: FeatureValueType) => {
         const value = form.value;
-        let newValue: FeatureValue;
-        switch (type) {
-          case FeatureValueType.Boolean:
-            newValue = typeof value === 'boolean' ? value : value === 'true';
-            if (newValue !== value) {
-              form.value = newValue;
-            }
-            break;
-          case FeatureValueType.Number:
-            newValue = parseFloat(value as string) || null;
-            if (newValue !== value) {
-              form.value = newValue;
-            }
-            break;
-          case FeatureValueType.String:
-            newValue = typeof value !== 'undefined' && value !== null ? `${value}` : '';
-            if (newValue !== value) {
-              form.value = newValue;
-            }
-            break;
+        const newValue = getUpdatedValue(value, type);
+        if (newValue !== value) {
+          form.value = newValue;
         }
       };
 
@@ -265,16 +217,6 @@
           form.type = value;
           updateValue(value);
         }
-      };
-
-      const toFormValue = (value: any): string => {
-        if (typeof value === 'string') {
-          return value;
-        }
-        if (typeof value === 'number') {
-          return `${value}`;
-        }
-        return '';
       };
 
       return { form, preview, cancel, submit, errors, isValid, setType, types: FeatureValueType, toFormValue };

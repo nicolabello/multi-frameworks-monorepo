@@ -25,10 +25,9 @@
 <script lang="ts">
   import FeatureForm from '@/components/FeatureForm.vue';
   import mdcTopAppBar from '@/modules/material-components-web/directives/mdc-top-app-bar';
-  import { FeatureService } from '@/services/feature.service';
   import { onBeforeUnmount, onMounted, ref, SetupContext } from '@vue/composition-api';
   import Vue, { ComponentOptions } from 'vue';
-  import { Feature } from '~express/models/feature';
+  import { Feature, FeatureService } from '@feature-toggles/helpers';
 
   const componentOptions: ComponentOptions<Vue> = {
     setup(props: {}, context: SetupContext) {

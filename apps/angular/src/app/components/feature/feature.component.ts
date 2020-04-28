@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
-import { Feature } from '~express/models/feature';
+import { Feature } from '@feature-toggles/helpers';
 import { FeatureService } from '../../services/feature.service';
 
 @Component({

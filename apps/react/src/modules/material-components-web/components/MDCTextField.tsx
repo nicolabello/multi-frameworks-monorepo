@@ -1,7 +1,8 @@
+import { MDCTextFieldProps, updateMDCInput } from '@feature-toggles/helpers';
 import { MDCTextField as MDCTextFieldImport } from '@nicolabello/material-components-web';
 import React from 'react';
 
-type Props = { required?: boolean, invalid?: boolean, disabled?: boolean, value?: any } & any;
+type Props = MDCTextFieldProps & any;
 type State = any;
 
 class MDCTextField extends React.Component<Props, State> {
@@ -35,20 +36,11 @@ class MDCTextField extends React.Component<Props, State> {
   }*/
 
   public componentDidUpdate(): void {
-    if (this.instance) {
-      this.instance.required = this.props.required || false;
-      this.instance.disabled = this.props.disabled || false;
-      if (this.instance.value !== this.props.value) {
-        this.instance.value = this.props.value;
-      }
-      this.instance.valid = !this.props.invalid;
-    }
+    updateMDCInput(this.instance, this.props as MDCTextFieldProps);
   }
 
   public componentWillUnmount(): void {
-    if (this.instance) {
-      this.instance.destroy();
-    }
+    this.instance?.destroy();
   }
 
   public render() {

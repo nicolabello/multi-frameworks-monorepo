@@ -23,10 +23,14 @@
     "ws:e": "yarn workspace @feature-toggles/express",
     "ws:a": "yarn workspace @feature-toggles/angular",
     "ws:r": "yarn workspace @feature-toggles/react",
-    "ws:v": "yarn workspace @feature-toggles/vue"
+    "ws:v": "yarn workspace @feature-toggles/vue",
+    "ws:h": "yarn workspace @feature-toggles/helpers"
   },
   "devDependencies": {
     "lerna": "^3.20.2",
     "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "@feature-toggles/helpers": "link:libs/helpers/build"
   }
 }
