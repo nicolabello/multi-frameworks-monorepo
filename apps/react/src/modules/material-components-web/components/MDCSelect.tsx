@@ -1,4 +1,4 @@
-import { MDCSelectProps, updateMDCInput } from '@feature-toggles/helpers';
+import { MDCSelectProps, updateMDCInstance } from '@feature-toggles/helpers';
 import { MDCSelect as MDCSelectImport } from '@nicolabello/material-components-web';
 import React from 'react';
 
@@ -9,7 +9,6 @@ class MDCSelect extends React.Component<Props, State> {
 
   private ref = React.createRef<HTMLElement>();
   private instance: MDCSelectImport | undefined;
-  private onChange = () => this.props.onChange && this.instance && this.props.onChange(this.instance.value);
 
   private get spreadProps(): any {
     const props = { ...this.props };
@@ -29,7 +28,12 @@ class MDCSelect extends React.Component<Props, State> {
   }
 
   public componentDidUpdate(): void {
-    updateMDCInput(this.instance, this.props as MDCSelectProps);
+    updateMDCInstance(this.instance, this.props as MDCSelectProps);
+  }
+
+  public componentWillUnmount(): void {
+    this.instance?.unlisten('MDCSelect:change', this.onChange);
+    this.instance?.destroy();
   }
 
   /*public shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
@@ -41,16 +45,13 @@ class MDCSelect extends React.Component<Props, State> {
       || this.props.onChange !== nextProps.onChange;
   }*/
 
-  public componentWillUnmount(): void {
-    this.instance?.unlisten('MDCSelect:change', this.onChange);
-    this.instance?.destroy();
-  }
-
   public render() {
     return (
       <div ref={this.ref} {...this.spreadProps}>{this.props.children}</div>
     );
   }
+
+  private onChange = () => this.props.onChange && this.instance && this.props.onChange(this.instance.value);
 
 }
 

@@ -1,7 +1,7 @@
 <template>
     <form class="ft-form" novalidate v-on:submit.prevent="submit()">
 
-        <label class="mdc-text-field" v-mdc-text-field="{value: form.key, valid: !errors.key, required: true}">
+        <label class="mdc-text-field" v-mdc-text-field="{value: form.key, valid: !errors?.key, required: true}">
             <span class="mdc-text-field__ripple"></span>
             <input aria-controls="key-helper-text-id" aria-describedby="key-helper-text-id" aria-labelledby="key-id"
                    autofocus
@@ -10,16 +10,16 @@
             <span class="mdc-line-ripple"></span>
         </label>
         <div aria-hidden="true" class="mdc-text-field-helper-line" id="key-helper-text-id">
-            <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" v-if="errors.key"
+            <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" v-if="errors?.key"
                  v-mdc-text-field-helper-text>
-                {{errors.key}}
+                {{errors?.key}}
             </div>
             <div class="mdc-text-field-helper-text" v-else v-mdc-text-field-helper-text>This will be used as key in the
                 response object
             </div>
         </div>
 
-        <label class="mdc-text-field" v-mdc-text-field="{value: form.description, valid: !errors.description}">
+        <label class="mdc-text-field" v-mdc-text-field="{value: form.description, valid: !errors?.description}">
             <span class="mdc-text-field__ripple"></span>
             <input aria-controls="description-helper-text-id" aria-describedby="description-helper-text-id"
                    aria-labelledby="description-id" class="mdc-text-field__input"
@@ -30,12 +30,12 @@
         <div aria-hidden="true" class="mdc-text-field-helper-line" id="description-helper-text-id">
             <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
                  v-mdc-text-field-helper-text>
-                {{errors.description}}
+                {{errors?.description}}
             </div>
         </div>
 
         <div class="mdc-select"
-             v-mdc-select="{value: form.type, valid: !errors.type, onChange: setType, required: true}">
+             v-mdc-select="{value: form.type, valid: !errors?.type, onChange: setType, required: true}">
             <div class="mdc-select__anchor">
                 <span class="mdc-select__dropdown-icon"></span>
                 <div aria-controls="type-helper-text-id" aria-describedby="type-helper-text-id"
@@ -55,7 +55,7 @@
         </div>
         <div aria-hidden="true" class="mdc-select-helper-text mdc-select-helper-text--validation-msg"
              id="type-helper-text-id" v-mdc-select-helper-text>
-            {{errors.type}}
+            {{errors?.type}}
         </div>
 
         <div class="ft-switch" role="presentation" v-if="form.type === types.Boolean">
@@ -72,7 +72,7 @@
             <label for="value-boolean-id">Off/On</label>
         </div>
         <label class="mdc-text-field" v-if="form.type === types.Number"
-               v-mdc-text-field="{value: form.value, valid: !errors.value}">
+               v-mdc-text-field="{value: form.value, valid: !errors?.value}">
             <span class="mdc-text-field__ripple"></span>
             <input aria-controls="value-number-helper-text-id" aria-describedby="value-number-helper-text-id"
                    aria-labelledby="value-number-id" class="mdc-text-field__input" type="number"
@@ -84,11 +84,11 @@
              v-if="form.type === types.Number">
             <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
                  v-mdc-text-field-helper-text>
-                {{errors.value}}
+                {{errors?.value}}
             </div>
         </div>
         <label class="mdc-text-field" v-if="form.type === types.String"
-               v-mdc-text-field="{value: form.value, valid: !errors.value}">
+               v-mdc-text-field="{value: form.value, valid: !errors?.value}">
             <span class="mdc-text-field__ripple"></span>
             <input aria-controls="value-string-helper-text-id" aria-describedby="value-string-helper-text-id"
                    aria-labelledby="value-string-id" class="mdc-text-field__input" type="text"
@@ -100,7 +100,7 @@
              v-if="form.type === types.String">
             <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
                  v-mdc-text-field-helper-text>
-                {{errors.value}}
+                {{errors?.value}}
             </div>
         </div>
 
@@ -135,12 +135,13 @@
   import mdcTextField from '@/modules/material-components-web/directives/mdc-text-field';
   import mdcTextFieldHelperText from '@/modules/material-components-web/directives/mdc-text-field-helper-text';
   import {
+    castFeatureValue,
     Feature,
+    FeatureErrors,
     FeatureValueType,
-    featureValueTypes,
-    getUpdatedValue,
-    normalizeValues,
-    toFormValue
+    normalizeFeature,
+    toInputValue,
+    validateFeature
   } from '@feature-toggles/helpers';
   import { computed, reactive, SetupContext, watchEffect } from '@vue/composition-api';
   import Vue, { ComponentOptions } from 'vue';
@@ -163,7 +164,7 @@
       watchEffect(() => {
         if (props.data !== data) {
           data = props.data;
-          const normalizedValues = normalizeValues(props.data);
+          const normalizedValues = normalizeFeature(props.data);
           form.key = normalizedValues.key;
           form.description = normalizedValues.description;
           form.type = normalizedValues.type;
@@ -171,26 +172,15 @@
         }
       });
 
-      const getErrors = () => {
+      const getErrors = () => validateFeature({
+        key: form.key,
+        description: form.description,
+        type: form.type,
+        value: form.value
+      } as Feature);
 
-        const errors: { [key in keyof Feature]?: string } = {};
-
-        if (!form.key) {
-          errors.key = 'This is required';
-        }
-
-        if (!form.type) {
-          errors.type = 'This is required';
-        } else if (!featureValueTypes.includes(form.type)) {
-          errors.type = 'Value not allowed';
-        }
-
-        return errors;
-
-      };
-
-      const errors = computed<{ [key in keyof Feature]?: string }>(getErrors);
-      const isValid = computed<boolean>(() => !Object.keys(getErrors()).length);
+      const errors = computed<FeatureErrors | null>(getErrors);
+      const isValid = computed<boolean>(() => !getErrors());
 
       const preview = computed<string>(() => JSON.stringify({ [`${form.key}`]: form.value }, null, 2));
 
@@ -206,7 +196,7 @@
 
       const updateValue = (type: FeatureValueType) => {
         const value = form.value;
-        const newValue = getUpdatedValue(value, type);
+        const newValue = castFeatureValue(value, type);
         if (newValue !== value) {
           form.value = newValue;
         }
@@ -219,7 +209,7 @@
         }
       };
 
-      return { form, preview, cancel, submit, errors, isValid, setType, types: FeatureValueType, toFormValue };
+      return { form, preview, cancel, submit, errors, isValid, setType, types: FeatureValueType, toInputValue };
 
     },
     directives: { mdcTextField, mdcTextFieldHelperText, mdcButton, mdcSelect, mdcSelectHelperText, mdcSwitch }

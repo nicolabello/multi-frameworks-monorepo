@@ -1,6 +1,8 @@
 <form (ngSubmit)="submit()" [formGroup]="form" class="ft-form" novalidate>
 
-  <label [mdcTextField]="form.get('key')" [required]="true" class="mdc-text-field">
+  <label [required]="true" [valid]="!(form.errors?.key && (form.get('key').dirty || form.get('key').touched))"
+         [value]="form.get('key').value" class="mdc-text-field"
+         mdcTextField>
     <span class="mdc-text-field__ripple"></span>
     <input aria-controls="key-helper-text-id" aria-describedby="key-helper-text-id" aria-labelledby="key-id"
            autofocus
@@ -9,19 +11,21 @@
     <span class="mdc-line-ripple"></span>
   </label>
   <div aria-hidden="true" class="mdc-text-field-helper-line" id="key-helper-text-id">
-    <div *ngIf="form.get('key').errors; else noNameErrors"
+    <div *ngIf="form.errors?.key && (form.get('key').dirty || form.get('key').touched); else noKeyErrors"
          class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg"
          mdcTextFieldHelperText>
-      <ft-validation-message [errors]="form.get('key').errors"></ft-validation-message>
+      {{form.errors?.key}}
     </div>
-    <ng-template #noNameErrors>
+    <ng-template #noKeyErrors>
       <div class="mdc-text-field-helper-text" mdcTextFieldHelperText>This will be used as key in the
         response object
       </div>
     </ng-template>
   </div>
 
-  <label [mdcTextField]="form.get('description')" class="mdc-text-field">
+  <label [valid]="!(form.errors?.description && (form.get('description').dirty || form.get('description').touched))" [value]="form.get('description').value"
+         class="mdc-text-field"
+         mdcTextField>
     <span class="mdc-text-field__ripple"></span>
     <input aria-controls="description-helper-text-id" aria-describedby="description-helper-text-id"
            aria-labelledby="description-id" class="mdc-text-field__input" formControlName="description"
@@ -31,11 +35,13 @@
   </label>
   <div aria-hidden="true" class="mdc-text-field-helper-line" id="description-helper-text-id">
     <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" mdcTextFieldHelperText>
-      <ft-validation-message [errors]="form.get('key').errors"></ft-validation-message>
+      {{form.errors?.description}}
     </div>
   </div>
 
-  <div [mdcSelect]="form.get('type')" [required]="true" class="mdc-select">
+  <div (onChange)="form.get('type').setValue($event)" [required]="true"
+       [valid]="!(form.errors?.type && (form.get('type').dirty || form.get('type').touched))" [value]="form.get('type').value"
+       class="mdc-select" mdcSelect>
     <div class="mdc-select__anchor">
       <span class="mdc-select__dropdown-icon"></span>
       <div aria-controls="type-helper-text-id" aria-describedby="type-helper-text-id"
@@ -55,7 +61,7 @@
   </div>
   <div aria-hidden="true" class="mdc-select-helper-text mdc-select-helper-text--validation-msg" id="type-helper-text-id"
        mdcSelectHelperText>
-    <ft-validation-message [errors]="form.get('type').errors"></ft-validation-message>
+    {{form.errors?.type}}
   </div>
 
   <ng-container [ngSwitch]="form.get('type').value">
@@ -74,7 +80,9 @@
       </div>
     </ng-container>
     <ng-container *ngSwitchCase="types.Number">
-      <label [mdcTextField]="form.get('value')" [required]="true" class="mdc-text-field">
+      <label [required]="true" [valid]="!(form.errors?.value && (form.get('value').dirty || form.get('value').touched))"
+             [value]="form.get('value').value" class="mdc-text-field"
+             mdcTextField>
         <span class="mdc-text-field__ripple"></span>
         <input aria-controls="value-number-helper-text-id" aria-describedby="value-number-helper-text-id"
                aria-labelledby="value-number-id" class="mdc-text-field__input" formControlName="value"
@@ -84,12 +92,14 @@
       </label>
       <div aria-hidden="true" class="mdc-text-field-helper-line" id="value-number-helper-text-id">
         <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" mdcTextFieldHelperText>
-          <ft-validation-message [errors]="form.get('value').errors"></ft-validation-message>
+          {{form.errors?.value}}
         </div>
       </div>
     </ng-container>
     <ng-container *ngSwitchCase="types.String">
-      <label [mdcTextField]="form.get('value')" [required]="true" class="mdc-text-field">
+      <label [required]="true" [valid]="!(form.errors?.value && (form.get('value').dirty || form.get('value').touched))"
+             [value]="form.get('value').value" class="mdc-text-field"
+             mdcTextField>
         <span class="mdc-text-field__ripple"></span>
         <input aria-controls="value-string-helper-text-id" aria-describedby="value-string-helper-text-id"
                aria-labelledby="value-string-id" class="mdc-text-field__input" formControlName="value"
@@ -99,7 +109,7 @@
       </label>
       <div aria-hidden="true" class="mdc-text-field-helper-line" id="value-string-helper-text-id">
         <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" mdcTextFieldHelperText>
-          <ft-validation-message [errors]="form.get('value').errors"></ft-validation-message>
+          {{form.errors?.value}}
         </div>
       </div>
     </ng-container>

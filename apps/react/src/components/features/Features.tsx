@@ -1,6 +1,6 @@
+import { Feature, FeaturesService } from '@feature-toggles/helpers';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Feature, FeaturesService } from '@feature-toggles/helpers';
 import MDCFab from '../../modules/material-components-web/components/MDCFab';
 import MDCTopAppBar from '../../modules/material-components-web/components/MDCTopAppBar';
 import FeaturesList from '../features-list/FeaturesList';

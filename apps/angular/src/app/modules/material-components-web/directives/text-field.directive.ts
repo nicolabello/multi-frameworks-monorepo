@@ -1,51 +1,42 @@
-import { AfterViewInit, Directive, ElementRef, Input, OnDestroy } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
+import { AfterViewInit, Directive, ElementRef, Input, OnChanges, OnDestroy } from '@angular/core';
+import { updateMDCInstance } from '@feature-toggles/helpers';
 import { MDCTextField } from '@nicolabello/material-components-web';
-import { Subscription } from 'rxjs';
 
 @Directive({
   selector: '[mdcTextField]',
-  exportAs: 'mdcTextField'
 })
-export class TextFieldDirective implements AfterViewInit, OnDestroy {
+export class TextFieldDirective implements AfterViewInit, OnChanges, OnDestroy {
 
-  public instance: MDCTextField;
-  private controlStatusSubscription: Subscription;
-  @Input('mdcTextField') private control: AbstractControl;
+  private instance: MDCTextField;
+
   @Input() private required: boolean;
+  @Input() private disabled: boolean;
+  @Input() private valid: boolean;
+  @Input() private value: any;
 
   constructor(private elementRef: ElementRef<HTMLElement>) {
   }
 
   public ngAfterViewInit(): void {
-
     this.instance = MDCTextField.attachTo(this.elementRef.nativeElement);
-    this.instance.required = this.required || false;
+    this.updateMDCInstance();
+  }
 
-    if (this.control) {
-
-      this.instance.useNativeValidation = false;
-
-      this.controlStatusSubscription = this.control.statusChanges.subscribe(() => {
-        this.instance.valid = !(this.control.invalid && (this.control.dirty || this.control.touched));
-        this.instance.disabled = this.control.disabled;
-      });
-
-      this.instance.valid = this.control.valid;
-      this.instance.disabled = this.control.disabled;
-
-    }
-
+  public ngOnChanges(): void {
+    this.updateMDCInstance();
   }
 
   public ngOnDestroy(): void {
-
     this.instance.destroy();
+  }
 
-    if (this.controlStatusSubscription) {
-      this.controlStatusSubscription.unsubscribe();
-    }
-
+  private updateMDCInstance() {
+    updateMDCInstance(this.instance, {
+      required: this.required,
+      disabled: this.disabled,
+      valid: this.valid,
+      value: this.value,
+    });
   }
 
 }

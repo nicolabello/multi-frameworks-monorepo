@@ -3,11 +3,10 @@ import { MDCTextFieldHelperText } from '@nicolabello/material-components-web';
 
 @Directive({
   selector: '[mdcTextFieldHelperText]',
-  exportAs: 'mdcTextFieldHelperText'
 })
 export class TextFieldHelperTextDirective implements AfterViewInit, OnDestroy {
 
-  public instance: MDCTextFieldHelperText;
+  private instance: MDCTextFieldHelperText;
 
   constructor(private elementRef: ElementRef<HTMLElement>) {
   }

@@ -25,3 +25,5 @@ export interface Feature {
   value: FeatureValue | null;
   // switches: FeatureSwitch[];
 }
+
+export type FeatureErrors = { [key in keyof Feature]?: string }

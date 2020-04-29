@@ -3,11 +3,10 @@ import { MDCRipple } from '@nicolabello/material-components-web';
 
 @Directive({
   selector: '[mdcCard]',
-  exportAs: 'mdcCard'
 })
 export class CardDirective implements AfterViewInit, OnDestroy {
 
-  public rippleInstance: MDCRipple;
+  private rippleInstance: MDCRipple;
 
   constructor(private elementRef: ElementRef<HTMLElement>) {
   }

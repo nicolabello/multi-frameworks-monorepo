@@ -3,11 +3,10 @@ import { MDCRipple } from '@nicolabello/material-components-web';
 
 @Directive({
   selector: '[mdcButton]',
-  exportAs: 'mdcButton'
 })
 export class ButtonDirective implements AfterViewInit, OnDestroy {
 
-  public rippleInstance: MDCRipple;
+  private rippleInstance: MDCRipple;
 
   constructor(private elementRef: ElementRef<HTMLElement>) {
   }

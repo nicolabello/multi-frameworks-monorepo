@@ -3,11 +3,10 @@ import { MDCSelectHelperText } from '@nicolabello/material-components-web';
 
 @Directive({
   selector: '[mdcSelectHelperText]',
-  exportAs: 'mdcSelectHelperText'
 })
 export class SelectHelperTextDirective implements AfterViewInit, OnDestroy {
 
-  public instance: MDCSelectHelperText;
+  private instance: MDCSelectHelperText;
 
   constructor(private elementRef: ElementRef<HTMLElement>) {
   }

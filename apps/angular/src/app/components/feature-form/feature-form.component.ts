@@ -10,10 +10,15 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ValidationErrors } from '@angular/forms';
+import {
+  castFeatureValue,
+  Feature,
+  FeatureValueType,
+  normalizeFeature,
+  validateFeature
+} from '@feature-toggles/helpers';
 import { Subscription } from 'rxjs';
-import { Feature, FeatureValue, FeatureValueType, featureValueTypes } from '@feature-toggles/helpers';
-import { Validators } from '../../helpers/validators';
 
 @Component({
   selector: 'ft-feature-form',
@@ -26,14 +31,11 @@ export class FeatureFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() public ftSubmit = new EventEmitter<Feature>();
   @Output() public ftCancel = new EventEmitter<void>();
   public form = new FormGroup({
-    key: new FormControl('', [Validators.required]),
+    key: new FormControl(''),
     description: new FormControl(''),
-    type: new FormControl('', [
-      Validators.required,
-      Validators.inArray(featureValueTypes)
-    ]),
+    type: new FormControl(''),
     value: new FormControl('')
-  });
+  }, (formGroup: FormGroup): ValidationErrors => validateFeature(formGroup.value));
   public types = FeatureValueType;
   private typeValueSubscription: Subscription;
 
@@ -49,14 +51,7 @@ export class FeatureFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input()
   public set data(value: Feature) {
-    value = {
-      _id: value?._id || null,
-      key: value?.key || '',
-      description: value?.description || '',
-      type: value?.type || null,
-      value: value ? value.value : null
-    };
-    this._data = value;
+    this._data = normalizeFeature(value);
     this.form.reset(this._data);
     this.cdr.markForCheck();
   }
@@ -67,21 +62,11 @@ export class FeatureFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public ngOnInit(): void {
     this.typeValueSubscription = this.form.get('type').valueChanges.subscribe((type: FeatureValueType) => {
-      const value = this.form.get('value').value;
-      let newValue: FeatureValue;
-      switch (type) {
-        case FeatureValueType.Boolean:
-          newValue = typeof value === 'boolean' ? value : value === 'true';
-          newValue !== value && this.form.get('value').setValue(newValue);
-          break;
-        case FeatureValueType.Number:
-          newValue = parseFloat(value) || null;
-          newValue !== value && this.form.get('value').setValue(newValue);
-          break;
-        case FeatureValueType.String:
-          newValue = typeof value !== 'undefined' && value !== null ? `${value}` : '';
-          newValue !== value && this.form.get('value').setValue(newValue);
-          break;
+      const control = this.form.get('value');
+      const value = control.value;
+      const newValue = castFeatureValue(value, type);
+      if (newValue !== value) {
+        control.setValue(newValue);
       }
     });
   }

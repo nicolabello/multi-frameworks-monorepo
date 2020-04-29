@@ -2,9 +2,11 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import { baseURL } from '@feature-toggles/helpers';
+
 export const environment = {
   production: false,
-  apiURL: 'http://localhost:8080'
+  apiURL: baseURL.dev
 };
 
 /*

@@ -1,4 +1,4 @@
-import { MDCTextFieldProps, updateMDCInput } from '@feature-toggles/helpers';
+import { MDCTextFieldProps, updateMDCInstance } from '@feature-toggles/helpers';
 import { MDCTextField as MDCTextFieldImport } from '@nicolabello/material-components-web';
 import React from 'react';
 
@@ -28,7 +28,7 @@ class MDCTextField extends React.Component<Props, State> {
   }
 
   /*public shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
-    return this.props.children !== nextProps.childrean
+    return this.props.children !== nextProps.children
       || this.props.required !== nextProps.required
       || this.props.disabled !== nextProps.disabled
       || this.props.value !== nextProps.value
@@ -36,7 +36,7 @@ class MDCTextField extends React.Component<Props, State> {
   }*/
 
   public componentDidUpdate(): void {
-    updateMDCInput(this.instance, this.props as MDCTextFieldProps);
+    updateMDCInstance(this.instance, this.props as MDCTextFieldProps);
   }
 
   public componentWillUnmount(): void {

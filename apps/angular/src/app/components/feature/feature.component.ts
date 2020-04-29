@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Feature } from '@feature-toggles/helpers';
 import { of, Subscription } from 'rxjs';
 import { distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
-import { Feature } from '@feature-toggles/helpers';
 import { FeatureService } from '../../services/feature.service';
 
 @Component({

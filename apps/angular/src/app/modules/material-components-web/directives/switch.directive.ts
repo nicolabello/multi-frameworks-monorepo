@@ -3,11 +3,10 @@ import { MDCSwitch } from '@nicolabello/material-components-web';
 
 @Directive({
   selector: '[mdcSwitch]',
-  exportAs: 'mdcSwitch'
 })
 export class SwitchDirective implements AfterViewInit, OnDestroy {
 
-  public instance: MDCSwitch;
+  private instance: MDCSwitch;
 
   constructor(private elementRef: ElementRef<HTMLElement>) {
   }

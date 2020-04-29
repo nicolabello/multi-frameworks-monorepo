@@ -3,11 +3,10 @@ import { MDCRipple } from '@nicolabello/material-components-web';
 
 @Directive({
   selector: '[mdcFab]',
-  exportAs: 'mdcFab'
 })
 export class FabDirective implements AfterViewInit, OnDestroy {
 
-  public rippleInstance: MDCRipple;
+  private rippleInstance: MDCRipple;
 
   constructor(private elementRef: ElementRef<HTMLElement>) {
   }

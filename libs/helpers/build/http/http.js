@@ -4,8 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var axios_1 = __importDefault(require("axios"));
+exports.baseURL = {
+    dev: 'http://localhost:8080',
+    prod: 'http://localhost:8080'
+};
 exports.default = axios_1.default.create({
-    baseURL: 'http://localhost:8080'
+    baseURL: exports.baseURL.dev
 });
 function httpCancelToken() {
     return axios_1.default.CancelToken.source();

@@ -1,6 +1,6 @@
+import { Feature, FeatureValueType } from '@feature-toggles/helpers';
 import { render, RenderResult } from '@testing-library/react';
 import React from 'react';
-import { Feature, FeatureValueType } from '@feature-toggles/helpers';
 import FeatureListItem from './FeatureListItem';
 
 describe('FeatureListItem', () => {

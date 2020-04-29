@@ -1,3 +1,4 @@
+import { validateFeature } from '@feature-toggles/helpers';
 import express from 'express';
 import { FeatureModel } from '../models/feature-model';
 
@@ -18,6 +19,18 @@ router
     });
   })
   .post((req, res) => {
+
+    const errors = validateFeature({
+      key: req.body.key,
+      description: req.body.description,
+      type: req.body.type,
+      value: req.body.value,
+    });
+
+    if (errors) {
+      return res.status(400).json({ errors });
+    }
+
     const feature = new FeatureModel();
 
     feature.key = req.body.key;
@@ -46,6 +59,17 @@ router
     FeatureModel.findById(req.params.id, (error, feature) => {
       if (error) return res.status(500).json({ message: error.message });
       if (!feature) return res.status(404).json({ message: 'Not found' });
+
+      const errors = validateFeature({
+        key: req.body.key,
+        description: req.body.description,
+        type: req.body.type,
+        value: req.body.value,
+      });
+
+      if (errors) {
+        return res.status(400).json({ errors });
+      }
 
       feature.key = req.body.key;
       feature.description = req.body.description;

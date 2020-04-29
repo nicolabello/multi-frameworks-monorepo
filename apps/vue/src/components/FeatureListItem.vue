@@ -12,9 +12,9 @@
 
 <script lang="ts">
   import mdcCard from '@/modules/material-components-web/directives/mdc-card';
+  import { Feature } from '@feature-toggles/helpers';
   import { computed, SetupContext } from '@vue/composition-api';
   import Vue, { ComponentOptions } from 'vue';
-  import { Feature } from '@feature-toggles/helpers';
 
   const componentOptions: ComponentOptions<Vue> = {
     props: {

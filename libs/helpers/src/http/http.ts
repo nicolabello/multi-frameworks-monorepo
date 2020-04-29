@@ -1,7 +1,12 @@
 import axios, { AxiosResponse, Canceler, CancelTokenSource } from 'axios';
 
+export const baseURL = {
+  dev: 'http://localhost:8080',
+  prod: 'http://localhost:8080'
+};
+
 export default axios.create({
-  baseURL: 'http://localhost:8080'
+  baseURL: baseURL.dev
 });
 
 export function httpCancelToken(): CancelTokenSource {

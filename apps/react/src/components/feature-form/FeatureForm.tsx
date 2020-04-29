@@ -1,10 +1,10 @@
 import {
+  castFeatureValue,
   Feature,
   FeatureValueType,
-  featureValueTypes,
-  getUpdatedValue,
-  normalizeValues,
-  toFormValue
+  normalizeFeature,
+  toInputValue,
+  validateFeature
 } from '@feature-toggles/helpers';
 import { useFormik } from 'formik';
 import React, { useEffect } from 'react';
@@ -19,24 +19,8 @@ import './FeatureForm.scss';
 function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (values: Feature) => any }) {
 
   const form = useFormik<Feature>({
-    initialValues: normalizeValues(props.data),
-    validate: values => {
-
-      const errors: { [key in keyof Feature]?: string } = {};
-
-      if (!values.key) {
-        errors.key = 'This is required';
-      }
-
-      if (!values.type) {
-        errors.type = 'This is required';
-      } else if (!featureValueTypes.includes(values.type)) {
-        errors.type = 'Value not allowed';
-      }
-
-      return errors;
-
-    },
+    initialValues: normalizeFeature(props.data),
+    validate: values => validateFeature(values) || {},
     onSubmit: values => props.onSubmit(values)
   });
 
@@ -49,14 +33,14 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
 
   const updateValue = (type: FeatureValueType) => {
     const value = form.values.value;
-    const newValue = getUpdatedValue(value, type);
+    const newValue = castFeatureValue(value, type);
     if (newValue !== value) {
       form.setFieldValue('value', newValue);
     }
   };
 
   useEffect(() => {
-    form.setValues(normalizeValues(props.data), true);
+    form.setValues(normalizeFeature(props.data), true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data]);
 
@@ -145,7 +129,7 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
             <input aria-controls="value-helper-text-id" aria-describedby="value-helper-text-id"
                    aria-labelledby="value-id"
                    className="mdc-text-field__input" type="number" name="value"
-                   value={toFormValue(form.values.value)}
+                   value={toInputValue(form.values.value)}
                    onChange={form.handleChange} onBlur={form.handleBlur}/>
             <span className="mdc-floating-label" id="value-id">Value</span>
             <span className="mdc-line-ripple"/>
@@ -165,7 +149,7 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
             <input aria-controls="value-helper-text-id" aria-describedby="value-helper-text-id"
                    aria-labelledby="value-id"
                    className="mdc-text-field__input" type="text" name="value"
-                   value={toFormValue(form.values.value)}
+                   value={toInputValue(form.values.value)}
                    onChange={form.handleChange} onBlur={form.handleBlur}/>
             <span className="mdc-floating-label" id="value-id">Value</span>
             <span className="mdc-line-ripple"/>

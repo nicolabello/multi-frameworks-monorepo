@@ -1,4 +1,4 @@
-export * from './models/feature';
-export * from './http/services/feature.service';
-export * from './http/services/features.service';
+export * from './models';
+export * from './http';
 export * from './mdc';
+export * from './form';

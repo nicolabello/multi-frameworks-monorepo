@@ -1,5 +1,5 @@
-import React from 'react';
 import { Feature } from '@feature-toggles/helpers';
+import React from 'react';
 import FeatureListItem from '../feature-list-item/FeatureListItem';
 import './FeaturesList.scss';
 

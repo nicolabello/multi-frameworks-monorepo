@@ -10,7 +10,6 @@ import { FeatureListItemComponent } from './components/feature-list-item/feature
 import { FeatureComponent } from './components/feature/feature.component';
 import { FeaturesListComponent } from './components/features-list/features-list.component';
 import { FeaturesComponent } from './components/features/features.component';
-import { ValidationMessageComponent } from './components/validation-message/validation-message.component';
 import { MaterialComponentsWebModule } from './modules/material-components-web/material-components-web.module';
 
 @NgModule({
@@ -20,8 +19,7 @@ import { MaterialComponentsWebModule } from './modules/material-components-web/m
     FeatureComponent,
     FeaturesListComponent,
     FeatureListItemComponent,
-    FeatureFormComponent,
-    ValidationMessageComponent
+    FeatureFormComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +29,6 @@ import { MaterialComponentsWebModule } from './modules/material-components-web/m
     ReactiveFormsModule,
     MaterialComponentsWebModule
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

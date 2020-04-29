@@ -12,3 +12,6 @@ export interface Feature {
     type: FeatureValueType | null;
     value: FeatureValue | null;
 }
+export declare type FeatureErrors = {
+    [key in keyof Feature]?: string;
+};

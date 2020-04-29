@@ -19,7 +19,10 @@
     "directive-selector": [
       true,
       "attribute",
-      ["ft", "mdc"],
+      [
+        "ft",
+        "mdc"
+      ],
       "camelCase"
     ],
     "component-selector": [
