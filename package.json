@@ -20,9 +20,10 @@
   "scripts": {
     "reinstall": "rimraf **/yarn.lock && rimraf **/node_modules && yarn install",
     "ws": "yarn workspaces",
-    "ws:e": "yarn workspace @feature-toggles/express",
     "ws:a": "yarn workspace @feature-toggles/angular",
+    "ws:e": "yarn workspace @feature-toggles/express",
     "ws:r": "yarn workspace @feature-toggles/react",
+    "ws:s": "yarn workspace @feature-toggles/svelte",
     "ws:v": "yarn workspace @feature-toggles/vue",
     "ws:h": "yarn workspace @feature-toggles/helpers"
   },
