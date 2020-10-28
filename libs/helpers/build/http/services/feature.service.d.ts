@@ -1,4 +1,4 @@
-import { Feature } from '../../models/feature';
+import { Feature } from '../../models';
 import { PromiseWithCanceller } from '../http';
 export declare class FeatureService {
     private static http;

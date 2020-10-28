@@ -8,4 +8,4 @@ export interface MDCTextFieldProps {
 export interface MDCSelectProps extends MDCTextFieldProps {
     onChange?: (value: string) => void;
 }
-export declare const updateMDCInstance: (instance?: MDCTextField | MDCSelect | undefined, props?: MDCTextFieldProps | MDCSelectProps | undefined) => void;
+export declare const updateMDCInstance: (instance?: MDCSelect | MDCTextField | undefined, props?: MDCTextFieldProps | MDCSelectProps | undefined) => void;

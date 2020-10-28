@@ -1,4 +1,4 @@
-import { Feature } from '../../models/feature';
+import { Feature } from '../../models';
 import http, { httpCancelToken, promiseWithCanceller, PromiseWithCanceller } from '../http';
 
 export class FeatureService {
