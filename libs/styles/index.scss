@@ -1,12 +1,13 @@
 @use "~@nicolabello/material-components-web/textfield";
 @use "~@nicolabello/material-components-web/theme";
 
+
 @import "~normalize.css/normalize.css";
 
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
 @import "https://fonts.googleapis.com/css?family=Roboto:300,400,500";
 
-// @import "https://unpkg.com/material-components-web@v5.1.0/dist/material-components-web.min.css";
+//@import "https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css";
 @import "~@nicolabello/material-components-web/styles";
 
 // Material styles fixes - Start
@@ -20,7 +21,8 @@
   color: textfield.$helper-text-color;
 
   &.mdc-select-helper-text--validation-msg {
-    @include theme.prop(color, error);
+    //@include theme.prop(color, error);
+    color: theme.$error;
   }
 }
 
@@ -28,8 +30,10 @@
 
 body {
   height: 100vh;
-  @include theme.prop(background-color, background);
-  @include theme.prop(color, text-primary-on-light);
+  //@include theme.prop(background-color, background);
+  //@include theme.prop(color, text-primary-on-light);
+  background-color: theme.$background;
+  color: theme.$on-surface;
 }
 
 .mdc-drawer {
@@ -96,7 +100,8 @@ body {
   }
 
   p {
-    @include theme.prop(color, text-secondary-on-background);
+    //@include theme.prop(color, text-secondary-on-background);
+    color: theme.$secondary;
   }
 
   .feature-value {
@@ -105,7 +110,8 @@ body {
     pre {
       margin: 0;
       padding: 0;
-      @include theme.prop(color, error);
+      //@include theme.prop(color, error);
+      color: theme.$error;
     }
   }
 }

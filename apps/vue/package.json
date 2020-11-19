@@ -25,7 +25,7 @@
     "vuex": "^3.1.3"
   },
   "devDependencies": {
-    "@nicolabello/material-components-web": "^5.1.0",
+    "@nicolabello/material-components-web": "^8.0.11",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^5.2.4",
     "@typescript-eslint/eslint-plugin": "^2.26.0",

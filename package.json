@@ -7,31 +7,22 @@
     "url": "https://github.com/nicolabello/feature-toggles"
   },
   "license": "GPL-2.0-or-later",
-  "workspaces": {
-    "packages": [
-      "apps/*",
-      "libs/*"
-    ],
-    "nohoist": [
-      "**/vue",
-      "**/vue/**"
-    ]
-  },
+  "workspaces": [
+    "apps/*",
+    "libs/*"
+  ],
   "scripts": {
-    "reinstall": "rimraf **/yarn.lock && rimraf **/node_modules && yarn install",
-    "ws": "yarn workspaces",
-    "ws:a": "yarn workspace @feature-toggles/angular",
-    "ws:e": "yarn workspace @feature-toggles/express",
-    "ws:r": "yarn workspace @feature-toggles/react",
-    "ws:s": "yarn workspace @feature-toggles/svelte",
-    "ws:v": "yarn workspace @feature-toggles/vue",
-    "ws:h": "yarn workspace @feature-toggles/helpers"
+    "reinstall": "rimraf *.lock && rimraf **/node_modules && npm install --legacy-peer-deps",
+    "ws": "npm workspaces",
+    "ws:a": "npm workspace @feature-toggles/angular",
+    "ws:e": "npm workspace @feature-toggles/express",
+    "ws:r": "npm workspace @feature-toggles/react",
+    "ws:s": "npm workspace @feature-toggles/svelte",
+    "ws:v": "npm workspace @feature-toggles/vue",
+    "ws:h": "npm workspace @feature-toggles/helpers"
   },
   "devDependencies": {
-    "lerna": "^3.20.2",
+    "lerna": "^3.22.1",
     "rimraf": "^3.0.2"
-  },
-  "dependencies": {
-    "@feature-toggles/helpers": "link:libs/helpers/build"
   }
 }

@@ -3,7 +3,7 @@
     "apps/*",
     "libs/*"
   ],
-  "npmClient": "yarn",
+  "npmClient": "npm",
   "useWorkspaces": true,
   "version": "independent"
 }

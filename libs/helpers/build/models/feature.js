@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.featureValueTypes = exports.FeatureValueType = void 0;
 var FeatureValueType;
 (function (FeatureValueType) {
     FeatureValueType["String"] = "string";

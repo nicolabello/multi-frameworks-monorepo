@@ -3,5 +3,5 @@
 </template>
 
 <style lang="scss">
-    @import "../../../libs/styles";
+    @import "~@feature-toggles/styles";
 </style>

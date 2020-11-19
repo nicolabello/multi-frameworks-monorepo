@@ -1,7 +1,7 @@
 <form (ngSubmit)="submit()" [formGroup]="form" class="ft-form" novalidate>
 
   <label [required]="true" [valid]="!(form.errors?.key && (form.get('key').dirty || form.get('key').touched))"
-         [value]="form.get('key').value" class="mdc-text-field"
+         [value]="form.get('key').value" class="mdc-text-field mdc-text-field--filled"
          mdcTextField>
     <span class="mdc-text-field__ripple"></span>
     <input aria-controls="key-helper-text-id" aria-describedby="key-helper-text-id" aria-labelledby="key-id"
@@ -23,8 +23,9 @@
     </ng-template>
   </div>
 
-  <label [valid]="!(form.errors?.description && (form.get('description').dirty || form.get('description').touched))" [value]="form.get('description').value"
-         class="mdc-text-field"
+  <label [valid]="!(form.errors?.description && (form.get('description').dirty || form.get('description').touched))"
+         [value]="form.get('description').value"
+         class="mdc-text-field mdc-text-field--filled"
          mdcTextField>
     <span class="mdc-text-field__ripple"></span>
     <input aria-controls="description-helper-text-id" aria-describedby="description-helper-text-id"
@@ -40,22 +41,40 @@
   </div>
 
   <div (onChange)="form.get('type').setValue($event)" [required]="true"
-       [valid]="!(form.errors?.type && (form.get('type').dirty || form.get('type').touched))" [value]="form.get('type').value"
-       class="mdc-select" mdcSelect>
-    <div class="mdc-select__anchor">
-      <span class="mdc-select__dropdown-icon"></span>
-      <div aria-controls="type-helper-text-id" aria-describedby="type-helper-text-id"
-           aria-haspopup="listbox" aria-labelledby="type-label-id type-selected-text-id"
-           class="mdc-select__selected-text" id="type-selected-text-id"
-           role="button"></div>
-      <span class="mdc-floating-label" id="type-label-id">Type</span>
+       [valid]="!(form.errors?.type && (form.get('type').dirty || form.get('type').touched))"
+       [value]="form.get('type').value"
+       class="mdc-select mdc-select--filled" mdcSelect>
+    <div class="mdc-select__anchor"
+         role="button"
+         aria-haspopup="listbox"
+         aria-expanded="false"
+         aria-labelledby="type-label-id type-selected-text-id">
       <div class="mdc-line-ripple"></div>
+      <span class="mdc-floating-label" id="type-label-id">Type</span>
+      <span class="mdc-select__selected-text-container">
+        <span id="type-selected-text-id" class="mdc-select__selected-text"></span>
+      </span>
+      <span class="mdc-select__dropdown-icon">
+        <span class="mdc-select__dropdown-icon-graphic">
+        <span class="mdc-select__dropdown-icon-inactive material-icons">arrow_drop_down</span>
+        <span class="mdc-select__dropdown-icon-active material-icons">arrow_drop_up</span>
+          </span>
+      </span>
     </div>
     <div class="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
-      <ul class="mdc-list">
-        <li aria-selected="false" class="mdc-list-item" data-value="boolean" role="option">Toggle</li>
-        <li aria-selected="false" class="mdc-list-item" data-value="string" role="option">String</li>
-        <li aria-selected="false" class="mdc-list-item" data-value="number" role="option">Number</li>
+      <ul class="mdc-list" role="listbox" aria-label="Type">
+        <li aria-selected="false" class="mdc-list-item" data-value="boolean" role="option">
+          <span class="mdc-list-item__ripple"></span>
+          <span class="mdc-list-item__text">Toggle</span>
+        </li>
+        <li aria-selected="false" class="mdc-list-item" data-value="string" role="option">
+          <span class="mdc-list-item__ripple"></span>
+          <span class="mdc-list-item__text">String</span>
+        </li>
+        <li aria-selected="false" class="mdc-list-item" data-value="number" role="option">
+          <span class="mdc-list-item__ripple"></span>
+          <span class="mdc-list-item__text">Number</span>
+        </li>
       </ul>
     </div>
   </div>
@@ -76,12 +95,12 @@
                    role="switch" type="checkbox">
           </div>
         </div>
-        <label for="value-boolean-id">Off/On</label>
+        <label for="value-boolean-id">Value</label>
       </div>
     </ng-container>
     <ng-container *ngSwitchCase="types.Number">
       <label [required]="true" [valid]="!(form.errors?.value && (form.get('value').dirty || form.get('value').touched))"
-             [value]="form.get('value').value" class="mdc-text-field"
+             [value]="form.get('value').value" class="mdc-text-field mdc-text-field--filled"
              mdcTextField>
         <span class="mdc-text-field__ripple"></span>
         <input aria-controls="value-number-helper-text-id" aria-describedby="value-number-helper-text-id"
@@ -98,7 +117,7 @@
     </ng-container>
     <ng-container *ngSwitchCase="types.String">
       <label [required]="true" [valid]="!(form.errors?.value && (form.get('value').dirty || form.get('value').touched))"
-             [value]="form.get('value').value" class="mdc-text-field"
+             [value]="form.get('value').value" class="mdc-text-field mdc-text-field--filled"
              mdcTextField>
         <span class="mdc-text-field__ripple"></span>
         <input aria-controls="value-string-helper-text-id" aria-describedby="value-string-helper-text-id"

@@ -19,7 +19,8 @@ export class TextFieldDirective implements AfterViewInit, OnChanges, OnDestroy {
 
   public ngAfterViewInit(): void {
     this.instance = MDCTextField.attachTo(this.elementRef.nativeElement);
-    this.updateMDCInstance();
+    this.instance.useNativeValidation = false;
+    this.updateMDCInstance()
   }
 
   public ngOnChanges(): void {

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.updateMDCInstance = void 0;
 var form_1 = require("../form");
 exports.updateMDCInstance = function (instance, props) {
     if (instance && props) {
