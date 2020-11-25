@@ -8,15 +8,15 @@ import './Feature.scss';
 
 function Feature() {
 
-  const { id } = useParams();
+  const { id } = useParams<{id: string}>();
   const addingNew = id === 'new';
 
   const [data, setData] = useState<FeatureInterface>();
   const history = useHistory();
 
   const cancelGetRequest = useRef<Canceler>();
-
   const cancelAddOrUpdateRequest = useRef<Canceler>();
+
   const addOrUpdate = (data: FeatureInterface) => {
     cancelAddOrUpdateRequest.current && cancelAddOrUpdateRequest.current();
     const { cancelRequest, request } = addingNew ? FeatureService.add(data) : FeatureService.update(data);

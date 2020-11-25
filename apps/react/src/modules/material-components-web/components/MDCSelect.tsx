@@ -37,7 +37,7 @@ class MDCSelect extends React.Component<Props, State> {
   }
 
   /*public shouldComponentUpdate(nextProps: Readonly<Props>): boolean {
-    return this.props.children !== nextProps.childrean
+    return this.props.children !== nextProps.children
       || this.props.required !== nextProps.required
       || this.props.disabled !== nextProps.disabled
       || this.props.value !== nextProps.value

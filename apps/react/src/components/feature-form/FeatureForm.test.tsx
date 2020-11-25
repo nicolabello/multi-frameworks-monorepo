@@ -15,7 +15,7 @@ describe('FeatureForm', () => {
       type: FeatureValueType.Boolean,
       value: true
     };
-    component = render(<FeatureForm data={data}/>);
+    component = render(<FeatureForm data={data} onCancel={() => null} onSubmit={() => null}/>);
   });
 
   it('should create', () => {
