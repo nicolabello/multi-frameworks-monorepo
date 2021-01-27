@@ -1,9 +1,0 @@
-{
-  "packages": [
-    "apps/*",
-    "libs/*"
-  ],
-  "npmClient": "npm",
-  "useWorkspaces": true,
-  "version": "independent"
-}
