@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateFeature = exports.normalizeFeature = exports.castFeatureValue = exports.toInputValue = void 0;
 var feature_1 = require("../models/feature");
-exports.toInputValue = function (value) {
+var toInputValue = function (value) {
     if (typeof value === 'string') {
         return value;
     }
@@ -11,7 +11,8 @@ exports.toInputValue = function (value) {
     }
     return '';
 };
-exports.castFeatureValue = function (value, type) {
+exports.toInputValue = toInputValue;
+var castFeatureValue = function (value, type) {
     var newValue;
     switch (type) {
         case feature_1.FeatureValueType.Boolean:
@@ -28,7 +29,8 @@ exports.castFeatureValue = function (value, type) {
     }
     return newValue;
 };
-exports.normalizeFeature = function (data) {
+exports.castFeatureValue = castFeatureValue;
+var normalizeFeature = function (data) {
     var type = data && data.type && feature_1.featureValueTypes.includes(data.type) ? data.type : null;
     return {
         _id: data && data._id || '',
@@ -38,7 +40,8 @@ exports.normalizeFeature = function (data) {
         value: type ? exports.castFeatureValue(data && data.value, type) : null,
     };
 };
-exports.validateFeature = function (data) {
+exports.normalizeFeature = normalizeFeature;
+var validateFeature = function (data) {
     var errors = {};
     if (!(data && data.key)) {
         errors.key = 'This is required';
@@ -58,3 +61,4 @@ exports.validateFeature = function (data) {
     }
     return Object.keys(errors).length ? errors : null;
 };
+exports.validateFeature = validateFeature;
