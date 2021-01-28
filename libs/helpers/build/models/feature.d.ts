@@ -6,7 +6,7 @@ export declare enum FeatureValueType {
 export declare const featureValueTypes: string[];
 export declare type FeatureValue = string | number | boolean | null;
 export interface Feature {
-    _id: any;
+    _id?: any;
     key: string;
     description: string;
     type: FeatureValueType | null;

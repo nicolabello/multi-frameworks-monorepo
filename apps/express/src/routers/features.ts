@@ -1,6 +1,6 @@
 import { validateFeature } from '@feature-toggles/helpers';
 import express from 'express';
-import { FeatureModel } from '../models/feature-model';
+import { FeatureModel, FeatureDocument } from '../models/feature-model';
 
 const router = express.Router();
 
@@ -48,7 +48,7 @@ router
 router
   .route('/:id')
   .get((req, res) => {
-    FeatureModel.findById(req.params.id, (error, feature) => {
+    FeatureModel.findById(req.params.id, (error: { message: string; }, feature: FeatureDocument | null) => {
       if (error) return res.status(500).json({ message: error.message });
       if (!feature) return res.status(404).json({ message: 'Not found' });
 
@@ -56,7 +56,7 @@ router
     });
   })
   .put((req, res) => {
-    FeatureModel.findById(req.params.id, (error, feature) => {
+    FeatureModel.findById(req.params.id, (error: { message: string; }, feature: FeatureDocument | null) => {
       if (error) return res.status(500).json({ message: error.message });
       if (!feature) return res.status(404).json({ message: 'Not found' });
 

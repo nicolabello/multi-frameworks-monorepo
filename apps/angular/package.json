@@ -31,6 +31,8 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
+    "@feature-toggles/styles": "link:../../libs/styles",
+    "@feature-toggles/helpers": "link:../../libs/helpers",
     "@angular-devkit/build-angular": "~0.1101.1",
     "@angular/cli": "~11.1.1",
     "@angular/compiler-cli": "~11.1.0",

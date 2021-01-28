@@ -15,17 +15,19 @@
     "serve": "sirv public"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "11.0.2",
-    "@rollup/plugin-node-resolve": "^7.0.0",
-    "rollup": "^1.20.0",
-    "rollup-plugin-livereload": "^1.0.0",
-    "rollup-plugin-svelte": "^5.0.3",
-    "rollup-plugin-terser": "^5.1.2",
+    "@feature-toggles/helpers": "link:../../libs/helpers",
+    "@feature-toggles/styles": "link:../../libs/styles",
+    "@rollup/plugin-commonjs": "17.0.0",
+    "@rollup/plugin-node-resolve": "^11.1.0",
+    "rollup": "^2.38.0",
+    "rollup-plugin-livereload": "^2.0.0",
+    "rollup-plugin-svelte": "^7.1.0",
+    "rollup-plugin-terser": "^7.0.2",
     "svelte": "^3.0.0",
-    "svelte-preprocess": "^3.7.4",
-    "typescript": "^3.8.3"
+    "svelte-preprocess": "^4.6.3",
+    "typescript": "^4.1.3"
   },
   "dependencies": {
-    "sirv-cli": "^0.4.4"
+    "sirv-cli": "^1.0.10"
   }
 }
