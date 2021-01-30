@@ -1,15 +1,15 @@
 import { MDCRipple } from '@nicolabello/material-components-web';
-import { DirectiveOptions } from 'vue';
+import { Directive } from 'vue';
 
 type CustomHTMLElement = HTMLElement & {
   rippleInstance?: MDCRipple;
 }
 
-const mdcFab: DirectiveOptions = {
-  inserted: (el: CustomHTMLElement) => {
+const mdcFab: Directive = {
+  mounted: (el: CustomHTMLElement) => {
     el.rippleInstance = MDCRipple.attachTo(el);
   },
-  unbind: (el: CustomHTMLElement) => {
+  unmounted: (el: CustomHTMLElement) => {
     el.rippleInstance?.destroy();
   },
 };

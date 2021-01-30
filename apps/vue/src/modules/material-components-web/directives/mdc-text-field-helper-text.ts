@@ -1,15 +1,15 @@
 import { MDCTextFieldHelperText } from '@nicolabello/material-components-web';
-import { DirectiveOptions } from 'vue';
+import { Directive } from 'vue';
 
 type CustomHTMLElement = HTMLElement & {
   textFieldHelperTextInstance?: MDCTextFieldHelperText;
 }
 
-const mdcTextFieldHelperText: DirectiveOptions = {
-  inserted: (el: CustomHTMLElement) => {
+const mdcTextFieldHelperText: Directive = {
+  mounted: (el: CustomHTMLElement) => {
     el.textFieldHelperTextInstance = MDCTextFieldHelperText.attachTo(el);
   },
-  unbind: (el: CustomHTMLElement) => {
+  unmounted: (el: CustomHTMLElement) => {
     el.textFieldHelperTextInstance?.destroy();
   },
 };

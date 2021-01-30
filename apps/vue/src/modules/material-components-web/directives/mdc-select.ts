@@ -1,15 +1,14 @@
 import { MDCSelectProps, updateMDCInstance } from '@feature-toggles/helpers';
 import { MDCSelect } from '@nicolabello/material-components-web';
-import { DirectiveOptions } from 'vue';
-import { DirectiveBinding } from 'vue/types/options';
+import { Directive, DirectiveBinding } from 'vue';
 
 type CustomHTMLElement = HTMLElement & {
   selectInstance?: MDCSelect;
   selectInstanceOnChange?: () => void;
 }
 
-const mdcSelect: DirectiveOptions = {
-  inserted: (el: CustomHTMLElement, binding: DirectiveBinding) => {
+const mdcSelect: Directive = {
+  mounted: (el: CustomHTMLElement, binding: DirectiveBinding) => {
     const instance = MDCSelect.attachTo(el);
     el.selectInstance = instance;
     updateMDCInstance(el.selectInstance, binding.value as MDCSelectProps);
@@ -19,10 +18,10 @@ const mdcSelect: DirectiveOptions = {
       el.selectInstanceOnChange = selectInstanceOnChange;
     }
   },
-  update: (el: CustomHTMLElement, binding: DirectiveBinding) => {
+  updated: (el: CustomHTMLElement, binding: DirectiveBinding) => {
     updateMDCInstance(el.selectInstance, binding.value as MDCSelectProps);
   },
-  unbind: (el: CustomHTMLElement) => {
+  unmounted: (el: CustomHTMLElement) => {
     el.selectInstanceOnChange && el.selectInstance?.unlisten('MDCSelect:change', el.selectInstanceOnChange);
     el.selectInstance?.destroy();
   },

@@ -1,26 +1,26 @@
 <template>
-    <ul class="ft-cards-list">
-        <li v-bind:key="item._id" v-for="item of data">
-            <FeatureListItem v-bind:data="item"/>
-        </li>
-    </ul>
+  <ul class="ft-cards-list">
+    <li v-for="item of data" v-bind:key="item._id">
+      <FeatureListItem v-bind:data="item"/>
+    </li>
+  </ul>
 </template>
 
 <script lang="ts">
-  import FeatureListItem from '@/components/FeatureListItem.vue';
-  import Vue, { ComponentOptions } from 'vue';
+import FeatureListItem from '@/components/FeatureListItem.vue';
+import { Component } from 'vue';
 
-  const componentOptions: ComponentOptions<Vue> = {
-    props: {
-      data: { type: Array, default: () => [] }
-    },
-    setup() {
-      return {};
-    },
-    components: { FeatureListItem }
-  };
+const component: Component = {
+  props: {
+    data: { type: Array, default: () => [] }
+  },
+  setup() {
+    return {};
+  },
+  components: { FeatureListItem }
+};
 
-  export default componentOptions;
+export default component;
 </script>
 
 <style lang="scss" scoped></style>

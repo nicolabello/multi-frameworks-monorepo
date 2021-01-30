@@ -1,15 +1,15 @@
 import { MDCTopAppBar } from '@nicolabello/material-components-web';
-import { DirectiveOptions } from 'vue';
+import { Directive } from 'vue';
 
 type CustomHTMLElement = HTMLElement & {
   topAppBarInstance?: MDCTopAppBar;
 }
 
-const mdcTopAppBar: DirectiveOptions = {
-  inserted: (el: CustomHTMLElement) => {
+const mdcTopAppBar: Directive = {
+  mounted: (el: CustomHTMLElement) => {
     el.topAppBarInstance = MDCTopAppBar.attachTo(el);
   },
-  unbind: (el: CustomHTMLElement) => {
+  unmounted: (el: CustomHTMLElement) => {
     el.topAppBarInstance?.destroy();
   },
 };

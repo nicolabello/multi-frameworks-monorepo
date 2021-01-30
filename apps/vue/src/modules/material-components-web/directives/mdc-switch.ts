@@ -1,15 +1,15 @@
 import { MDCSwitch } from '@nicolabello/material-components-web';
-import { DirectiveOptions } from 'vue';
+import { Directive } from 'vue';
 
 type CustomHTMLElement = HTMLElement & {
   switchInstance?: MDCSwitch;
 }
 
-const mdcSwitch: DirectiveOptions = {
-  inserted: (el: CustomHTMLElement) => {
+const mdcSwitch: Directive = {
+  mounted: (el: CustomHTMLElement) => {
     el.switchInstance = MDCSwitch.attachTo(el);
   },
-  unbind: (el: CustomHTMLElement) => {
+  unmounted: (el: CustomHTMLElement) => {
     el.switchInstance?.destroy();
   },
 };

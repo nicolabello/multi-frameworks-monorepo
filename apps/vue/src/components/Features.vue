@@ -1,65 +1,65 @@
 <template>
-    <div role="presentation">
+  <div role="presentation">
 
-        <header class="mdc-top-app-bar mdc-top-app-bar--fixed" v-mdc-top-app-bar>
-            <div class="mdc-top-app-bar__row">
-                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-                    <h1 class="mdc-top-app-bar__title">Feature toggles</h1>
-                </section>
-            </div>
-        </header>
+    <header v-mdc-top-app-bar class="mdc-top-app-bar mdc-top-app-bar--fixed">
+      <div class="mdc-top-app-bar__row">
+        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+          <h1 class="mdc-top-app-bar__title">Feature toggles</h1>
+        </section>
+      </div>
+    </header>
 
-        <div class="mdc-top-app-bar--fixed-adjust" role="presentation">
+    <div class="mdc-top-app-bar--fixed-adjust" role="presentation">
 
-            <main class="ft-main-content">
-                <FeaturesList v-bind:data="data"/>
-            </main>
+      <main class="ft-main-content">
+        <FeaturesList v-bind:data="data"/>
+      </main>
 
-            <button aria-label="Add feature" class="mdc-fab ft-fab-absolute" type="button" v-mdc-fab
-                    v-on:click="addNew()">
-                <span class="mdc-fab__ripple"></span>
-                <span class="mdc-fab__icon material-icons">add</span>
-            </button>
-
-        </div>
+      <button v-mdc-fab aria-label="Add feature" class="mdc-fab ft-fab-absolute" type="button"
+              v-on:click="addNew()">
+        <span class="mdc-fab__ripple"></span>
+        <span class="mdc-fab__icon material-icons">add</span>
+      </button>
 
     </div>
+
+  </div>
 </template>
 
 <script lang="ts">
-  import FeaturesList from '@/components/FeaturesList.vue';
-  import mdcFab from '@/modules/material-components-web/directives/mdc-fab';
-  import mdcTopAppBar from '@/modules/material-components-web/directives/mdc-top-app-bar';
-  import { Feature, FeaturesService } from '@feature-toggles/helpers';
-  import { onBeforeUnmount, onMounted, ref, SetupContext } from '@vue/composition-api';
-  import Vue, { ComponentOptions } from 'vue';
+import FeaturesList from '@/components/FeaturesList.vue';
+import mdcFab from '@/modules/material-components-web/directives/mdc-fab';
+import mdcTopAppBar from '@/modules/material-components-web/directives/mdc-top-app-bar';
+import { Feature, FeaturesService } from '@feature-toggles/helpers';
+import { Component, onBeforeUnmount, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-  const componentOptions: ComponentOptions<Vue> = {
-    setup(props: {}, context: SetupContext) {
+const component: Component = {
+  setup() {
 
-      const router = context.root.$router;
-      const addNew = () => router.push('/feature/new');
+    const router = useRouter();
+    const addNew = () => router.push('/feature/new');
 
-      const data = ref<Feature[]>();
+    const data = ref<Feature[]>();
 
-      let cancelRequest: Function;
+    let cancelRequest: Function;
 
-      onMounted(() => {
-        let request: Promise<Feature[]>;
-        ({ request, cancelRequest } = FeaturesService.getAll());
-        (async () => data.value = await request)();
-      });
+    onMounted(() => {
+      let request: Promise<Feature[]>;
+      ({ request, cancelRequest } = FeaturesService.getAll());
+      (async () => data.value = await request)();
+    });
 
-      onBeforeUnmount(() => cancelRequest && cancelRequest());
+    onBeforeUnmount(() => cancelRequest && cancelRequest());
 
-      return { addNew, data };
+    return { addNew, data };
 
-    },
-    components: { FeaturesList },
-    directives: { mdcFab, mdcTopAppBar }
-  };
+  },
+  components: { FeaturesList },
+  directives: { mdcFab, mdcTopAppBar }
+};
 
-  export default componentOptions;
+export default component;
 </script>
 
 <style lang="scss" scoped></style>
