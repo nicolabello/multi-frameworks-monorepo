@@ -1,13 +1,13 @@
 @use "../node_modules/@nicolabello/material-components-web/textfield";
 @use "../node_modules/@nicolabello/material-components-web/theme";
 
-//@import "../node_modules/normalize.css/normalize.css";
+@import "../node_modules/normalize.css/normalize";
 
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
 @import "https://fonts.googleapis.com/css?family=Roboto:300,400,500";
 
 //@import "https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css";
-@import "../node_modules/@nicolabello/material-components-web/styles.css";
+@import "../node_modules/@nicolabello/material-components-web/styles";
 
 // Material styles fixes - Start
 .mdc-select__anchor {

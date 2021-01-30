@@ -32,14 +32,13 @@
   },
   "dependencies": {
     "formik": "^2.1.4",
-    "node-sass": "^4.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
-    "@feature-toggles/styles": "link:../../libs/styles",
     "@feature-toggles/helpers": "link:../../libs/helpers",
+    "@feature-toggles/styles": "link:../../libs/styles",
     "@nicolabello/material-components-web": "^9.0.10",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.3",
@@ -49,7 +48,9 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.4",
-    "react-scripts": "4.0.1",
+    "react-scripts": "^4.0.1",
+    "node-sass": "npm:sass",
+    "sass": "^1.32.5",
     "typescript": "~4.1.3"
   }
 }

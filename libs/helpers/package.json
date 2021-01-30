@@ -15,8 +15,8 @@
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "scripts": {
-    "build": "rimraf ./build/**.*&& tsc && cp .eslintrc.js build/ ",
-    "build:watch": "rimraf ./build/**.* && cp .eslintrc.js build/ && tsc --watch"
+    "build": "rimraf ./build && tsc",
+    "build:watch": "rimraf ./build && tsc --watch"
   },
   "dependencies": {
     "axios": "^0.21.1"

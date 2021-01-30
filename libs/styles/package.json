@@ -9,8 +9,21 @@
     "directory": "libs/styles"
   },
   "license": "GPL-2.0-or-later",
+  "files": [
+    "build/**"
+  ],
+  "main": "build/index.css",
+  "scripts": {
+    "build": "rimraf ./build && sass ./src/index.scss ./build/index.css",
+    "build:watch": "rimraf ./build && sass --watch ./src/index.scss ./build/index.css"
+  },
   "devDependencies": {
     "@nicolabello/material-components-web": "^9.0.10",
-    "normalize.css": "^8.0.1"
+    "normalize.css": "^8.0.1",
+    "rimraf": "^3.0.2",
+    "sass": "^1.32.5"
+  },
+  "dependencies": {
+    "node-sass": "^5.0.0"
   }
 }

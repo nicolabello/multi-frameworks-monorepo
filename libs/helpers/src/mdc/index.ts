@@ -21,5 +21,6 @@ export const updateMDCInstance = (instance?: MDCTextField | MDCSelect, props?: M
     instance.required = !!props.required;
     instance.disabled = !!props.disabled;
     instance.valid = !!props.valid;
+    instance.initialize();
   }
 };
