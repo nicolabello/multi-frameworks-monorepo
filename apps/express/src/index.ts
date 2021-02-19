@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
 import { featuresRouter } from './routers/features';
+import { featuresGraphqlRouter } from './routers/features-graphql';
 
 async function start(): Promise<void> {
   dotenv.config();
@@ -34,6 +35,7 @@ async function start(): Promise<void> {
   });
 
   server.use('/features', featuresRouter);
+  server.use('/graphql/features', featuresGraphqlRouter);
 
   server.listen(port);
 

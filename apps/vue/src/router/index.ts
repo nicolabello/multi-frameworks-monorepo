@@ -1,11 +1,8 @@
 import Feature from '@/components/Feature.vue';
 import Features from '@/components/Features.vue';
-import Vue from 'vue';
-import VueRouter, { RouteConfig } from 'vue-router';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
-Vue.use(VueRouter);
-
-const routes: RouteConfig[] = [
+const routes: Array<RouteRecordRaw> = [
   {
     path: '/features',
     name: 'Features',
@@ -21,14 +18,13 @@ const routes: RouteConfig[] = [
     // component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '*',
+    path: '/:pathMatch(.*)*',
     redirect: '/features'
   }
 ];
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
   routes
 });
 

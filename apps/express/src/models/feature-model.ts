@@ -1,7 +1,7 @@
 import { Feature, featureValueTypes } from '@feature-toggles/helpers';
 import mongoose from 'mongoose';
 
-interface FeatureDocument extends mongoose.Document, Feature {
+export interface FeatureDocument extends mongoose.Document, Feature {
 }
 
 const schema = new mongoose.Schema<FeatureDocument>({

@@ -1,18 +1,18 @@
 import { MDCRipple } from '@nicolabello/material-components-web';
-import { DirectiveOptions } from 'vue';
+import { Directive } from 'vue';
 
 type CustomHTMLElement = HTMLElement & {
   rippleInstance?: MDCRipple;
 }
 
-const mdcCard: DirectiveOptions = {
-  inserted: (el: CustomHTMLElement) => {
+const mdcCard: Directive = {
+  mounted: (el: CustomHTMLElement) => {
     const rippleElement = el.querySelector('.mdc-card__primary-action');
     if (rippleElement) {
       el.rippleInstance = MDCRipple.attachTo(rippleElement);
     }
   },
-  unbind: (el: CustomHTMLElement) => {
+  unmounted: (el: CustomHTMLElement) => {
     el.rippleInstance?.destroy();
   },
 };

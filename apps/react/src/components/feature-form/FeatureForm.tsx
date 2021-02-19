@@ -49,7 +49,8 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
   return (
     <form onSubmit={form.handleSubmit} className="ft-form" noValidate>
 
-      <MDCTextField className="mdc-text-field" required={true} valid={!form.touched.key || !form.errors.key}
+      <MDCTextField className="mdc-text-field mdc-text-field--filled" required={true}
+                    valid={!form.touched.key || !form.errors.key}
                     value={form.values.key}>
         <span className="mdc-text-field__ripple"/>
         <input aria-controls="key-helper-text-id" aria-describedby="key-helper-text-id" aria-labelledby="key-id"
@@ -67,7 +68,8 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
             object</MDCTextFieldHelperText>}
       </div>
 
-      <MDCTextField className="mdc-text-field" valid={!form.touched.description || !form.errors.description}
+      <MDCTextField className="mdc-text-field mdc-text-field--filled"
+                    valid={!form.touched.description || !form.errors.description}
                     value={form.values.description}>
         <span className="mdc-text-field__ripple"/>
         <input aria-controls="description-helper-text-id" aria-describedby="description-helper-text-id"
@@ -82,23 +84,41 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
           className="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg">{form.errors.description}</MDCTextFieldHelperText>
       </div>
 
-      <MDCSelect className="mdc-select" required={true} valid={!form.touched.type || !form.errors.type}
+      <MDCSelect className="mdc-select mdc-select--filled" required={true}
+                 valid={!form.touched.type || !form.errors.type}
                  value={form.values.type}
                  onChange={(value: FeatureValueType) => setType(value)}>
-        <div className="mdc-select__anchor">
-          <span className="mdc-select__dropdown-icon"/>
-          <div aria-controls="type-helper-text-id" aria-describedby="type-helper-text-id"
-               aria-haspopup="listbox" aria-labelledby="type-label-id type-selected-text-id"
-               className="mdc-select__selected-text" id="type-selected-text-id"
-               role="button"/>
+        <div className="mdc-select__anchor"
+             role="button"
+             aria-haspopup="listbox"
+             aria-expanded="false"
+             aria-labelledby="type-label-id type-selected-text-id">
+          <div className="mdc-line-ripple"></div>
           <span className="mdc-floating-label" id="type-label-id">Type</span>
-          <div className="mdc-line-ripple"/>
+          <span className="mdc-select__selected-text-container">
+        <span id="type-selected-text-id" className="mdc-select__selected-text"></span>
+      </span>
+          <span className="mdc-select__dropdown-icon">
+        <span className="mdc-select__dropdown-icon-graphic">
+        <span className="mdc-select__dropdown-icon-inactive material-icons">arrow_drop_down</span>
+        <span className="mdc-select__dropdown-icon-active material-icons">arrow_drop_up</span>
+          </span>
+      </span>
         </div>
         <div className="mdc-select__menu mdc-menu mdc-menu-surface" role="listbox">
-          <ul className="mdc-list">
-            <li className="mdc-list-item" data-value="boolean" role="option" aria-selected="false">Toggle</li>
-            <li className="mdc-list-item" data-value="string" role="option" aria-selected="false">String</li>
-            <li className="mdc-list-item" data-value="number" role="option" aria-selected="false">Number</li>
+          <ul className="mdc-list" role="listbox" aria-label="Type">
+            <li aria-selected="false" className="mdc-list-item" data-value="boolean" role="option">
+              <span className="mdc-list-item__ripple"></span>
+              <span className="mdc-list-item__text">Toggle</span>
+            </li>
+            <li aria-selected="false" className="mdc-list-item" data-value="string" role="option">
+              <span className="mdc-list-item__ripple"></span>
+              <span className="mdc-list-item__text">String</span>
+            </li>
+            <li aria-selected="false" className="mdc-list-item" data-value="number" role="option">
+              <span className="mdc-list-item__ripple"></span>
+              <span className="mdc-list-item__text">Number</span>
+            </li>
           </ul>
         </div>
       </MDCSelect>
@@ -123,7 +143,8 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
 
       {form.values.type === FeatureValueType.Number ?
         <>
-          <MDCTextField className="mdc-text-field" valid={!form.touched.value || !form.errors.value}
+          <MDCTextField className="mdc-text-field mdc-text-field--filled"
+                        valid={!form.touched.value || !form.errors.value}
                         value={form.values.value}>
             <span className="mdc-text-field__ripple"/>
             <input aria-controls="value-helper-text-id" aria-describedby="value-helper-text-id"
@@ -143,7 +164,8 @@ function FeatureForm(props: { data?: Feature, onCancel: () => any, onSubmit: (va
 
       {form.values.type === FeatureValueType.String ?
         <>
-          <MDCTextField className="mdc-text-field" valid={!form.touched.value || !form.errors.value}
+          <MDCTextField className="mdc-text-field mdc-text-field--filled"
+                        valid={!form.touched.value || !form.errors.value}
                         value={form.values.value}>
             <span className="mdc-text-field__ripple"/>
             <input aria-controls="value-helper-text-id" aria-describedby="value-helper-text-id"
