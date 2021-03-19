@@ -4,6 +4,9 @@ node_modules
 # Anything starting with .
 .*
 
+# Coverage output
+coverage
+
 # Configs
 *.config.*
 
