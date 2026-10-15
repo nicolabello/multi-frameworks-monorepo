@@ -1,8 +1,13 @@
+# Local MongoDB for development. Works with Docker Desktop, OrbStack or any Docker-compatible engine.
+# The official image only enables authentication when MONGO_INITDB_ROOT_USERNAME/PASSWORD are set,
+# so this database has no credentials: the port is therefore published on 127.0.0.1 only,
+# making it unreachable from other machines on the network.
+# https://hub.docker.com/_/mongo
 services:
   mongo:
     image: mongo:8
     ports:
-      - '27017:27017'
+      - '127.0.0.1:27017:27017'
     volumes:
       - mongo-data:/data/db
 
