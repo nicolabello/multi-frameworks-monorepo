@@ -10,6 +10,8 @@ import { FeatureModel } from '../models/feature-model.js';
 const schemaComposer = new SchemaComposer();
 
 // graphql-compose-mongoose's typings predate Mongoose 9's inferred models, hence the cast.
+// It also validates with `validateSync()`, which makes Mongoose log a deprecation warning (removed in Mongoose 10).
+// That comes from the library, not this code: it needs an upstream update before upgrading to Mongoose 10.
 const FeatureTC = composeMongoose(FeatureModel as unknown as Model<Document>, { schemaComposer });
 
 schemaComposer.Query.addFields({
