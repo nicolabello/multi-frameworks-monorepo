@@ -14,6 +14,11 @@
   },
   "scripts": {
     "dev": "turbo run dev",
+    "dev:api": "turbo run dev --filter=@feature-toggles/express --filter=@feature-toggles/helpers",
+    "dev:angular": "turbo run dev --filter=@feature-toggles/angular --filter=@feature-toggles/express --filter=@feature-toggles/helpers",
+    "dev:react": "turbo run dev --filter=@feature-toggles/react --filter=@feature-toggles/express --filter=@feature-toggles/helpers",
+    "dev:vue": "turbo run dev --filter=@feature-toggles/vue --filter=@feature-toggles/express --filter=@feature-toggles/helpers",
+    "dev:svelte": "turbo run dev --filter=@feature-toggles/svelte --filter=@feature-toggles/express --filter=@feature-toggles/helpers",
     "build": "turbo run build",
     "test": "turbo run test",
     "lint": "turbo run lint",

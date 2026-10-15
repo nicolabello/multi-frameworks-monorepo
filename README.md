@@ -31,7 +31,12 @@ pnpm db:up        # MongoDB 8 in Docker on :27017
 pnpm dev          # API + all four front-ends (Turborepo)
 ```
 
-Run a single app with a filter, e.g. `pnpm dev --filter=@feature-toggles/svelte --filter=@feature-toggles/express`.
+Or run a single front-end together with the API it needs:
+
+```sh
+pnpm dev:angular   # or dev:react, dev:vue, dev:svelte
+pnpm dev:api       # API only
+```
 
 GraphiQL is served at http://localhost:8080/graphql/features.
 
