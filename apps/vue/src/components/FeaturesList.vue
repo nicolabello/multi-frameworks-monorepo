@@ -1,26 +1,15 @@
-<template>
-  <ul class="ft-cards-list">
-    <li v-for="item of data" v-bind:key="item._id">
-      <FeatureListItem v-bind:data="item"/>
-    </li>
-  </ul>
-</template>
+<script setup lang="ts">
+import type { Feature } from '@feature-toggles/helpers';
+import FeatureListItem from './FeatureListItem.vue';
 
-<script lang="ts">
-import FeatureListItem from '@/components/FeatureListItem.vue';
-import { Component } from 'vue';
-
-const component: Component = {
-  props: {
-    data: { type: Array, default: () => [] }
-  },
-  setup() {
-    return {};
-  },
-  components: { FeatureListItem }
-};
-
-export default component;
+defineProps<{ features: Feature[] }>();
 </script>
 
-<style lang="scss" scoped></style>
+<template>
+  <ul v-if="features.length" class="ft-cards-list">
+    <li v-for="feature of features" :key="feature._id">
+      <FeatureListItem :feature="feature" />
+    </li>
+  </ul>
+  <p v-else class="ft-empty">No features yet.</p>
+</template>

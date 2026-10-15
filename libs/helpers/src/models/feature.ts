@@ -1,29 +1,24 @@
-export enum FeatureValueType {
-  String = 'string',
-  Number = 'number',
-  Boolean = 'boolean',
-}
+export const FeatureValueType = {
+  String: 'string',
+  Number: 'number',
+  Boolean: 'boolean',
+} as const;
 
-export const featureValueTypes: string[] = Object.keys(FeatureValueType).map(
-  (key) => (FeatureValueType as any)[key] as string
-);
+export type FeatureValueType = (typeof FeatureValueType)[keyof typeof FeatureValueType];
+
+export const featureValueTypes: readonly FeatureValueType[] = Object.values(FeatureValueType);
+
+export const isFeatureValueType = (value: unknown): value is FeatureValueType =>
+  featureValueTypes.includes(value as FeatureValueType);
 
 export type FeatureValue = string | number | boolean | null;
 
-/*export interface FeatureSwitch {
-  environment?: string;
-  version?: string;
-  language?: string;
-  value: FeatureValueType;
-}*/
-
 export interface Feature {
-  _id?: any;
+  _id?: string;
   key: string;
   description: string;
   type: FeatureValueType | null;
-  value: FeatureValue | null;
-  // switches: FeatureSwitch[];
+  value: FeatureValue;
 }
 
-export type FeatureErrors = { [key in keyof Feature]?: string }
+export type FeatureErrors = { [key in keyof Feature]?: string };

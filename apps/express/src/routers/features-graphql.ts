@@ -1,36 +1,27 @@
-import { graphqlHTTP } from 'express-graphql';
 import { SchemaComposer } from 'graphql-compose';
-import { composeWithMongoose } from 'graphql-compose-mongoose';
-import { FeatureDocument, FeatureModel } from '../models/feature-model';
-
-const featureTc = composeWithMongoose<FeatureDocument>(FeatureModel);
-
-const featureQueries = {
-  getById: featureTc.getResolver('findById'),
-  getAll: featureTc.getResolver('findMany'),
-};
-
-const featureMutations = {
-  add: featureTc.getResolver('createOne'),
-  update: featureTc.getResolver('updateOne'),
-};
+import { composeMongoose } from 'graphql-compose-mongoose';
+import { createYoga } from 'graphql-yoga';
+import type { Document, Model } from 'mongoose';
+import { FeatureModel } from '../models/feature-model.js';
 
 const schemaComposer = new SchemaComposer();
+// graphql-compose-mongoose's typings predate Mongoose 9's inferred models, hence the cast.
+const FeatureTC = composeMongoose(FeatureModel as unknown as Model<Document>, { schemaComposer });
 
-schemaComposer.Query.addFields({ ...featureQueries });
-schemaComposer.Mutation.addFields({ ...featureMutations });
-
-const extensions = ({ context }: { context: { startTime: number } }) => {
-  return {
-    runTime: Date.now() - context.startTime,
-  };
-};
-
-const router = graphqlHTTP({
-  context: { startTime: Date.now() },
-  graphiql: true,
-  schema: schemaComposer.buildSchema(),
-  // extensions,
+schemaComposer.Query.addFields({
+  getById: FeatureTC.mongooseResolvers.findById(),
+  getAll: FeatureTC.mongooseResolvers.findMany(),
 });
 
-export const featuresGraphqlRouter = router;
+schemaComposer.Mutation.addFields({
+  add: FeatureTC.mongooseResolvers.createOne(),
+  update: FeatureTC.mongooseResolvers.updateById(),
+});
+
+export const graphqlEndpoint = '/graphql/features';
+
+// GraphiQL is served on the same URL when opened in a browser.
+export const featuresGraphql = createYoga({
+  schema: schemaComposer.buildSchema(),
+  graphqlEndpoint,
+});

@@ -1,0 +1,11 @@
+packages:
+  - apps/*
+  - libs/*
+
+# Native/postinstall scripts allowed to run (pnpm blocks them by default)
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  lmdb: true
+  mongodb-memory-server: true
+  msgpackr-extract: true

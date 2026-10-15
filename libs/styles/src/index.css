@@ -1,0 +1,125 @@
+/*
+ * Shared look & feel for every app in the monorepo.
+ *
+ * Usage, in each app's main stylesheet:
+ *   @import "tailwindcss";
+ *   @import "@feature-toggles/styles";
+ *
+ * The `ft-*` classes below wrap the repeated bits of markup (form controls, cards, app bar)
+ * so the same HTML renders identically in Angular, React, Vue and Svelte.
+ * One-off layout is done with plain Tailwind utilities in the templates.
+ */
+
+@theme {
+  --color-primary-50: var(--color-indigo-50);
+  --color-primary-100: var(--color-indigo-100);
+  --color-primary-500: var(--color-indigo-500);
+  --color-primary-600: var(--color-indigo-600);
+  --color-primary-700: var(--color-indigo-700);
+}
+
+@layer base {
+  html {
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
+}
+
+@layer components {
+  /* App bar */
+  .ft-app-bar {
+    @apply fixed inset-x-0 top-0 z-10 flex h-16 items-center gap-2 bg-primary-600 px-4 text-white shadow-md;
+  }
+
+  .ft-app-bar-title {
+    @apply text-xl font-medium;
+  }
+
+  .ft-icon-button {
+    @apply inline-flex size-10 cursor-pointer items-center justify-center rounded-full transition-colors hover:bg-white/15 focus-visible:outline-2 focus-visible:outline-white;
+  }
+
+  .ft-main {
+    @apply mx-auto max-w-xl px-4 pt-24 pb-24;
+  }
+
+  /* Floating action button */
+  .ft-fab {
+    @apply fixed right-6 bottom-6 inline-flex size-14 cursor-pointer items-center justify-center rounded-2xl bg-primary-600 text-white shadow-lg transition hover:bg-primary-700 hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600;
+  }
+
+  /* Features list */
+  .ft-cards-list {
+    @apply flex flex-col gap-2;
+  }
+
+  .ft-card {
+    @apply block rounded-xl border border-slate-200 bg-white p-4 transition hover:border-primary-500 hover:shadow-md focus-visible:outline-2 focus-visible:outline-primary-600;
+  }
+
+  .ft-card-title {
+    @apply text-lg font-medium;
+  }
+
+  .ft-card-description {
+    @apply text-sm text-slate-500;
+  }
+
+  .ft-card-value {
+    @apply mt-2 font-mono text-sm text-rose-600;
+  }
+
+  .ft-empty {
+    @apply py-12 text-center text-slate-500;
+  }
+
+  /* Form */
+  .ft-form {
+    @apply flex flex-col gap-6;
+  }
+
+  .ft-field {
+    @apply flex flex-col gap-1;
+  }
+
+  .ft-label {
+    @apply text-sm font-medium text-slate-700;
+  }
+
+  .ft-input {
+    @apply w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 shadow-xs transition outline-none focus:border-primary-600 focus:ring-3 focus:ring-primary-100 aria-invalid:border-rose-600 aria-invalid:focus:ring-rose-100;
+  }
+
+  .ft-helper {
+    @apply text-xs text-slate-500;
+  }
+
+  .ft-error {
+    @apply text-xs text-rose-600;
+  }
+
+  /* Switch: <label class="ft-switch"><input type="checkbox" role="switch" class="peer sr-only"><span class="ft-switch-track"></span>…</label> */
+  .ft-switch {
+    @apply inline-flex cursor-pointer items-center gap-3 select-none;
+  }
+
+  .ft-switch-track {
+    @apply relative h-6 w-11 shrink-0 rounded-full bg-slate-300 transition-colors peer-checked:bg-primary-600 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary-600 after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:shadow after:transition-transform peer-checked:after:translate-x-5;
+  }
+
+  .ft-preview {
+    @apply overflow-x-auto rounded-lg bg-slate-900 p-4 font-mono text-sm text-slate-100;
+  }
+
+  .ft-form-controls {
+    @apply flex items-center justify-end gap-2;
+  }
+
+  /* Buttons */
+  .ft-btn {
+    @apply inline-flex h-10 cursor-pointer items-center justify-center rounded-full px-5 text-sm font-medium text-primary-600 transition-colors hover:bg-primary-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:cursor-not-allowed disabled:opacity-40;
+  }
+
+  .ft-btn-primary {
+    @apply bg-primary-600 text-white hover:bg-primary-700 disabled:hover:bg-primary-600;
+  }
+}

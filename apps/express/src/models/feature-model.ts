@@ -1,21 +1,16 @@
-import { Feature, featureValueTypes } from '@feature-toggles/helpers';
-import mongoose from 'mongoose';
+import { type Feature, isFeatureValueType } from '@feature-toggles/helpers';
+import { model, Schema } from 'mongoose';
 
-export interface FeatureDocument extends mongoose.Document, Feature {
-}
+export type FeatureDocument = Omit<Feature, '_id'>;
 
-const schema = new mongoose.Schema<FeatureDocument>({
+const schema = new Schema<FeatureDocument>({
   key: { type: String, required: true },
-  description: String,
+  description: { type: String, default: '' },
   type: {
     type: String,
-    validate: (value: string): boolean => featureValueTypes.indexOf(value) > -1,
+    validate: { validator: isFeatureValueType, message: 'Value not allowed' },
   },
-  value: Object,
+  value: Schema.Types.Mixed,
 });
 
-export const FeatureModel = mongoose.model<FeatureDocument>(
-  'Feature',
-  schema,
-  'features'
-);
+export const FeatureModel = model('Feature', schema, 'features');

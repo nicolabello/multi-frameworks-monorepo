@@ -1,6 +1,12 @@
-import { Feature, FeatureErrors, FeatureValue, FeatureValueType, featureValueTypes } from '../models/feature';
+import {
+  type Feature,
+  type FeatureErrors,
+  type FeatureValue,
+  FeatureValueType,
+  isFeatureValueType,
+} from '../models/index.js';
 
-export const toInputValue = (value: any): string => {
+export const toInputValue = (value: unknown): string => {
   if (typeof value === 'string') {
     return value;
   }
@@ -10,60 +16,58 @@ export const toInputValue = (value: any): string => {
   return '';
 };
 
-export const castFeatureValue = (value: any, type: FeatureValueType): FeatureValue => {
-  let newValue: FeatureValue;
-
+export const castFeatureValue = (value: unknown, type: FeatureValueType | null): FeatureValue => {
   switch (type) {
     case FeatureValueType.Boolean:
-      newValue = typeof value === 'boolean' ? value : value === 'true';
-      break;
-    case FeatureValueType.Number:
-      newValue = parseFloat(value as string) || null;
-      break;
+      return typeof value === 'boolean' ? value : value === 'true';
+    case FeatureValueType.Number: {
+      if (value === '' || value === null || value === undefined) {
+        return null;
+      }
+      const number = typeof value === 'number' ? value : parseFloat(String(value));
+      return Number.isFinite(number) ? number : null;
+    }
     case FeatureValueType.String:
-      newValue = typeof value !== 'undefined' && value !== null ? `${value}` : '';
-      break;
+      return value !== undefined && value !== null ? `${value}` : '';
     default:
-      newValue = null;
+      return null;
   }
-
-  return newValue;
 };
 
-export const normalizeFeature = (data?: Feature): Feature => {
-
-  const type = data && data.type && featureValueTypes.includes(data.type) ? data.type : null;
+export const normalizeFeature = (data?: Partial<Feature> | null): Feature => {
+  const type = isFeatureValueType(data?.type) ? data.type : null;
 
   return {
-    _id: data && data._id || '',
-    key: data && data.key || '',
-    description: data && data.description || '',
-    type: type,
-    value: type ? castFeatureValue(data && data.value, type) : null,
+    _id: data?._id ?? '',
+    key: data?.key ?? '',
+    description: data?.description ?? '',
+    type,
+    value: castFeatureValue(data?.value, type),
   };
-
 };
 
-export const validateFeature = (data?: Omit<Feature, '_id'>): FeatureErrors | null => {
-
+export const validateFeature = (data?: Partial<Omit<Feature, '_id'>> | null): FeatureErrors | null => {
   const errors: FeatureErrors = {};
 
-  if (!(data && data.key)) {
+  if (!data?.key) {
     errors.key = 'This is required';
   }
 
-  if (!(data && data.type)) {
+  if (!data?.type) {
     errors.type = 'This is required';
-  } else {
-    if (!featureValueTypes.includes(data.type)) {
-      errors.type = 'Value not allowed';
-    } else {
-      if (data.value !== castFeatureValue(data.value, data.type)) {
-        errors.value = 'Does not match the type';
-      }
-    }
+  } else if (!isFeatureValueType(data.type)) {
+    errors.type = 'Value not allowed';
+  } else if (
+    data.value === null ||
+    data.value === undefined ||
+    data.value !== castFeatureValue(data.value, data.type)
+  ) {
+    errors.value = 'Does not match the type';
   }
 
   return Object.keys(errors).length ? errors : null;
-
 };
+
+/** Pretty-printed JSON of what the API would return for this feature. */
+export const featurePreview = (feature: Pick<Feature, 'key' | 'value'>): string =>
+  JSON.stringify({ [feature.key]: feature.value }, null, 2);

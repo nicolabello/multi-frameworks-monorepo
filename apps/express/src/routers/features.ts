@@ -1,92 +1,55 @@
-import { validateFeature } from '@feature-toggles/helpers';
-import express from 'express';
-import { FeatureDocument, FeatureModel } from '../models/feature-model';
+import { type Feature, validateFeature } from '@feature-toggles/helpers';
+import { Router, type Request } from 'express';
+import { isValidObjectId } from 'mongoose';
+import { FeatureModel } from '../models/feature-model.js';
 
-const router = express.Router();
+const pickFeature = (body: Request['body']): Omit<Feature, '_id'> => ({
+  key: body?.key,
+  description: body?.description ?? '',
+  type: body?.type,
+  value: body?.value,
+});
 
-/*router.use((req, res, next) => {
-  console.log(`${req.method} req to ${req.url}`);
-  next();
-});*/
-
-router
-  .route('/')
-  .get((req, res) => {
-    FeatureModel.find(req.query, (error, features) => {
-      if (error) return res.status(500).json({ message: error.message });
-
-      res.json(features);
-    });
+// Express 5 forwards rejected promises from async handlers to the error middleware.
+export const featuresRouter = Router()
+  .get('/', async (req, res) => {
+    const features = await FeatureModel.find(req.query).setOptions({ sanitizeFilter: true });
+    res.json(features);
   })
-  .post((req, res) => {
-    const errors = validateFeature({
-      key: req.body.key,
-      description: req.body.description,
-      type: req.body.type,
-      value: req.body.value,
-    });
-
+  .post('/', async (req, res) => {
+    const data = pickFeature(req.body);
+    const errors = validateFeature(data);
     if (errors) {
-      return res.status(400).json({ errors });
+      res.status(400).json({ errors });
+      return;
     }
 
-    const feature = new FeatureModel();
-
-    feature.key = req.body.key;
-    feature.description = req.body.description;
-    feature.type = req.body.type;
-    feature.value = req.body.value;
-
-    feature.save((error, feature) => {
-      if (error) return res.status(500).json({ message: error.message });
-
-      res.json(feature);
-    });
-  });
-
-router
-  .route('/:id')
-  .get((req, res) => {
-    FeatureModel.findById(
-      req.params.id,
-      (error: { message: string }, feature: FeatureDocument | null) => {
-        if (error) return res.status(500).json({ message: error.message });
-        if (!feature) return res.status(404).json({ message: 'Not found' });
-
-        res.json(feature);
-      }
-    );
+    const feature = await FeatureModel.create(data);
+    res.status(201).json(feature);
   })
-  .put((req, res) => {
-    FeatureModel.findById(
-      req.params.id,
-      (error: { message: string }, feature: FeatureDocument | null) => {
-        if (error) return res.status(500).json({ message: error.message });
-        if (!feature) return res.status(404).json({ message: 'Not found' });
+  .get('/:id', async (req, res) => {
+    const feature = isValidObjectId(req.params.id) ? await FeatureModel.findById(req.params.id) : null;
+    if (!feature) {
+      res.status(404).json({ message: 'Not found' });
+      return;
+    }
 
-        const errors = validateFeature({
-          key: req.body.key,
-          description: req.body.description,
-          type: req.body.type,
-          value: req.body.value,
-        });
+    res.json(feature);
+  })
+  .put('/:id', async (req, res) => {
+    const feature = isValidObjectId(req.params.id) ? await FeatureModel.findById(req.params.id) : null;
+    if (!feature) {
+      res.status(404).json({ message: 'Not found' });
+      return;
+    }
 
-        if (errors) {
-          return res.status(400).json({ errors });
-        }
+    const data = pickFeature(req.body);
+    const errors = validateFeature(data);
+    if (errors) {
+      res.status(400).json({ errors });
+      return;
+    }
 
-        feature.key = req.body.key;
-        feature.description = req.body.description;
-        feature.type = req.body.type;
-        feature.value = req.body.value;
-
-        feature.save((error, feature) => {
-          if (error) return res.status(500).json({ message: error.message });
-
-          res.json(feature);
-        });
-      }
-    );
+    feature.set(data);
+    res.json(await feature.save());
   });
-
-export const featuresRouter = router;

@@ -1,76 +1,53 @@
-<template>
-  <div role="presentation">
+<script setup lang="ts">
+import { type Feature, FeatureService } from '@feature-toggles/helpers';
+import { computed, onBeforeUnmount, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import ArrowBackIcon from './ArrowBackIcon.vue';
+import FeatureForm from './FeatureForm.vue';
 
-    <header v-mdc-top-app-bar class="mdc-top-app-bar mdc-top-app-bar--fixed">
-      <div class="mdc-top-app-bar__row">
-        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-          <button class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button"
-                  v-on:click="showList()">
-            arrow_back
-          </button>
-          <h1 class="mdc-top-app-bar__title">{{ addingNew ? 'Add feature' : 'Edit feature' }}</h1>
-        </section>
-      </div>
-    </header>
+const props = defineProps<{ id: string }>();
 
-    <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust">
-      <main class="ft-main-content">
-        <FeatureForm v-bind:data="data" v-on:ftCancel="showList()" v-on:ftSubmit="addOrUpdate"/>
-      </main>
-    </div>
+const router = useRouter();
+const showList = () => router.push('/features');
 
-  </div>
-</template>
+const addingNew = computed(() => props.id === 'new');
+const feature = ref<Feature | null>(null);
+const loaded = ref(false);
 
-<script lang="ts">
-import FeatureForm from '@/components/FeatureForm.vue';
-import mdcTopAppBar from '@/modules/material-components-web/directives/mdc-top-app-bar';
-import { Feature, FeatureService } from '@feature-toggles/helpers';
-import { Component, onBeforeUnmount, onMounted, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+let controller: AbortController | undefined;
 
-const component: Component = {
-  setup() {
-
-    const route = useRoute();
-    const id = route.params.id;
-    const addingNew = ref<boolean>(id === 'new');
-
-    const router = useRouter();
-    const showList = () => router.push('/features');
-
-    const data = ref<Feature>();
-
-    let cancelGetRequest: Function;
-    onMounted(() => {
-      if (!addingNew.value) {
-        const { request, cancelRequest } = FeatureService.get(id);
-        cancelGetRequest = cancelRequest;
-        (async () => data.value = await request)();
-      }
-    });
-
-    onBeforeUnmount(() => cancelGetRequest && cancelGetRequest());
-
-    let cancelAddOrUpdateRequest: Function;
-    const addOrUpdate = (data: Feature) => {
-      cancelAddOrUpdateRequest && cancelAddOrUpdateRequest();
-      const { request, cancelRequest } = addingNew.value ? FeatureService.add(data) : FeatureService.update(data);
-      cancelAddOrUpdateRequest = cancelRequest;
-      (async () => {
-        await request;
-        showList();
-      })();
-    };
-
-    return { addingNew, showList, data, addOrUpdate };
-
+watch(
+  () => props.id,
+  async (id) => {
+    controller?.abort();
+    feature.value = null;
+    loaded.value = addingNew.value;
+    if (!addingNew.value) {
+      controller = new AbortController();
+      feature.value = await FeatureService.get(id, { signal: controller.signal });
+      loaded.value = true;
+    }
   },
-  components: { FeatureForm },
-  directives: { mdcTopAppBar }
-};
+  { immediate: true },
+);
 
-export default component;
+onBeforeUnmount(() => controller?.abort());
+
+async function save(data: Feature) {
+  await (addingNew.value ? FeatureService.add(data) : FeatureService.update(data));
+  await showList();
+}
 </script>
 
-<style lang="scss" scoped></style>
+<template>
+  <header class="ft-app-bar">
+    <button type="button" class="ft-icon-button" aria-label="Back" @click="showList">
+      <ArrowBackIcon />
+    </button>
+    <h1 class="ft-app-bar-title">{{ addingNew ? 'Add feature' : 'Edit feature' }}</h1>
+  </header>
+
+  <main class="ft-main">
+    <FeatureForm v-if="loaded" :key="id" :feature="feature" @cancel="showList" @submit="save" />
+  </main>
+</template>

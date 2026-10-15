@@ -1,19 +1,8 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "es2019",
-    "module": "commonjs",
-    "allowJs": true,
-    "outDir": "build",
-    "rootDir": "src",
-    "strict": true,
-    "noImplicitAny": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "forceConsistentCasingInFileNames": true
+    "types": ["node"],
+    "noEmit": true
   },
-  "exclude": [
-    "*.config.*",
-    "**/*.test.*",
-    "**/*.spec.*"
-  ]
+  "include": ["src", "vitest.config.ts"]
 }

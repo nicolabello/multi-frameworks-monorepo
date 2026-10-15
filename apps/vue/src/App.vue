@@ -1,7 +1,3 @@
 <template>
-  <router-view/>
+  <RouterView />
 </template>
-
-<style lang="scss">
-@import "~@feature-toggles/styles";
-</style>

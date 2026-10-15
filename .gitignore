@@ -1,21 +1,26 @@
 # Logs
 logs
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
 
-# Dependency directories
+# Dependencies
 node_modules
 
-# JetBrains IDEs config
-.idea
+# Build output & caches
+dist
+build
+coverage
+.turbo
+.angular
+.svelte-kit
+*.tsbuildinfo
 
-# Yarn
-.yarn/*
-!.yarn/releases
-!.yarn/plugins
-!.yarn/sdks
-!.yarn/versions
-.pnp.*
+# Env
+.env
+.env.*
+!.env.example
+
+# Editors / OS
+.idea
+.vscode/*
+!.vscode/extensions.json
+.DS_Store

@@ -1,65 +1,26 @@
-<template>
-  <div role="presentation">
+<script setup lang="ts">
+import { type Feature, FeaturesService } from '@feature-toggles/helpers';
+import { onBeforeUnmount, ref } from 'vue';
+import AddIcon from './AddIcon.vue';
+import FeaturesList from './FeaturesList.vue';
 
-    <header v-mdc-top-app-bar class="mdc-top-app-bar mdc-top-app-bar--fixed">
-      <div class="mdc-top-app-bar__row">
-        <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-          <h1 class="mdc-top-app-bar__title">Feature toggles</h1>
-        </section>
-      </div>
-    </header>
+const features = ref<Feature[]>();
 
-    <div class="mdc-top-app-bar--fixed-adjust" role="presentation">
-
-      <main class="ft-main-content">
-        <FeaturesList v-bind:data="data"/>
-      </main>
-
-      <button v-mdc-fab aria-label="Add feature" class="mdc-fab ft-fab-absolute" type="button"
-              v-on:click="addNew()">
-        <span class="mdc-fab__ripple"></span>
-        <span class="mdc-fab__icon material-icons">add</span>
-      </button>
-
-    </div>
-
-  </div>
-</template>
-
-<script lang="ts">
-import FeaturesList from '@/components/FeaturesList.vue';
-import mdcFab from '@/modules/material-components-web/directives/mdc-fab';
-import mdcTopAppBar from '@/modules/material-components-web/directives/mdc-top-app-bar';
-import { Feature, FeaturesService } from '@feature-toggles/helpers';
-import { Component, onBeforeUnmount, onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
-
-const component: Component = {
-  setup() {
-
-    const router = useRouter();
-    const addNew = () => router.push('/feature/new');
-
-    const data = ref<Feature[]>();
-
-    let cancelRequest: Function;
-
-    onMounted(() => {
-      let request: Promise<Feature[]>;
-      ({ request, cancelRequest } = FeaturesService.getAll());
-      (async () => data.value = await request)();
-    });
-
-    onBeforeUnmount(() => cancelRequest && cancelRequest());
-
-    return { addNew, data };
-
-  },
-  components: { FeaturesList },
-  directives: { mdcFab, mdcTopAppBar }
-};
-
-export default component;
+const controller = new AbortController();
+FeaturesService.getAll({ signal: controller.signal }).then((data) => (features.value = data));
+onBeforeUnmount(() => controller.abort());
 </script>
 
-<style lang="scss" scoped></style>
+<template>
+  <header class="ft-app-bar">
+    <h1 class="ft-app-bar-title">Feature toggles</h1>
+  </header>
+
+  <main class="ft-main">
+    <FeaturesList v-if="features" :features="features" />
+  </main>
+
+  <RouterLink to="/features/new" class="ft-fab" aria-label="Add feature">
+    <AddIcon />
+  </RouterLink>
+</template>
