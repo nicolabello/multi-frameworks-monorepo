@@ -8,8 +8,11 @@
  * The `ft-*` classes below wrap the repeated bits of markup (form controls, cards, app bar)
  * so the same HTML renders identically in Angular, React, Vue and Svelte.
  * One-off layout is done with plain Tailwind utilities in the templates.
+ *
+ * Tailwind v4 is configured in CSS, there is no tailwind.config.js: https://tailwindcss.com/docs/installation
  */
 
+/* Design tokens: each variable here also generates utilities, e.g. `bg-primary-600`. https://tailwindcss.com/docs/theme */
 @theme {
   --color-primary-50: var(--color-indigo-50);
   --color-primary-100: var(--color-indigo-100);
@@ -24,6 +27,11 @@
   }
 }
 
+/*
+ * Component classes built from utilities with @apply (https://tailwindcss.com/docs/functions-and-directives#apply-directive).
+ * Being in the `components` layer, utilities in the markup can still override them.
+ * https://tailwindcss.com/docs/adding-custom-styles#adding-component-classes
+ */
 @layer components {
   /* App bar */
   .ft-app-bar {
@@ -97,7 +105,9 @@
     @apply text-xs text-rose-600;
   }
 
-  /* Switch: <label class="ft-switch"><input type="checkbox" role="switch" class="peer sr-only"><span class="ft-switch-track"></span>…</label> */
+  /* Switch styled from the state of a visually hidden checkbox with the `peer-*` variants:
+     https://tailwindcss.com/docs/hover-focus-and-other-states#styling-based-on-sibling-state
+     Markup: <label class="ft-switch"><input type="checkbox" role="switch" class="peer sr-only"><span class="ft-switch-track"></span>…</label> */
   .ft-switch {
     @apply inline-flex cursor-pointer items-center gap-3 select-none;
   }

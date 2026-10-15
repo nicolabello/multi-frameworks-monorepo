@@ -6,6 +6,7 @@ import {
   isFeatureValueType,
 } from '../models/index.js';
 
+/** Text to show in an `<input>` for a feature value (inputs only deal with strings). */
 export const toInputValue = (value: unknown): string => {
   if (typeof value === 'string') {
     return value;
@@ -16,6 +17,11 @@ export const toInputValue = (value: unknown): string => {
   return '';
 };
 
+/**
+ * Converts any value to the given feature type, e.g. `'1.5'` → `1.5` for numbers or `'true'` → `true` for booleans.
+ * Used when the user switches type, so the existing value is carried over when it makes sense,
+ * and by `validateFeature` to check that a value already has the right type.
+ */
 export const castFeatureValue = (value: unknown, type: FeatureValueType | null): FeatureValue => {
   switch (type) {
     case FeatureValueType.Boolean:
@@ -34,6 +40,7 @@ export const castFeatureValue = (value: unknown, type: FeatureValueType | null):
   }
 };
 
+/** Turns possibly incomplete data (e.g. "new feature" = nothing) into a complete, consistent `Feature` for a form. */
 export const normalizeFeature = (data?: Partial<Feature> | null): Feature => {
   const type = isFeatureValueType(data?.type) ? data.type : null;
 
@@ -46,6 +53,10 @@ export const normalizeFeature = (data?: Partial<Feature> | null): Feature => {
   };
 };
 
+/**
+ * The single source of truth for what a valid feature is, shared by every front-end and the API.
+ * Returns `null` when valid, otherwise one message per invalid field.
+ */
 export const validateFeature = (data?: Partial<Omit<Feature, '_id'>> | null): FeatureErrors | null => {
   const errors: FeatureErrors = {};
 

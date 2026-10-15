@@ -8,6 +8,7 @@ import { FeatureListItemComponent } from './feature-list-item';
   template: `
     @if (features().length) {
       <ul class="ft-cards-list">
+        <!-- track tells Angular how to identify items between renders: https://angular.dev/guide/templates/control-flow#why-is-track-in-for-blocks-important -->
         @for (feature of features(); track feature._id) {
           <li><ft-feature-list-item [feature]="feature" /></li>
         }
@@ -18,5 +19,6 @@ import { FeatureListItemComponent } from './feature-list-item';
   `,
 })
 export class FeaturesListComponent {
+  // Signal inputs: https://angular.dev/guide/components/inputs
   readonly features = input.required<Feature[]>();
 }

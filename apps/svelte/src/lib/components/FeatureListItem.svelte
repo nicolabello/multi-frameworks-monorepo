@@ -5,6 +5,7 @@
   let { feature }: { feature: Feature } = $props();
 </script>
 
+<!-- Plain links: SvelteKit intercepts clicks on same-app <a> elements and navigates client-side -->
 <a href={resolve('/features/[id]', { id: feature._id ?? '' })} class="ft-card">
   <h2 class="ft-card-title">{feature.key}</h2>
   {#if feature.description}

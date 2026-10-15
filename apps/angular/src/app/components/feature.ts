@@ -19,6 +19,7 @@ import { ArrowBackIcon } from './icons';
 
     <main class="ft-main">
       @if (addingNew() || feature.hasValue()) {
+        <!-- @let declares a template variable: https://angular.dev/guide/templates/variables#local-template-variables-with-let -->
         @let current = addingNew() ? null : feature.value()!;
         <ft-feature-form [feature]="current" (cancelled)="showList()" (saved)="save($event)" />
       }
@@ -29,7 +30,10 @@ export class FeatureComponent {
   /** Bound from the `:id` route param */
   readonly id = input.required<string>();
 
+  // Derived signal, recomputed when `id` changes: https://angular.dev/guide/signals#computed-signals
   protected readonly addingNew = computed(() => this.id() === 'new');
+  // Re-fetches whenever `id` changes; returning `undefined` means "don't fetch" (when adding a new feature).
+  // https://angular.dev/guide/http/http-resource
   protected readonly feature = httpResource<Feature>(() =>
     this.addingNew() ? undefined : featureUrl(this.id()),
   );

@@ -9,9 +9,13 @@ import {
 } from '@feature-toggles/helpers';
 import { computed, reactive, watch } from 'vue';
 
+// Typed props and events: https://vuejs.org/guide/typescript/composition-api.html
 const props = defineProps<{ feature?: Feature | null }>();
 const emit = defineEmits<{ cancel: []; submit: [feature: Feature] }>();
 
+// `reactive` makes a deeply reactive copy of the object, which the inputs edit through `v-model`.
+// Taking the prop's initial value is enough: the parent re-creates this component (`:key`) for another feature.
+// https://vuejs.org/api/reactivity-core.html#reactive
 const form = reactive<Feature>(normalizeFeature(props.feature));
 const touched = reactive<Partial<Record<keyof Feature, boolean>>>({});
 
@@ -21,6 +25,7 @@ watch(
   (type) => (form.value = castFeatureValue(form.value, type)),
 );
 
+// Re-evaluated automatically whenever a field used by `validateFeature` changes. https://vuejs.org/guide/essentials/computed.html
 const errors = computed(() => validateFeature(form));
 const showError = (field: keyof Feature) => (touched[field] && errors.value?.[field]) || undefined;
 
@@ -83,6 +88,7 @@ const submit = () => {
 
     <div v-else-if="form.type" class="ft-field">
       <label for="value" class="ft-label">Value</label>
+      <!-- `.number` casts the input to a number: https://vuejs.org/guide/essentials/forms.html#number -->
       <input
         v-if="form.type === FeatureValueType.Number"
         id="value"

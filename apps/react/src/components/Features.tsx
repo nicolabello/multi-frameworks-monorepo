@@ -4,6 +4,7 @@ import FeaturesList from './FeaturesList.tsx';
 import { AddIcon } from './Icons.tsx';
 
 function Features() {
+  // Data fetched by the route's loader (see routes.tsx) before this component rendered
   const features = useLoaderData<Feature[]>();
 
   return (

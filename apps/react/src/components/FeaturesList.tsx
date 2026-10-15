@@ -9,6 +9,7 @@ function FeaturesList({ features }: { features: Feature[] }) {
   return (
     <ul className="ft-cards-list">
       {features.map((feature) => (
+        // `key` lets React match list items between renders: https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key
         <li key={feature._id}>
           <FeatureListItem feature={feature} />
         </li>

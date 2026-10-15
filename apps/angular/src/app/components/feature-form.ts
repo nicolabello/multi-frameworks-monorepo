@@ -17,6 +17,8 @@ import {
   imports: [FormField, NgTemplateOutlet],
   template: `
     <form class="ft-form" novalidate (submit)="submit($event)">
+      <!-- [formField] binds an input to a Signal Forms field (value, touched state, errors…):
+           https://angular.dev/guide/forms/signals/overview -->
       <div class="ft-field">
         <label for="key" class="ft-label">Key</label>
         <input
@@ -40,6 +42,9 @@ import {
 
       <div class="ft-field">
         <label for="type" class="ft-label">Type</label>
+        <!-- The select and the value inputs are wired by hand rather than with [formField], because changing
+             the type must also convert the value (see setType/setValue). [selected] goes on the options because
+             a [value] on the <select> would be applied before its options exist. -->
         <select
           id="type"
           class="ft-input"
@@ -81,6 +86,8 @@ import {
         }
       }
 
+      <!-- A reusable chunk of template, rendered by ngTemplateOutlet above with a different input type:
+           https://angular.dev/guide/templates/ng-template -->
       <ng-template #valueField let-type="type">
         <div class="ft-field">
           <label for="value" class="ft-label">Value</label>
@@ -110,6 +117,7 @@ import {
   `,
 })
 export class FeatureFormComponent {
+  // Signal-based inputs and outputs: https://angular.dev/guide/components/inputs https://angular.dev/guide/components/outputs
   readonly feature = input<Feature | null>(null);
   readonly cancelled = output();
   readonly saved = output<Feature>();
@@ -118,10 +126,17 @@ export class FeatureFormComponent {
   protected readonly toInputValue = toInputValue;
   protected readonly preview = featurePreview;
 
-  /** Form model, reset whenever the `feature` input changes */
+  /**
+   * Form model: a writable signal that resets whenever the `feature` input changes.
+   * https://angular.dev/guide/signals/linked-signal
+   */
   protected readonly model = linkedSignal(() => normalizeFeature(this.feature()));
 
-  /** Signal Form; the shared `validateFeature` rules are mapped onto each field */
+  /**
+   * Signal Form built on the model. Instead of per-field validators, `validateTree` runs the shared
+   * `validateFeature` once and assigns each message to its field (`fieldTree`).
+   * https://angular.dev/guide/forms/signals/validation
+   */
   protected readonly featureForm = form(this.model, (path) => {
     validateTree(path, ({ value, fieldTree }) =>
       Object.entries(validateFeature(value()) ?? {}).map(([field, message]) => ({

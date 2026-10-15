@@ -8,6 +8,8 @@
 
   let { data }: PageProps = $props();
 
+  // `resolve` builds a type-checked URL for a route (and adds the app's base path, if any);
+  // `goto` navigates client-side. https://svelte.dev/docs/kit/$app-paths#resolve https://svelte.dev/docs/kit/$app-navigation#goto
   const showList = () => goto(resolve('/features'));
 
   async function save(feature: Feature) {
@@ -24,6 +26,8 @@
 </header>
 
 <main class="ft-main">
+  <!-- {#key} destroys and re-creates its content when the value changes: a fresh form for another feature.
+       https://svelte.dev/docs/svelte/key -->
   {#key data.feature?._id}
     <FeatureForm feature={data.feature} oncancel={showList} onsubmit={save} />
   {/key}

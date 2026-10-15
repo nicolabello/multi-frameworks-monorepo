@@ -14,17 +14,23 @@
     onsubmit: (feature: Feature) => void;
   }
 
+  // Svelte 5 runes: `$props`, `$state` and `$derived` declare props and reactive state.
+  // https://svelte.dev/docs/svelte/what-are-runes
+  // Callback props (`onsubmit`…) replace Svelte 4's `createEventDispatcher`: https://svelte.dev/docs/svelte/v5-migration-guide#Event-changes
   let { feature, oncancel, onsubmit }: Props = $props();
 
   // The parent re-creates this component with {#key} when the feature changes, so the initial value is enough
   // svelte-ignore state_referenced_locally
+  // `$state` on an object makes a deeply reactive proxy: https://svelte.dev/docs/svelte/$state
   const form = $state(normalizeFeature(feature));
   const touched = $state<Partial<Record<keyof Feature, boolean>>>({});
 
+  // Recomputed whenever something it reads changes: https://svelte.dev/docs/svelte/$derived
   const errors = $derived(validateFeature(form));
   const showError = (field: keyof Feature) => (touched[field] && errors?.[field]) || undefined;
 
-  // Function binding: keep the value compatible whenever the type changes
+  // Function binding (`bind:value={get, set}`): intercept writes to keep the value compatible whenever the
+  // type changes. https://svelte.dev/docs/svelte/bind#Function-bindings
   const getType = () => form.type;
   const setType = (type: FeatureValueType | null) => {
     form.type = type;

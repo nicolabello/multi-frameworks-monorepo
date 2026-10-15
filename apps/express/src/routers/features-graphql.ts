@@ -4,7 +4,11 @@ import { createYoga } from 'graphql-yoga';
 import type { Document, Model } from 'mongoose';
 import { FeatureModel } from '../models/feature-model.js';
 
+// graphql-compose builds a GraphQL schema in code, and graphql-compose-mongoose derives the
+// GraphQL types and CRUD resolvers from the Mongoose model, so nothing is written by hand.
+// https://graphql-compose.github.io/docs/plugins/plugin-mongoose.html
 const schemaComposer = new SchemaComposer();
+
 // graphql-compose-mongoose's typings predate Mongoose 9's inferred models, hence the cast.
 const FeatureTC = composeMongoose(FeatureModel as unknown as Model<Document>, { schemaComposer });
 
@@ -13,6 +17,7 @@ schemaComposer.Query.addFields({
   getAll: FeatureTC.mongooseResolvers.findMany(),
 });
 
+// Both mutations go through `save()`, so the model's validation hook applies to them too
 schemaComposer.Mutation.addFields({
   add: FeatureTC.mongooseResolvers.createOne(),
   update: FeatureTC.mongooseResolvers.updateById(),
@@ -20,7 +25,9 @@ schemaComposer.Mutation.addFields({
 
 export const graphqlEndpoint = '/graphql/features';
 
-// GraphiQL is served on the same URL when opened in a browser.
+// GraphQL Yoga is a spec-compliant GraphQL server that plugs into Express as middleware.
+// It also serves the GraphiQL IDE when the endpoint is opened in a browser.
+// https://the-guild.dev/graphql/yoga-server/docs/integrations/integration-with-express
 export const featuresGraphql = createYoga({
   schema: schemaComposer.buildSchema(),
   graphqlEndpoint,

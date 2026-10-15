@@ -17,6 +17,9 @@ interface Props {
 }
 
 function FeatureForm({ feature, onCancel, onSubmit }: Props) {
+  // Formik keeps the form values, touched fields and errors, and wires up the inputs' handlers.
+  // Validation is delegated to the shared `validateFeature` (Formik expects `{}` when there are no errors).
+  // https://formik.org/docs/api/useFormik
   const form = useFormik<Feature>({
     initialValues: normalizeFeature(feature),
     validate: (values) => validateFeature(values) ?? {},
@@ -25,8 +28,10 @@ function FeatureForm({ feature, onCancel, onSubmit }: Props) {
   });
 
   const { values, errors, touched } = form;
+  // Only show an error once the user has left the field
   const showError = (field: keyof Feature) => (touched[field] && errors[field]) || undefined;
 
+  // Changing the type also converts the current value, so both fields are updated together
   const setType = async (type: string) => {
     const newType = isFeatureValueType(type) ? type : null;
     await form.setValues({ ...values, type: newType, value: castFeatureValue(values.value, newType) });
@@ -47,6 +52,8 @@ function FeatureForm({ feature, onCancel, onSubmit }: Props) {
           autoFocus
           aria-invalid={!!showError('key')}
           aria-describedby="key-helper"
+          // Controlled input: React state is the single source of truth for its value.
+          // https://react.dev/reference/react-dom/components/input#controlling-an-input-with-a-state-variable
           value={values.key}
           onChange={form.handleChange}
           onBlur={form.handleBlur}

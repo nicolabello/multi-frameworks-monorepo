@@ -4,6 +4,7 @@ import FeatureForm from './FeatureForm.tsx';
 import { ArrowBackIcon } from './Icons.tsx';
 
 function Feature() {
+  // Whatever the route's loader returned (see routes.tsx): https://reactrouter.com/api/hooks/useLoaderData
   const feature = useLoaderData<FeatureModel | null>();
   const navigate = useNavigate();
   const showList = () => navigate('/features');
@@ -23,6 +24,8 @@ function Feature() {
       </header>
 
       <main className="ft-main">
+        {/* A different `key` makes React mount a fresh form (with fresh state) for another feature:
+            https://react.dev/learn/preserving-and-resetting-state#option-2-resetting-state-with-a-key */}
         <FeatureForm key={feature?._id ?? 'new'} feature={feature} onCancel={showList} onSubmit={save} />
       </main>
     </>

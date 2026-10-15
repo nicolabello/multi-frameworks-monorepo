@@ -61,6 +61,10 @@ describe('REST /features', () => {
     expect(updated.body.value).toBe(false);
   });
 
+  it('answers 400, not 500, to malformed JSON', async () => {
+    await request(app).post('/features').set('content-type', 'application/json').send('{"key":').expect(400);
+  });
+
   it('returns 404 for unknown or malformed ids', async () => {
     await request(app).get(`/features/${new mongoose.Types.ObjectId()}`).expect(404);
     await request(app).get('/features/not-an-id').expect(404);
@@ -77,5 +81,25 @@ describe('GraphQL /graphql/features', () => {
       .send({ query: '{ getAll { key type value } }' })
       .expect(200);
     expect(res.body).toEqual({ data: { getAll: [{ key: 'darkMode', type: 'boolean', value: true }] } });
+  });
+
+  it('applies the shared validation rules to mutations', async () => {
+    // A valid string feature (empty string included) is accepted…
+    await request(app)
+      .post('/graphql/features')
+      .send({ query: 'mutation { add(record: { key: "msg", type: "string", value: "" }) { recordId } }' })
+      .expect(200);
+    await FeatureModel.deleteMany({});
+
+    // …a number feature with a string value isn't
+    const res = await request(app)
+      .post('/graphql/features')
+      .send({
+        query: 'mutation { add(record: { key: "limit", type: "number", value: "abc" }) { recordId } }',
+      })
+      .expect(200);
+
+    expect(res.body.errors[0].message).toContain('Does not match the type');
+    expect(await FeatureModel.countDocuments()).toBe(0);
   });
 });

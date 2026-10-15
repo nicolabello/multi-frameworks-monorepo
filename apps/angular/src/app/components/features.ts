@@ -15,6 +15,7 @@ import { AddIcon } from './icons';
     </header>
 
     <main class="ft-main">
+      <!-- Built-in control flow (@if, @for, @switch) replaces *ngIf/*ngFor: https://angular.dev/guide/templates/control-flow -->
       @if (features.hasValue()) {
         <ft-features-list [features]="features.value()" />
       }
@@ -26,5 +27,7 @@ import { AddIcon } from './icons';
   `,
 })
 export class FeaturesComponent {
+  // `httpResource` performs a GET and exposes the result as signals (`value()`, `isLoading()`, `error()`…).
+  // https://angular.dev/guide/http/http-resource
   protected readonly features = httpResource<Feature[]>(() => featuresUrl);
 }
